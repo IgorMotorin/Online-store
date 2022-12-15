@@ -1,1 +1,1 @@
-# Online-stote
+# Online-store
