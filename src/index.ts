@@ -1,7 +1,12 @@
-// import App from './components/app/app';
+// import './global.css';
+import './bootstrap.min.css';
 import './global.css';
 
-// const app: App = new App();
-// app.start();
+import {App} from './components/app';
 
-console.log('Starting  App')
+
+console.log('Starting  App');
+
+const app: App = new App();
+
+
