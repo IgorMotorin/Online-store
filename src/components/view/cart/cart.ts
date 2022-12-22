@@ -22,7 +22,7 @@ export class Cart {
                     <li class="page-item"><a class="page-link" href="#">3</a></li>
                     <li class="page-item"><a class="page-link" href="#">Next</a></li>
                 </ul>
-            </nav>
+            </nav>           
             <div class="dropstart ms-auto">
                 <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     5
@@ -59,12 +59,12 @@ export class Cart {
                     <div>
                         <h5 class="d-flex justify-content-between align-items-center mb-3">
                             <div class="d-flex gap-2">                                
-                                <a class="link-secondary" href="#" aria-label="Добавить количество товара">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0d6efd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle align-text-bottom" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                </a>
-                                <span class="badge bg-primary rounded-pill">3</span>
                                 <a class="link-secondary" href="#" aria-label="Убавить количество товара">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0d6efd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle align-text-bottom" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                </a>
+                                <span class="badge bg-primary rounded-pill">3</span>                                
+                                <a class="link-secondary" href="#" aria-label="Добавить количество товара">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0d6efd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle align-text-bottom" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
                                 </a>
                             </div> 
                         </h5>
@@ -91,12 +91,12 @@ export class Cart {
                     <div>
                         <h5 class="d-flex justify-content-between align-items-center mb-3">
                             <div class="d-flex gap-2">                                
-                                <a class="link-secondary" href="#" aria-label="Добавить количество товара">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0d6efd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle align-text-bottom" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                </a>
-                                <span class="badge bg-primary rounded-pill">3</span>
                                 <a class="link-secondary" href="#" aria-label="Убавить количество товара">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0d6efd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle align-text-bottom" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                </a>
+                                <span class="badge bg-primary rounded-pill">3</span>                                
+                                <a class="link-secondary" href="#" aria-label="Добавить количество товара">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0d6efd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle align-text-bottom" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
                                 </a>
                             </div> 
                         </h5>
@@ -123,12 +123,12 @@ export class Cart {
                     <div>
                         <h5 class="d-flex justify-content-between align-items-center mb-3">
                             <div class="d-flex gap-2">                                
-                                <a class="link-secondary" href="#" aria-label="Добавить количество товара">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0d6efd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle align-text-bottom" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                </a>
-                                <span class="badge bg-primary rounded-pill">3</span>
                                 <a class="link-secondary" href="#" aria-label="Убавить количество товара">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0d6efd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle align-text-bottom" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                </a>
+                                <span class="badge bg-primary rounded-pill">3</span>
+                                <a class="link-secondary" href="#" aria-label="Добавить количество товара">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0d6efd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle align-text-bottom" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
                                 </a>
                             </div> 
                         </h5>

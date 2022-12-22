@@ -7,6 +7,8 @@ import { Search } from '../search';
 import { IFiltersProps } from '../../interface/interface';
 import { Sort } from '../sort';
 import { Cart } from '../cart';
+import { ProductDetails } from '../productDetails';
+import { Page404 } from '../page404';
 
 
 const filterProps: IFiltersProps = {
@@ -24,6 +26,8 @@ export class Main {
     sort: Sort = new Sort();
     search: Search = new Search();
     cart: Cart = new Cart(dataProducts.products[0]);
+    productDetails: ProductDetails = new ProductDetails(dataProducts.products[51]);
+    page404: Page404 = new Page404()
 
 
 render() {
@@ -45,9 +49,13 @@ render() {
                             </div> `;
 
     const cartView = `${this.cart.render()}`;
+
+    const productDetails = `${this.productDetails.render()}`;
+
+    const page404 = `${this.page404.render()}`
     
         return `<main class = "container">
-                ${cartView}                                      
+                ${productDetails}                                      
                 </main>`;
 }
 

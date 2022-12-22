@@ -94,3 +94,10 @@ body {
     stroke: blue;
     
 }
+
+
+.productDetails_img:active {
+    transition: transform .5s ease;
+    transform: scale(1.5);
+
+}

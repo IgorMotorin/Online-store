@@ -29,6 +29,13 @@ export class View {
                                 ${this.main.render()}                                
                                 ${this.footer.render()}
                                 ${this.order.render()}`;
+
+        this.afterRender()
+    }
+
+    afterRender() {
+        this.order.validation();
+
     }
 
 }
