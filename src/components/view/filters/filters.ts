@@ -17,9 +17,10 @@ export class Filters {
        
 
         <div class="filters">
-            <div class = "d-flex flex-column gap-1">
-            <button type="button" class="btn btn-outline-primary btn-sm">Reset filters</button>
-            <button type="button" class="btn btn-outline-primary btn-sm">Copy link</button>
+        <p class="fs-5 fw-semibold">Found: 26 items</p>
+            <div class = "d-flex flex-row gap-1">
+                <button type="button" class="btn btn-outline-primary btn-sm flex-fill">Reset filters</button>
+                <button type="button" class="btn btn-outline-primary btn-sm flex-fill">Copy link</button>
             </div>
         
             <label for="customRange2" class="form-label">Price</label>

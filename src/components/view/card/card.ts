@@ -8,16 +8,17 @@ export class Card {
         }
 
     render() {
+        
         const temp1:string =  `<img src=${this.props.thumbnail} class="card-img-top h-25" alt="...">`;
         const temp2:string =  `<div class="card-img-top" style="background: url(${this.props.thumbnail});height: 200px;background-size: contain;background-repeat: no-repeat;background-position: center;"></div>`;
         return `
         <div class="card" style="width: 18rem;">
-        <div class="card-img-top" style="background: url(${this.props.thumbnail});height: 180px;background-size: contain;background-repeat: no-repeat;background-position: top;"></div>
+            <div class="card-img-top" style="background: url(${this.props.thumbnail});height: 180px;background-size: contain;background-repeat: no-repeat;background-position: top;"></div>
             
 
             
                 <div class="card-body h-25">
-                    <h5 class="card-title">${this.props.title}</h5>
+                    <h5 class="card-title">${this.props.title}</h5>                    
                     <p class="card-text">${this.props.description}</p>
                 </div>
 

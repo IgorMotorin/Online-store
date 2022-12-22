@@ -4,7 +4,7 @@ export class Search {
 
 render() {
     return `
-            <div class="input-group mb-3 w-50 container">                                                        
+            <div class="input-group mb-3 w-50 container search p-3">                                                        
                 <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Search...">
                 <datalist id="datalistOptions">
                     <option value="Samsung Universe 9">
