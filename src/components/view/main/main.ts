@@ -26,7 +26,7 @@ export class Main {
     sort: Sort = new Sort();
     search: Search = new Search();
     cart: Cart = new Cart(dataProducts.products[0]);
-    productDetails: ProductDetails = new ProductDetails(dataProducts.products[51]);
+    productDetails: ProductDetails = new ProductDetails(dataProducts.products[71]);
     page404: Page404 = new Page404()
 
 

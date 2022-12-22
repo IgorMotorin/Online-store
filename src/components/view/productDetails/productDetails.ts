@@ -9,8 +9,8 @@ export class ProductDetails {
 
     render() {
         // <img src="${this.props.thumbnail}" style="max-height: 300px" class="img-fluid rounded" alt="...">
-        const temp1:string =  `<img src=${this.props.thumbnail} class="card-img-top h-25" alt="...">`;
-        const temp2:string =  `<div class="card-img-top" style="background: url(${this.props.thumbnail});height: 200px;background-size: contain;background-repeat: no-repeat;background-position: center;"></div>`;
+        const temp1 =  `<img src=${this.props.thumbnail} class="card-img-top h-25" alt="...">`;
+        const temp2 =  `<div class="card-img-top" style="background: url(${this.props.thumbnail});height: 200px;background-size: contain;background-repeat: no-repeat;background-position: center;"></div>`;
         return `
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -23,7 +23,7 @@ export class ProductDetails {
         
  
         
-        <div class="d-flex justify-content-between  align-items-center flex-wrap">
+        <div class="d-flex justify-content-between  align-items-start flex-wrap">
             
             
                     <div class="col-md-6 d-flex justify-content-center align-items-center">
@@ -34,15 +34,15 @@ export class ProductDetails {
                                 <button type="button" data-bs-target="#carouselExampleIndicators" style ="background-color: #0d6efd" data-bs-slide-to="1" aria-label="Slide 2"></button>
                                 <button type="button" data-bs-target="#carouselExampleIndicators" style ="background-color: #0d6efd" data-bs-slide-to="2" aria-label="Slide 3"></button>
                             </div>
-                            <div class="carousel-inner">
+                            <div class="carousel-inner" style="height: 500px; max-width: 500px">
                                 <div class="carousel-item active">
-                                    <img src="${this.props.thumbnail}" style="max-height: 500px" class="w-100 img-fluid rounded productDetails_img" alt="...">
+                                    <img src="${this.props.thumbnail}"  class="img-fluid rounded productDetails_img" alt="...">
                                 </div>
                                 <div class="carousel-item">
-                                    <img src="${this.props.images[0]}" style="max-height: 500px" class="w-100 img-fluid rounded productDetails_img" alt="...">
+                                    <img src="${this.props.images[0]}" class=" img-fluid rounded productDetails_img" alt="...">
                                 </div>
                                 <div class="carousel-item">
-                                    <img src="${this.props.images[1]}" style="max-height: 500px" class="w-100 img-fluid rounded productDetails_img" alt="...">
+                                    <img src="${this.props.images[1]}" class=" img-fluid rounded productDetails_img" alt="...">
                                 </div>
                             </div>
                             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
