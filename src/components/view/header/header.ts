@@ -1,3 +1,5 @@
+import { View } from "../view";
+
 export class Header {
    
         total: number;
@@ -8,11 +10,7 @@ export class Header {
         this.volume = volume;
     }
 
-   addEvent() {
-    console.log(this.total)
-
-   }
-
+   
     render() {
         return `
         <div class="container align-baseline">
@@ -23,7 +21,7 @@ export class Header {
                 </a>
                 <ul class="nav nav-pills"> 
                     <li class="nav-item">                    
-                        <button type="button" class="btn btn-primary position-relative">
+                        <button type="button" class="btn btn-primary position-relative header_button">
                             Cart total: ${this.total} EUR
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                 ${this.volume}

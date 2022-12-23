@@ -9,6 +9,7 @@ import { Sort } from '../sort';
 import { Cart } from '../cart';
 import { ProductDetails } from '../productDetails';
 import { Page404 } from '../page404';
+import { Template } from 'webpack';
 
 
 const filterProps: IFiltersProps = {
@@ -28,6 +29,7 @@ export class Main {
     cart: Cart = new Cart(dataProducts.products[0]);
     productDetails: ProductDetails = new ProductDetails(dataProducts.products[71]);
     page404: Page404 = new Page404()
+    settingsMain: "/cart" | "/products" | "/productDetails" | "/page404" = "/products";
 
 
 render() {
@@ -53,10 +55,23 @@ render() {
     const productDetails = `${this.productDetails.render()}`;
 
     const page404 = `${this.page404.render()}`
+
+    let template = ``;
+   
+    if (this.settingsMain === '/products') {template = productsView}
+    if (this.settingsMain === '/cart') {template = cartView}
+    if (this.settingsMain === '/productDetails') {template = productDetails}
+    if (this.settingsMain === '/page404') {template = page404}
     
-        return `<main class = "container">
-                ${productDetails}                                      
+        return `<main class = "container main">
+                ${template}                                      
                 </main>`;
+}
+
+
+reRender () {
+    (document.querySelector(".main") as HTMLElement).innerHTML = this.render()
+
 }
 
 }

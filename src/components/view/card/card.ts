@@ -19,7 +19,7 @@ export class Card {
             
                 <div class="card-body h-25">
                     <h5 class="card-title">${this.props.title}</h5>                    
-                    <p class="card-text">${this.props.description}</p>
+                    <small class="card-text">${this.props.description}</small>
                 </div>
 
             
@@ -34,8 +34,8 @@ export class Card {
             
             
                 <div class="card-body">
-                    <a href="#" class="btn btn-primary">Add to cart</a>
-                    <a href="#" class="btn btn-primary">Details</a>
+                    <button class="btn btn-primary card_buttonAdd">Add to cart</button>
+                    <button class="btn btn-primary card_buttonDetails">Details</button>
                 </div>
         </div>
       `;

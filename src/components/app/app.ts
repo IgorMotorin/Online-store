@@ -1,13 +1,12 @@
-import { View } from '../view';
+import { Router } from '../router';
 
-export class App {   
-    
-      view: View;    
-     
+export class App {     
+          
+      router: Router;
+
       constructor() {        
-        this.view = new View();
-        this.view.render();
+        this.router = new Router();
+        
       }
-
-
+     
 }

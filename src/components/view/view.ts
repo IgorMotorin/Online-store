@@ -16,6 +16,7 @@ export class View {
     root: HTMLElement = document.getElementById('root') as HTMLElement;
     order: Order = new Order();
     
+    
    
      
     
@@ -33,9 +34,18 @@ export class View {
         this.afterRender()
     }
 
-    afterRender() {
-        this.order.validation();
+    add(){
+        console.log('adding!!!')
+    }
+
+    afterRender() {                 
+            // this.addEventHeader()       
+
+            this.order.validation();
+            
 
     }
+
+    
 
 }
