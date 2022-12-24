@@ -6,10 +6,20 @@ export class Router {
       query: any = this.getURLtoQuery(location.href);      
       controller: Controller = new Controller(this);
      
-      constructor() {       
+      constructor() {      
+         
         this.controller.addEventHeader();
         this.controller.addEventURL();
-        this.controller.addEventProducts(); 
+        this.controller.addEventProducts();
+        this.controller.addEventFilters();
+        
+        if (document.referrer) {
+          this.url = new URL(document.referrer);
+          this.query = this.getURLtoQuery(document.referrer)
+          history.pushState(null, 'redirect', document.referrer);          
+        }
+        this.controller.updateView(this.url, this.query);
+        
       }
 
       readURL() {

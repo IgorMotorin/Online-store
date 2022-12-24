@@ -24,7 +24,7 @@ render() {
     return `
                                 <div class = "d-flex flex-row mb-3 justify-content-between">
                                     
-                                <select class="form-select form-select-sm w-25 h-50" aria-label=".form-select-sm example">
+                                <select class="form-select form-select-sm w-25 h-50 filters_input" form ="filtersForm" name="sort" aria-label=".form-select-sm example">
                                     <option selected>Sorting</option>
                                     <option value="1">Sort by price</option>
                                     <option value="2">Sort by rating</option>
