@@ -4,6 +4,7 @@ import './global.css';
 // import '../public/_redirects'
 
 
+
 import {App} from './components/app';
 
 
@@ -15,3 +16,4 @@ const app: App = new App();
 window.addEventListener('error', function(e) {
     console.log('my router total Error !!! ', e);
 }, true);
+
