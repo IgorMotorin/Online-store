@@ -13,7 +13,9 @@ const getPrice = new Model;
 // console.log(`category: ${getPrice.getDataFilterByCategory("smartphones")}`)
 
 // console.log(`brand: ${getPrice.getDataFilterByBrand("Apple")}`)
-console.log(getPrice.start())
+console.log(getPrice.StartOrResetFilters())
 // console.log(getPrice.getDataSortByNameIncrease())
 // console.log(getPrice.getDataSortByNameDecrease())
 // console.log(getPrice.getDataSortByDiscountDecrease())
+// console.log(getPrice.getDataFilterBySearch('ded'))
+// console.log(getPrice.getDataById(8))
