@@ -1,23 +1,86 @@
 import { View } from "../view";
 import { Router } from "../router";
+import { queryOptions } from "../interface/interface";
+import Model from "../model/model";
 
-export class Controller {   
+export class Controller extends Model {   
     
     view: View = new View();
     router: Router;
+    query: queryOptions = {};
     
 
     constructor(router: Router) {
+      super();
+      
+      
+
         this.router = router;
         this.view.render();
         
     }
+
+    getStartData(){
+      // получаем исходный объект без фильтров и сортировок
+      this.StartOrResetFilters()
+      // отдаем на рендер без фильтров
+      
+    }
+
+
+    getDataWithFilters(){
+      // получаем объект в соответствии с фильтрами и отдаем на рендер
+      if (this.query.category){
+        for (const cat of this.query.category) {
+          super.getDataFilterByCategory(cat);
+        }
+      }
+      if (this.query.brand){
+        for (const bran of this.query.brand) {
+          super.getDataFilterByBrand(bran);
+        }
+      }
+      if (this.query.price){
+        super.getDataFilterByPrice(Number(this.query.price[0]), Number(this.query.price[1]));
+        }
+      if (this.query.stock){
+        super.getDataFilterByStock(Number(this.query.stock[0]), Number(this.query.stock[1]));
+        }
+      if (this.query.sort){
+        if (this.query.sort === 'priceUp') { super.getDataSortByPriceIncrease(); }
+        if (this.query.sort === 'priceDown') { super.getDataSortByPriceDecrease(); }
+        if (this.query.sort === 'ratingUp') { super.getDataSortByRatingIncrease(); }
+        if (this.query.sort === 'ratingDown') { super.getDataSortByRatingDecrease(); }
+        if (this.query.sort === 'discountUp') { super.getDataSortByDiscountIncrease(); }
+        if (this.query.sort === 'discountDown') { super.getDataSortByDiscountDecrease(); }
+        }
+      if (this.query.search){
+        super.getDataFilterBySearch(this.query.search);
+        }
+        // Сделали объект
+        super.getFinalData()
+        //отдаем на рендер
+    }
+
+      getCart(){
+        //Получаем карточку по id:number и 
+        super.getDataById(1)
+        //отдаем на рендер
+      }
+
+      getBasket(){
+        //Получаем карзину по массиву id number[]
+        super.getDataByIdForBasket([1,2,3])
+        //отдаем на рендер
+      }
+
 
     updateView (url: URL, query: any) {
         console.log("url:", url.href)
         console.log("path:", url.pathname)
         console.log("query:", query)
 
+        
         
 
         if (url.pathname === '/') {
@@ -118,6 +181,9 @@ export class Controller {
     
     //   console.log(data)
     // }
+
+
+
     
     
 

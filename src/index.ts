@@ -1,6 +1,7 @@
 // import './global.css';
 import './bootstrap.min.css';
 import './global.css';
+// import '../public/_redirects'
 
 
 import {App} from './components/app';
