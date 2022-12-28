@@ -10,6 +10,8 @@ import { Cart } from '../cart';
 import { ProductDetails } from '../productDetails';
 import { Page404 } from '../page404';
 import { Template } from 'webpack';
+import { Controller } from '../../controller';
+import Model from '../../model/model';
 
 
 const filterProps: IFiltersProps = {
@@ -26,7 +28,8 @@ export class Main {
     filters: Filters = new Filters(filterProps);
     sort: Sort = new Sort();
     search: Search = new Search();
-    cart: Cart = new Cart(dataProducts.products[0]);
+    mod = new Model();
+    cart: Cart = new Cart(this.mod.getDataByIdForBasket([1, 2, 3, 4, 5, 6, 12, 18, 25, 36, 45]));
     productDetails: ProductDetails = new ProductDetails(dataProducts.products[71]);
     page404: Page404 = new Page404()
     settingsMain: "/cart" | "/products" | "/productDetails" | "/page404" = "/products";
@@ -62,15 +65,16 @@ render() {
     if (this.settingsMain === '/cart') {template = cartView}
     if (this.settingsMain === '/productDetails') {template = productDetails}
     if (this.settingsMain === '/page404') {template = page404}
-    
-        return `<main class = "container main">
+            return `<main class = "container main">
                 ${template}                                      
                 </main>`;
 }
 
 
 reRender () {
-    (document.querySelector(".main") as HTMLElement).innerHTML = this.render()
+     (document.querySelector(".main") as HTMLElement).innerHTML = this.render();
+    // (document.querySelector('.header_button')as HTMLElement).innerHTML = `Cart total: ${this.cart.sum} EUR`;
+    if (this.settingsMain === '/cart') {this.cart.updateRander();}
 
 }
 
