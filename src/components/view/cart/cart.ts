@@ -1,11 +1,14 @@
 import { IDataProduct } from "../../interface/interface";
 // import { Event } from "../../interface/interface";
+import {Main} from "../main"
 
 let itemsMove = 0;
 let itemsCount = 5;
+
+
 export class Cart {
         props: IDataProduct[];
-        
+        // main = new Main();
 
         constructor (props: IDataProduct[]){
             
@@ -19,13 +22,13 @@ export class Cart {
 
     render() {
       const listGroupItemsArr: string[] = [];
-      for (const item of this.props){listGroupItemsArr.push(`<li class="list-group-item d-flex justify-content-between align-items-start flex-wrap" style="min-height: 200px">
+          for (const item of this.props){listGroupItemsArr.push(`<li class="list-group-item d-flex justify-content-between align-items-start flex-wrap" style="min-height: 200px">
       <div class="col-md-2 m-2" style="display: flex; align-self: center">
       <img src="${item.thumbnail}" class="img-fluid rounded" alt="..." style="max-height: 150px;">            
   </div>
   <div class="ms-2 me-auto " style="height: 100%; display: flex; flex-direction: column; justify-content: space-around">
       <div class="fw-bold" style="font-size: 24px; margin-top: 8px">${item.title}</div>
-      
+      <h4 style="max-width: 400px; font-size: 12px">${item.description}</h4>
       <ul class="list-group list-group-horizontal fs-6 lh-1 m-1" style="margit-bottom: 20px">
           <li class="list-group-item"><small>Price: <span class="ItemPrice">${item.price}</span> EUR</small></li>
           <li class="list-group-item"><small>Discount: <span class="ItemDiscount">${item.discountPercentage}</span> %</small></li>
@@ -52,7 +55,12 @@ export class Cart {
   </div>                
 </li>
 `);}
+const listGroupPages = Math.ceil(listGroupItemsArr.length / itemsCount);
+let listGroupPagesRender = '';
 const listGroupItems = listGroupItemsArr.join('');
+for (let i = 1; i <= listGroupPages; i ++) { listGroupPagesRender += `<li class="page-item"><a class="page-link page-link-number" >${i}</a></li>` }
+
+
 
         
         return `
@@ -63,9 +71,7 @@ const listGroupItems = listGroupItemsArr.join('');
             <nav class= "ms-auto" aria-label="Page navigation example">
                 <ul class="pagination">
                     <li class="page-item"><a class="page-link page-link-previous">Previous</a></li>
-                    <li class="page-item"><a class="page-link page-link-number" >1</a></li>
-                    <li class="page-item"><a class="page-link page-link-number" >2</a></li>
-                    <li class="page-item"><a class="page-link page-link-number" >3</a></li>
+                    ${listGroupPagesRender}
                     <li class="page-item"><a class="page-link page-link-next" >Next</a></li>
                 </ul>
             </nav>           
@@ -98,7 +104,7 @@ const listGroupItems = listGroupItemsArr.join('');
             <div class="col-md-5 col-lg-4 order-md-last m-auto mt-4">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
                 <span class="text-primary">Your cart</span>
-                <span class="badge bg-primary rounded-pill">3</span>
+                <span class="badge bg-primary rounded-pill promoItems">3</span>
                 </h4>
                 <ul class="list-group mb-3">
                     <li class="list-group-item d-flex justify-content-between lh-sm">
@@ -106,18 +112,18 @@ const listGroupItems = listGroupItemsArr.join('');
                         <h6 class="my-0">Total</h6>
                         <small class="text-muted">goods for the amount</small>
                         </div>
-                        <span class="text-muted">12 EUR</span>
+                        <span class="text-muted promoSum">12 EUR</span>
                     </li>                             
                     <li class="list-group-item d-flex justify-content-between bg-light">
                         <div class="text-success">
                         <h6 class="my-0">Promo code</h6>
                         <small>EXAMPLECODE</small>
                         </div>
-                        <span class="text-success">−5 EUR</span>
+                        <span class="text-success">−<span class="promoDiscont">5</span> EUR</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between">
                         <span>Total payable</span>
-                        <strong>20 EUR</strong>
+                        <strong class="promoTotalSum">20 EUR</strong>
                     </li>
                 </ul>
     
@@ -149,22 +155,26 @@ updateRander(){
   document.querySelectorAll('.changeItems-count').forEach(item => volume += Number(item.innerHTML));
   let sum = 0;
   document.querySelectorAll('.changeItems-sum').forEach(item => sum += Number(item.innerHTML));
-  if (document.querySelector('.nav-item') !== null){return (document.querySelector('.nav-item') as HTMLElement).innerHTML = `<button type="button" class="btn btn-primary position-relative header_button">
+  const promoDiscont = Number((document.querySelector('.promoDiscont') as HTMLElement).innerHTML);
+  console.log(promoDiscont)
+  if (document.querySelector('.nav-item') !== null){(document.querySelector('.promoSum') as HTMLElement).innerHTML = `${sum} EUR`;
+  (document.querySelector('.promoTotalSum') as HTMLElement).innerHTML = `${sum - promoDiscont}`; (document.querySelector('.promoItems') as HTMLElement).innerHTML = `${volume}`;
+    return (document.querySelector('.nav-item') as HTMLElement).innerHTML = `<button type="button" class="btn btn-primary position-relative header_button">
   Cart total: ${sum} EUR
   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
       ${volume}
       <span class="visually-hidden">Корзина заказов</span>
   </span>
 </button>`;}
-  
 
   }
   
   
 
     document.querySelectorAll('.align-items-start').forEach(element => { element.addEventListener('click', changeItem);
-      
     });
+
+  // let reRendered = false;
   function changeItem(event: any){  
   const target = event.target;  
   const changeI = event.target.closest('.align-items-start');
@@ -175,12 +185,15 @@ updateRander(){
       if (count.innerHTML < Number(changeI.querySelector('.ItemStock').innerHTML)) {count.innerHTML = `${Number(count.innerHTML) + 1}`; itemSum.innerHTML = `${Number(itemSum.innerHTML) / (Number(count.innerHTML) - 1) * Number(count.innerHTML)}`}
     }
     if (target.closest('.changeItems-deleteItem')){
-      if (count.innerHTML > 1) {count.innerHTML = `${Number(count.innerHTML) - 1}`; itemSum.innerHTML = `${Number(itemSum.innerHTML) / (Number(count.innerHTML) + 1) * Number(count.innerHTML)}`}
-    }
+      if (count.innerHTML > 1) {count.innerHTML = `${Number(count.innerHTML) - 1}`; itemSum.innerHTML = `${Number(itemSum.innerHTML) / (Number(count.innerHTML) + 1) * Number(count.innerHTML)}`}}
+    // if (count.innerHTML === '1' && changeI){listGroupItemsArr.splice(changeI, 1); console.log(listGroupItemsArr);}
+    
     
     changeHeader()
   }
   changeHeader();
+  
+  
   
   (document.querySelector('.switchPages') as HTMLElement).addEventListener('click', switchPages)
   function switchPages(event: any){
@@ -189,6 +202,7 @@ updateRander(){
     const itemsOnPage = document.querySelectorAll('.align-items-start').length;
     const linkNext = target.closest('.page-link-next');
     const linkPrev = target.closest('.page-link-previous');
+    const linkNumber = target.closest('.page-link-number');
     const listGroupContainer = document.querySelector('.list-group-container');
     const listGroupNumbered = document.querySelector('.list-group-numbered');
     if (target.closest('.dropdown-item')){
@@ -196,22 +210,27 @@ updateRander(){
     if (itemsCount < itemsOnPage){(listGroupContainer as HTMLElement).style.height = `${itemsCount * 200}px`} else {(listGroupContainer as HTMLElement).style.height = `${itemsOnPage * 200}px`}
     }
     
-    // this.itemsMove = this.itemsMoveFunc();
-    
+        
     if (linkNext){
       if (itemsMove / 200 < itemsOnPage - Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML)){itemsMove += Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200; console.log(itemsOnPage); (listGroupNumbered as HTMLElement).style.top = `-${itemsMove}px`; console.log(itemsMove / 200)}
-    
     }
     if (linkPrev){
       if (itemsMove / 200 >= Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML)){itemsMove -= Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200; (listGroupNumbered as HTMLElement).style.top = `-${itemsMove}px`; console.log(itemsMove / 200); console.log(Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML))}
     }
+    if (linkNumber){
+      itemsMove = Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200 * (linkNumber.innerHTML - 1);
+      (listGroupNumbered as HTMLElement).style.top = `-${itemsMove}px`; console.log(itemsMove / 200);
+    }
+    
+
   }
   
 }
 
-// itemsMoveFunc() {
-//   console.log(this.itemsMove);
-//   return this.itemsMove += ;
+// reRender(){
+//   return (document.querySelector(".main") as HTMLElement).innerHTML = `<main class = "container main">
+//   ${this.render()}                                      
+//   </main>`;
 // }
 
 }
