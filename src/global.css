@@ -101,3 +101,53 @@ body {
     transform: scale(1.5);
 
 }
+
+
+
+#slider-price {
+    height: 8px;
+    border: none;
+    margin-top: 10px;
+    margin-bottom: 16px;
+}
+
+#slider-price .noUi-connect {
+    background: #0d6dfd59;
+}
+
+#slider-price .noUi-connects {
+    background: #dee2e6;
+}
+#slider-price .noUi-handle {
+    height: 16px;
+    width: 16px;
+    top: -3px;
+    right: -7px; /* half the width */
+    border-radius: 9px;
+    background: #0d6efd;
+    border-color: #0d6efd;
+}
+
+#slider-stock {
+    height: 8px;
+    border: none;
+    margin-top: 10px;
+    margin-bottom: 16px;
+}
+
+#slider-stock .noUi-connect {
+    background: #0d6dfd59;
+}
+
+#slider-stock .noUi-connects {
+    background: #dee2e6;
+}
+#slider-stock .noUi-handle {
+    height: 16px;
+    width: 16px;
+    top: -3px;
+    right: -7px; /* half the width */
+    border-radius: 9px;
+    background: #0d6efd;
+    border-color: #0d6efd;
+}

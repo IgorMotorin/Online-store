@@ -1,6 +1,8 @@
 // import './global.css';
+import './nouislider.css';
 import './bootstrap.min.css';
 import './global.css';
+
 // import '../public/_redirects'
 
 

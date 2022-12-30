@@ -13,6 +13,7 @@ export class Router {
         this.controller.addEventURL();
         this.controller.addEventProducts();
         this.controller.addEventFilters();
+        
 
         
         

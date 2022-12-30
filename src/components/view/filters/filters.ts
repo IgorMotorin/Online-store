@@ -1,4 +1,5 @@
 import { IFiltersProps } from "../../interface/interface";
+// import noUiSlider from 'nouislider';
 
 export class Filters {
 
@@ -19,51 +20,26 @@ export class Filters {
         <div class="filters">
             <p class="fs-5 fw-semibold">Found: 26 items</p>
             <div class = "d-flex flex-row gap-1">
-                <button type="button" class="btn btn-outline-primary btn-sm flex-fill">Reset filters</button>
-                <button type="button" class="btn btn-outline-primary btn-sm flex-fill">Copy link</button>
+                <button id="filter-reset" type="button" class="btn btn-outline-primary btn-sm flex-fill">Reset filters</button>
+                <button id="filter-copy" type="button" class="btn btn-outline-primary btn-sm flex-fill">Copy link</button>
             </div>
         
             <form id="filtersForm">
             <label for="customRange2" class="form-label">Price</label>
             <div class = "d-flex justify-content-between">
-                <span class="badge text-bg-primary">${this.props.price[0]}</span>
-                <span class="badge text-bg-primary">${this.props.price[1]}</span>
+                <span id="price-min" class="badge text-bg-primary">${this.props.price[0]}</span>
+                <span id="price-max" class="badge text-bg-primary">${this.props.price[1]}</span>
             </div>         
-            <input  type="range" 
-                    class="form-range one-range filters_input" 
-                    min="${this.props.price[0]}" 
-                    max="${this.props.price[1]}" 
-                    id="customRange1"
-                    name = "price"
-                    value="${this.props.price[0]}">
-            <input  type="range" 
-                    class="form-range two-range filters_input" 
-                    min="${this.props.price[0]}" 
-                    max="${this.props.price[1]}" 
-                    id="customRange2"
-                    name = "price"
-                    value="${this.props.price[1]}">
-
+           
+            <div id="slider-price" class="slider"></div>
              
             <label for="customRange2" class="form-label">Stock</label>
             <div class = "d-flex justify-content-between">
-                <span class="badge text-bg-primary">${this.props.stock[0]}</span>
-                <span class="badge text-bg-primary">${this.props.stock[1]}</span>
+                <span id="stock-min" class="badge text-bg-primary">${this.props.stock[0]}</span>
+                <span id="stock-max" class="badge text-bg-primary">${this.props.stock[1]}</span>
             </div>
-            <input  type="range" 
-                    class="form-range one-range filters_input" 
-                    min="${this.props.stock[0]}" 
-                    max="${this.props.stock[1]}" 
-                    id="customRange3"
-                    name = "stock"
-                    value = ${this.props.stock[0]}>
-            <input  type="range" 
-                    class="form-range two-range filters_input" 
-                    min="${this.props.stock[0]}" 
-                    max="${this.props.stock[1]}" 
-                    id="customRange4"
-                    name = "stock"
-                    value = ${this.props.stock[1]}>
+            
+            <div id="slider-stock" class="slider"></div>
         
             <div class="accordion" id="accordionExample">
                 <div class="accordion-item">
@@ -116,3 +92,37 @@ export class Filters {
         `;
     }
 }
+
+
+
+// <input  type="range" 
+// class="form-range one-range filters_input" 
+// min="${this.props.price[0]}" 
+// max="${this.props.price[1]}" 
+// id="customRange1"
+// name = "price"
+// value="${this.props.price[0]}">
+// <input  type="range" 
+// class="form-range two-range filters_input" 
+// min="${this.props.price[0]}" 
+// max="${this.props.price[1]}" 
+// id="customRange2"
+// name = "price"
+// value="${this.props.price[1]}">
+
+
+
+// <input  type="range" 
+//                     class="form-range one-range filters_input" 
+//                     min="${this.props.stock[0]}" 
+//                     max="${this.props.stock[1]}" 
+//                     id="customRange3"
+//                     name = "stock"
+//                     value = ${this.props.stock[0]}>
+//             <input  type="range" 
+//                     class="form-range two-range filters_input" 
+//                     min="${this.props.stock[0]}" 
+//                     max="${this.props.stock[1]}" 
+//                     id="customRange4"
+//                     name = "stock"
+//                     value = ${this.props.stock[1]}>
