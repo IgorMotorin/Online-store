@@ -18,7 +18,7 @@ export class Filters {
        
 
         <div class="filters">
-            <p class="fs-5 fw-semibold">Found: 26 items</p>
+            <p class="fs-5 fw-semibold">Found: ${this.props.found} items</p>
             <div class = "d-flex flex-row gap-1">
                 <button id="filter-reset" type="button" class="btn btn-outline-primary btn-sm flex-fill">Reset filters</button>
                 <button id="filter-copy" type="button" class="btn btn-outline-primary btn-sm flex-fill">Copy link</button>
@@ -44,11 +44,11 @@ export class Filters {
             <div class="accordion" id="accordionExample">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                             Category
                         </button>
                     </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
+                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne">
                         <div class="accordion-body">
                             ${this.props.category.map(item => {
                                 return `<div class="form-check badge-filter">

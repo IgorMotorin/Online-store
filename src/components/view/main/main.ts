@@ -1,10 +1,10 @@
-import { dataProducts } from '../../model/dataProducts';
+// import { dataProducts } from '../../model/dataProducts';
 import { Header } from '../header';
 import { Card } from '../card';
 import { Filters } from '../filters'
 import { Footer } from '../footer';
 import { Search } from '../search';
-import { IFiltersProps } from '../../interface/interface';
+import { IDataProduct, IDataProducts, IFiltersProps } from '../../interface/interface';
 import { Sort } from '../sort';
 import { Cart } from '../cart';
 import { ProductDetails } from '../productDetails';
@@ -12,24 +12,34 @@ import { Page404 } from '../page404';
 import { Template } from 'webpack';
 
 
-const filterProps: IFiltersProps = {
-    category: [['Мобильные', 10], ['Компьютеры', 20], ['Телефоны', 30], ['Гарнитура', 40]],
-    brand: [['Sony', 11], ['Apple', 12], ['Nokian', 13], ['гарнитура', 14]],
-    price: [0, 2000],
-    stock: [3, 10]
-}
+
 
 
 export class Main {
    
-    card: Card = new Card(dataProducts.products[0]);  
-    filters: Filters = new Filters(filterProps);
-    sort: Sort = new Sort();
-    search: Search = new Search();
-    cart: Cart = new Cart(dataProducts.products[0]);
-    productDetails: ProductDetails = new ProductDetails(dataProducts.products[71]);
-    page404: Page404 = new Page404()
-    settingsMain: "/cart" | "/products" | "/productDetails" | "/page404" = "/products";
+    card: Card;  
+    filters: Filters;
+    sort: Sort;
+    search: Search;
+    cart: Cart;
+    productDetails: ProductDetails;
+    page404: Page404;
+    settingsMain: "/cart" | "/products" | "/productDetails" | "/page404";
+    dataProducts: IDataProduct[];
+    filterProps: IFiltersProps;
+
+    constructor(dataProducts: IDataProduct[], filterProps: IFiltersProps) {
+    this.dataProducts = dataProducts;
+    this.filterProps = filterProps;
+    this.card = new Card(this.dataProducts[0]);  
+    this.filters = new Filters(this.filterProps);
+    this.sort = new Sort();
+    this.search = new Search();
+    this.cart = new Cart(this.dataProducts[0]);
+    this.productDetails = new ProductDetails(this.dataProducts[0]);
+    this.page404 = new Page404()
+    this.settingsMain = "/products";
+    }
 
 
 render() {
@@ -40,7 +50,7 @@ render() {
                                 <div class="container">
                                     ${this.sort.render()}
                                     <div class = "products">                                         
-                                        ${dataProducts.products
+                                        ${this.dataProducts
                                             .map(item=>{
                                             this.card.props = item;
                                             return `${this.card.render()}`
@@ -71,6 +81,14 @@ render() {
 
 reRender () {
     (document.querySelector(".main") as HTMLElement).innerHTML = this.render()
+
+}
+reRenderProducts () {
+    (document.querySelector(".products") as HTMLElement).innerHTML = this.dataProducts
+                                                                        .map(item=>{
+                                                                        this.card.props = item;
+                                                                        return `${this.card.render()}`
+                                                                        }).join("");
 
 }
 

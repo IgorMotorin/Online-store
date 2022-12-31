@@ -8,12 +8,7 @@ import { IFiltersProps } from '../../interface/interface';
 import '../../../assets/icons/grid-3x3.svg';
 
 
-const filterProps: IFiltersProps = {
-    category: [['Мобильные', 10], ['Компьютеры', 20], ['Телефоны', 30], ['Гарнитура', 40]],
-    brand: [['Sony', 11], ['Apple', 12], ['Nokian', 13], ['гарнитура', 14]],
-    price: [0, 2000],
-    stock: [3, 10]
-}
+
 
 
 export class Sort {

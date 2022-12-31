@@ -3,16 +3,20 @@ import { queryOptions } from "../interface/interface";
 
 export class Router {   
     
-      url: URL = new URL(location.href);
-      query: any = this.getURLtoQuery(location.href);      
-      controller: Controller = new Controller(this);
+      url: URL;
+      query: any;      
+      controller: Controller;
      
       constructor() {      
+        this.url = new URL(location.href);
+        this.query = this.getURLtoQuery(location.href);      
+        this.controller = new Controller(this);
          
         this.controller.addEventHeader();
         this.controller.addEventURL();
         this.controller.addEventProducts();
         this.controller.addEventFilters();
+        // this.addEventUrl();
         
 
         
@@ -41,6 +45,15 @@ export class Router {
           return Object.assign({[value]: _params.get(value)?.split(',')}, sum);
         }, {});
         return query;
+      }
+
+      addEventUrl() {
+        addEventListener('popstate', ()=> {
+          console.log('popstate !!!')
+          this.readURL();
+          this.controller.updateView(this.url, this.query);
+
+        })
       }
 
 
