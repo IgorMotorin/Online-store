@@ -98,6 +98,7 @@ export class Router {
   // }
 
 //     makeUrl() {
+
 //     const addHash = location.hash.slice(1);
 
 //     const urlOptions = { ...this.options, ...options };
@@ -109,5 +110,7 @@ export class Router {
 
 //     return url.slice(0, -1);
 // }
+
+
 
 }
