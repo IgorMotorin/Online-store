@@ -1,12 +1,14 @@
 // import {IDataProducts} from '../interface/interface';
-// import {IDataProduct} from '../interface/interface';
+import {IDataProduct} from '../interface/interface';
 import {dataProducts} from './dataProducts';
 
 class Model {
-  IdataProduct = dataProducts.products;
-  newIdataProduct = this.IdataProduct;
+  IdataProduct: IDataProduct[] = dataProducts.products;
+  newIdataProduct: IDataProduct[] = this.IdataProduct;
+  products: IDataProduct[] = [];
 
   getFinalData(){
+    console.log(this.newIdataProduct)
     return this.newIdataProduct;
   }
 
@@ -18,13 +20,13 @@ class Model {
     return this.newIdataProduct.filter(item => item.id === idNumb)
   }
 
-  getDataFilterByCategory(category:string){
-    return this.newIdataProduct = this.newIdataProduct.filter(item => item.category == category);
+  getDataFilterByCategory(category:string[]){
+    this.newIdataProduct = this.IdataProduct.filter(item => category.includes(item.category));
      
   }
 
-  getDataFilterByBrand(brand:string){
-    return this.newIdataProduct = this.newIdataProduct.filter(item => item.brand == brand);
+  getDataFilterByBrand(brand:string[]){
+    this.newIdataProduct = this.IdataProduct.filter(item => brand.includes(item.brand));
      
   }
 
@@ -33,7 +35,7 @@ class Model {
     // else if (!priceMin && priceMax){this.newIdataProduct = this.newIdataProduct.filter(item => item.price <= priceMax)}
     // else if (priceMin && !priceMax){this.newIdataProduct = this.newIdataProduct.filter(item => item.price >= priceMin)}
 
-    this.newIdataProduct = this.newIdataProduct.filter(item => item.price >= priceMin && item.price <= priceMax)
+    this.newIdataProduct = this.IdataProduct.filter(item => item.price >= priceMin && item.price <= priceMax)
     return this.newIdataProduct;
   } 
 
@@ -47,7 +49,7 @@ class Model {
   } 
 
   getDataFilterBySearch(searched:string){
-     return this.newIdataProduct = this.newIdataProduct.filter(item => item.title.toUpperCase().includes(searched.toUpperCase()) || item.description.toUpperCase().includes(searched.toUpperCase()) || item.brand.toUpperCase().includes(searched.toUpperCase()) || item.category.toUpperCase().includes(searched.toUpperCase()) || String(item.price).includes(searched) || String(item.discountPercentage).includes(searched) || String(item.rating).includes(searched) || String(item.stock).includes(searched));
+     return this.newIdataProduct = this.IdataProduct.filter(item => item.title.toUpperCase().includes(searched.toUpperCase()) || item.description.toUpperCase().includes(searched.toUpperCase()) || item.brand.toUpperCase().includes(searched.toUpperCase()) || item.category.toUpperCase().includes(searched.toUpperCase()) || String(item.price).includes(searched) || String(item.discountPercentage).includes(searched) || String(item.rating).includes(searched) || String(item.stock).includes(searched));
   }
 
   resetSearch(){

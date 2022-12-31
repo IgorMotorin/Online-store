@@ -8,12 +8,7 @@ import { IFiltersProps } from '../../interface/interface';
 import '../../../assets/icons/grid-3x3.svg';
 
 
-const filterProps: IFiltersProps = {
-    category: [['Мобильные', 10], ['Компьютеры', 20], ['Телефоны', 30], ['Гарнитура', 40]],
-    brand: [['Sony', 11], ['Apple', 12], ['Nokian', 13], ['гарнитура', 14]],
-    price: [0, 2000],
-    stock: [3, 10]
-}
+
 
 
 export class Sort {
@@ -25,14 +20,17 @@ render() {
                                 <div class = "d-flex flex-row mb-3 justify-content-between">
                                     
                                 <select class="form-select form-select-sm w-25 h-50 filters_input" form ="filtersForm" name="sort" aria-label=".form-select-sm example">
-                                    <option selected>Sorting</option>
-                                    <option value="1">Sort by price</option>
-                                    <option value="2">Sort by rating</option>
-                                    <option value="3">Sort by discount</option>
+                                    <option selected>Sort by</option>
+                                    <option value="price-ascending">price ascending</option>
+                                    <option value="price-descending">price descending</option>
+                                    <option value="rating-ascending">rating ascending</option>
+                                    <option value="rating-descending">rating descending</option>
+                                    <option value="discount-ascending">discount ascending</option>
+                                    <option value="discount-descending">discount descending</option>
                                 </select>
 
                                 <div class = "d-flex flex-row gap-1">
-                                    <button type="button" class="btn p-1">
+                                    <button id="sort-view4" type="button" class="btn p-1">
                                         <svg width="32" height="32">
                                             <rect width="14" height="14" x="0" y="0"
                                             fill="none"
@@ -49,7 +47,7 @@ render() {
                                             stroke="#0d6efd"/>
                                          </svg>
                                     </button>                                    
-                                    <button type="button" class="btn p-1">
+                                    <button id="sort-view2" type="button" class="btn p-1">
                                         <svg width="32" height="32">
                                         <rect width="32" height="14" x="0" y="0"
                                         fill="none"
