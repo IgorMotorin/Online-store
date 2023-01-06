@@ -119,7 +119,8 @@ render() {
 
 
 update () {
-    (document.querySelector(".main") as HTMLElement).outerHTML = this.render()
+    (document.querySelector(".main") as HTMLElement).outerHTML = this.render();
+    if (this.settingsMain === '/cart') {this.cart.updateRander();}
 
 //=======
 //reRender () {
