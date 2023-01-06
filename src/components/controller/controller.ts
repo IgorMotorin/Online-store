@@ -193,8 +193,9 @@ export class Controller extends Model {
           this.dataProducts = this.getDataWithFilters();
           this.view.main.dataProducts = this.dataProducts;
         }
-        this.view.main.updateProducts();
-        this.updateFilter()
+        this.view.main.updateProducts(this.query.view);
+        this.addEventProducts();
+        this.updateFilter();
       }
 
       updateFilter() {

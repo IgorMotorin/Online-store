@@ -79,7 +79,7 @@ export interface queryOptions {
     stock?: number[];
     sort?: TSort;
     search?: string;
-    viewCard?: boolean;
+    view?: string;
 
 
 }

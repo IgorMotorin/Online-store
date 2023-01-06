@@ -1,6 +1,6 @@
 // import { dataProducts } from '../../model/dataProducts';
 import { Header } from '../header';
-import { Card } from '../card';
+import { Card, CardH } from '../card';
 import { Filters } from '../filters'
 import { Footer } from '../footer';
 import { Search } from '../search';
@@ -17,7 +17,8 @@ import { Template } from 'webpack';
 
 export class Main {
    
-    card: Card;  
+    card: Card;
+    cardH: CardH;  
     filters: Filters;
     sort: Sort;
     search: Search;
@@ -28,12 +29,15 @@ export class Main {
     dataProducts: IDataProduct[];
     filterProps: IFiltersProps;
     query: queryOptions;
+    view?: string = "card";
 
     constructor(dataProducts: IDataProduct[], filterProps: IFiltersProps, query: queryOptions) {
     this.dataProducts = dataProducts;
     this.filterProps = filterProps;
     this.query = query;
-    this.card = new Card(this.dataProducts[0]);  
+    if (query.view) {this.view = query.view;}    
+    this.card = new Card(this.dataProducts[0]); 
+    this.cardH = new CardH(this.dataProducts[0]);  
     this.filters = new Filters(this.filterProps, this.query);
     this.sort = new Sort();
     this.search = new Search();
@@ -46,19 +50,33 @@ export class Main {
 
 render() {
 
+    const cards = `
+                    <div class = "products">                                         
+                        ${this.dataProducts
+                            .map(item=>{
+                            this.card.props = item;
+                            return `${this.card.render()}`
+                            }).join("")}
+                    </div>
+                    `;
+
+    const cardsH = `
+                    <div class = "products">                                         
+                        ${this.dataProducts
+                            .map(item=>{
+                            this.cardH.props = item;
+                            return `${this.cardH.render()}`
+                            }).join("")}
+                    </div>
+                    `;
+
+
     const productsView = `${this.search.render()}
                             <div class = "d-flex flex-row mb-3 container">
                                 ${this.filters.render()}
                                 <div class="container">
                                     ${this.sort.render()}
-                                    <div class = "products">                                         
-                                        ${this.dataProducts
-                                            .map(item=>{
-                                            this.card.props = item;
-                                            return `${this.card.render()}`
-                                            }).join("")}
-                                    </div>
-                                
+                                    ${this.view == "card" ? cards: cardsH}                                
                                 </div>
                             </div> `;
 
@@ -85,12 +103,27 @@ update () {
     (document.querySelector(".main") as HTMLElement).outerHTML = this.render()
 
 }
-updateProducts () {
-    (document.querySelector(".products") as HTMLElement).innerHTML = this.dataProducts
-                                                                        .map(item=>{
-                                                                        this.card.props = item;
-                                                                        return `${this.card.render()}`
-                                                                        }).join("");
+updateProducts (view = "card") {
+    const cards = `
+                    <div class = "products">                                         
+                        ${this.dataProducts
+                            .map(item=>{
+                            this.card.props = item;
+                            return `${this.card.render()}`
+                            }).join("")}
+                    </div>
+                    `;
+
+    const cardsH = `
+                    <div class = "products">                                         
+                        ${this.dataProducts
+                            .map(item=>{
+                            this.cardH.props = item;
+                            return `${this.cardH.render()}`
+                            }).join("")}
+                    </div>
+                    `;
+    (document.querySelector(".products") as HTMLElement).outerHTML = view == "card" ? cards: cardsH;
 
 }
 

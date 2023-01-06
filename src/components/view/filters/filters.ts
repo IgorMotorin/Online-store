@@ -56,7 +56,7 @@ export class Filters {
                         <div class="accordion-body">
                             ${this.props.category.map(item => {
                                 return `<div class="form-check badge-filter">
-                                            <input class="form-check-input filters_input" type="checkbox" value="${item[0]}" name="category" id="${item[0]}" ${this.query?.category?.includes(String(item[0])) ? "checked" : ''}>
+                                            <input class="form-check-input filters_input" type="checkbox" value="${item[0]}" name="category" id="${item[0]}" ${this.query?.category?.includes(String(item[0])) ? "checked" : ""}>
                                             <label class="form-check-label " for="${item[0]}">
                                                 ${String(item[0]).toUpperCase()}
                                             </label>
@@ -78,7 +78,7 @@ export class Filters {
                             <div class="accordion-body">
                                 ${this.props.brand.map(item => {
                                     return `<div class="form-check badge-filter">
-                                                <input class="form-check-input filters_input" type="checkbox" name="brand" value="${item[0]}" id="${item[0]}" ${this.query?.brand?.includes(String(item[0])) ? "checked" : ''}>
+                                                <input class="form-check-input filters_input" type="checkbox" name="brand" value="${item[0]}" id="${item[0]}" ${this.query?.brand?.includes(String(item[0])) ? "checked" : ""}>
                                                 <label class="form-check-label " for="${item[0]}">
                                                     ${item[0]}
                                                 </label>
