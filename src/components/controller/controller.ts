@@ -130,9 +130,9 @@ export class Controller extends Model {
         //отдаем на рендер
     }
 
-      getCart(){
+      getCart(id: number){
         //Получаем карточку по id:number и 
-        super.getDataById(1)
+        return super.getDataById(id)
         //отдаем на рендер
       }
 
@@ -147,7 +147,8 @@ export class Controller extends Model {
         console.log("url:", url.href)
         console.log("path:", url.pathname)
         console.log("query:", query)
-
+      
+        this.query = query;
         
         
 
@@ -173,7 +174,14 @@ export class Controller extends Model {
                 this.view.main.update();
         } else if (url.pathname.startsWith('/productDetails')) {            
             this.view.main.settingsMain = "/productDetails";
-            this.view.main.update();
+            console.log(this.query.id)
+            if (this.query.id) {
+              this.dataProducts = this.getCart(Number(this.query.id[0]));
+              this.view.main.dataProducts = this.dataProducts;
+              console.log(this.dataProducts)
+              this.view.main.update();
+            }
+            
         } else {         
             this.view.main.settingsMain = "/page404";
             this.view.main.update();
@@ -239,7 +247,8 @@ export class Controller extends Model {
       (document
         .querySelectorAll('.card_buttonDetails') as NodeListOf<Element>)
         .forEach(item => item.addEventListener('click', (e) => {
-            history.pushState(null, 'productDetails', location.origin + '/productDetails');
+            const targetElement = e.target as HTMLInputElement;            
+            history.pushState(null, 'productDetails', location.origin + '/productDetails' + "?id=" + targetElement.id);
             this.router.readURL();
             this.updateView(this.router.url, this.router.query);})
         );

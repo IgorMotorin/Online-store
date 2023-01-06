@@ -8,16 +8,17 @@ export class ProductDetails {
         }
 
     render() {
+        // console.log("999", this.props)
         // <img src="${this.props.thumbnail}" style="max-height: 300px" class="img-fluid rounded" alt="...">
         const temp1 =  `<img src=${this.props.thumbnail} class="card-img-top h-25" alt="...">`;
         const temp2 =  `<div class="card-img-top" style="background: url(${this.props.thumbnail});height: 200px;background-size: contain;background-repeat: no-repeat;background-position: center;"></div>`;
         return `
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Online-store</a></li>
-                <li class="breadcrumb-item"><a href="#">Smartphones</a></li>
-                <li class="breadcrumb-item"><a href="#">Apple</a></li>
-                <li class="breadcrumb-item active" aria-current="page">IPHONE X</li>
+                <li class="breadcrumb-item"><a href="/">Online-store</a></li>
+                <li class="breadcrumb-item"><a href="/?category=${this.props.category}">${this.props.category.toUpperCase()}</a></li>
+                <li class="breadcrumb-item"><a href="/?brand=${this.props.brand}">${this.props.brand}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">${this.props.title}</li>
             </ol>
         </nav>
         
@@ -31,19 +32,20 @@ export class ProductDetails {
                         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="false">
                             <div class="carousel-indicators" >
                                 <button type="button" data-bs-target="#carouselExampleIndicators" style ="background-color: #0d6efd" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                                <button type="button" data-bs-target="#carouselExampleIndicators" style ="background-color: #0d6efd" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                                <button type="button" data-bs-target="#carouselExampleIndicators" style ="background-color: #0d6efd" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                ${this.props.images
+                                    .map((item, idx)=>{return `<button type="button" data-bs-target="#carouselExampleIndicators" style ="background-color: #0d6efd" data-bs-slide-to="${idx + 1}" aria-label="Slide ${idx + 2}"></button>`
+                                                }).join("")}
                             </div>
                             <div class="carousel-inner" style="height: 500px; max-width: 500px">
                                 <div class="carousel-item active">
                                     <img src="${this.props.thumbnail}"  class="img-fluid rounded productDetails_img" alt="...">
                                 </div>
-                                <div class="carousel-item">
-                                    <img src="${this.props.images[0]}" class=" img-fluid rounded productDetails_img" alt="...">
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="${this.props.images[1]}" class=" img-fluid rounded productDetails_img" alt="...">
-                                </div>
+                                ${this.props.images
+                                    .map(item=>{return `<div class="carousel-item">
+                                                            <img src="${item}" class=" img-fluid rounded productDetails_img" alt="...">
+                                                        </div>`
+                                                }).join("")}
+                                
                             </div>
                             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" style ="background-color: #0d6efd; opacity: 0.5;" aria-hidden="true"></span>

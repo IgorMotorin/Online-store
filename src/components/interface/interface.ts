@@ -80,6 +80,7 @@ export interface queryOptions {
     sort?: TSort;
     search?: string;
     view?: string;
+    id?: string[];
 
 
 }

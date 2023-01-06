@@ -82,6 +82,7 @@ render() {
 
     const cartView = `${this.cart.render()}`;
 
+    this.productDetails.props = this.dataProducts[0];
     const productDetails = `${this.productDetails.render()}`;
 
     const page404 = `${this.page404.render()}`

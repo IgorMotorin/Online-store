@@ -35,7 +35,7 @@ export class Card {
             
                 <div class="card-body">
                     <button class="btn btn-primary card_buttonAdd">Add to cart</button>
-                    <button class="btn btn-primary card_buttonDetails">Details</button>
+                    <button class="btn btn-primary card_buttonDetails" id="${this.props.id}">Details</button>
                 </div>
         </div>
       `;
@@ -72,7 +72,7 @@ render() {
                     <div>
                         <div class="card-body">
                             <button class="btn btn-primary btn-sm card_buttonAdd">Add to cart</button>
-                            <button class="btn btn-primary btn-sm card_buttonDetails">Details</button>
+                            <button id="${this.props.id}" class="btn btn-primary btn-sm card_buttonDetails">Details</button>
                         </div>
                     </div>                
                 </li>
