@@ -1,4 +1,4 @@
-import { IFiltersProps } from "../../interface/interface";
+import { IFiltersProps, queryOptions } from "../../interface/interface";
 // import noUiSlider from 'nouislider';
 
 export class Filters {
@@ -6,10 +6,14 @@ export class Filters {
 
     
         props: IFiltersProps;
+        query: queryOptions;
+        nextProps: IFiltersProps;
         
 
-    constructor(props: IFiltersProps) {
-        this.props = props;        
+    constructor(props: IFiltersProps, query: queryOptions) {
+        this.props = props;
+        this.nextProps = props;
+        this.query = query;  
     }
 
 
@@ -44,7 +48,7 @@ export class Filters {
             <div class="accordion" id="accordionExample">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <button id="filter-button-category" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                             Category
                         </button>
                     </h2>
@@ -52,9 +56,9 @@ export class Filters {
                         <div class="accordion-body">
                             ${this.props.category.map(item => {
                                 return `<div class="form-check badge-filter">
-                                            <input class="form-check-input filters_input" type="checkbox" value="${item[0]}" name="category" id="${item[0]}">
+                                            <input class="form-check-input filters_input" type="checkbox" value="${item[0]}" name="category" id="${item[0]}" ${this.query?.category?.includes(String(item[0])) ? "checked" : ''}>
                                             <label class="form-check-label " for="${item[0]}">
-                                                ${item[0]}
+                                                ${String(item[0]).toUpperCase()}
                                             </label>
                                             <span class="badge text-bg-primary">${item[1]}</span>
                                         </div>`;
@@ -66,7 +70,7 @@ export class Filters {
                 </div>
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingTwo">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <button id="filter-button-brand" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                             Brand
                         </button>
                         </h2>
@@ -74,7 +78,7 @@ export class Filters {
                             <div class="accordion-body">
                                 ${this.props.brand.map(item => {
                                     return `<div class="form-check badge-filter">
-                                                <input class="form-check-input filters_input" type="checkbox" name="brand" value="${item[0]}" id="${item[0]}">
+                                                <input class="form-check-input filters_input" type="checkbox" name="brand" value="${item[0]}" id="${item[0]}" ${this.query?.brand?.includes(String(item[0])) ? "checked" : ''}>
                                                 <label class="form-check-label " for="${item[0]}">
                                                     ${item[0]}
                                                 </label>
@@ -90,6 +94,37 @@ export class Filters {
         
 
         `;
+    }
+
+    update(props: IFiltersProps){
+        this.props.found = props.found;
+        this.nextProps = props;
+        const prevbuttonCategory = (document.getElementById("filter-button-category") as HTMLElement).getAttribute("aria-expanded");
+        const prevbuttonBrand = (document.getElementById("filter-button-brand") as HTMLElement).getAttribute("aria-expanded");
+
+
+        (document.querySelector(".filters") as HTMLElement).outerHTML =  this.render();
+
+        const buttonCategory = (document.getElementById("filter-button-category") as HTMLElement);
+        const divCategory = (document.getElementById("collapseOne") as HTMLElement);
+
+        if (prevbuttonCategory == "true") {
+            buttonCategory.classList.remove();
+        buttonCategory.classList.add("accordion-button");
+        buttonCategory.setAttribute("aria-expanded", "true")
+        divCategory.classList.add("show")
+        }
+        
+        const buttonBrand = (document.getElementById("filter-button-brand") as HTMLElement);
+        const divBrand = (document.getElementById("collapseTwo") as HTMLElement);
+        
+        if (prevbuttonBrand == "true") {
+            buttonBrand.classList.remove();
+        buttonBrand.classList.add("accordion-button");
+        buttonBrand.setAttribute("aria-expanded", "true")
+        divBrand.classList.add("show")
+        }
+
     }
 }
 

@@ -4,7 +4,7 @@ import { Card } from '../card';
 import { Filters } from '../filters'
 import { Footer } from '../footer';
 import { Search } from '../search';
-import { IDataProduct, IDataProducts, IFiltersProps } from '../../interface/interface';
+import { IDataProduct, IDataProducts, IFiltersProps, queryOptions } from '../../interface/interface';
 import { Sort } from '../sort';
 import { Cart } from '../cart';
 import { ProductDetails } from '../productDetails';
@@ -27,12 +27,14 @@ export class Main {
     settingsMain: "/cart" | "/products" | "/productDetails" | "/page404";
     dataProducts: IDataProduct[];
     filterProps: IFiltersProps;
+    query: queryOptions;
 
-    constructor(dataProducts: IDataProduct[], filterProps: IFiltersProps) {
+    constructor(dataProducts: IDataProduct[], filterProps: IFiltersProps, query: queryOptions) {
     this.dataProducts = dataProducts;
     this.filterProps = filterProps;
+    this.query = query;
     this.card = new Card(this.dataProducts[0]);  
-    this.filters = new Filters(this.filterProps);
+    this.filters = new Filters(this.filterProps, this.query);
     this.sort = new Sort();
     this.search = new Search();
     this.cart = new Cart(this.dataProducts[0]);
@@ -46,7 +48,7 @@ render() {
 
     const productsView = `${this.search.render()}
                             <div class = "d-flex flex-row mb-3 container">
-                            ${this.filters.render()}
+                                ${this.filters.render()}
                                 <div class="container">
                                     ${this.sort.render()}
                                     <div class = "products">                                         
@@ -79,11 +81,11 @@ render() {
 }
 
 
-reRender () {
-    (document.querySelector(".main") as HTMLElement).innerHTML = this.render()
+update () {
+    (document.querySelector(".main") as HTMLElement).outerHTML = this.render()
 
 }
-reRenderProducts () {
+updateProducts () {
     (document.querySelector(".products") as HTMLElement).innerHTML = this.dataProducts
                                                                         .map(item=>{
                                                                         this.card.props = item;

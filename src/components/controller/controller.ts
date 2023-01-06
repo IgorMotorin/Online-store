@@ -52,19 +52,70 @@ export class Controller extends Model {
         //   console.log(cat)
         //   super.getDataFilterByCategory(cat);
         // }
-      }
-      if (this.query.brand){
-        super.getDataFilterByBrand(this.query.brand);
-        // for (const bran of this.query.brand) {
-        //   super.getDataFilterByBrand(bran);
-        // }
-      }
-      if (this.query.price){
-        super.getDataFilterByPrice(Number(this.query.price[0]), Number(this.query.price[1]));
+        if (this.query.brand){
+          super.getDataFilterByBrand(this.query.brand);
+          // for (const bran of this.query.brand) {
+          //   super.getDataFilterByBrand(bran);
+          // }
         }
-      if (this.query.stock){
-        super.getDataFilterByStock(Number(this.query.stock[0]), Number(this.query.stock[1]));
+        if (this.query.price){
+          super.getDataFilterByPrice(Number(this.query.price[0]), Number(this.query.price[1]));
+          }
+        if (this.query.stock){
+          super.getDataFilterByStock(Number(this.query.stock[0]), Number(this.query.stock[1]));
+          }
+        if (this.query.search){
+          super.getDataFilterBySearch(this.query.search[0]);
+          }
+
+
+      } else if (this.query.brand) {
+        super.getDataFilterByBrandOne(this.query.brand);
+
+        if (this.query.price){
+          super.getDataFilterByPrice(Number(this.query.price[0]), Number(this.query.price[1]));
         }
+        if (this.query.stock){
+          super.getDataFilterByStock(Number(this.query.stock[0]), Number(this.query.stock[1]));
+        }
+        if (this.query.search){
+          super.getDataFilterBySearch(this.query.search[0]);
+        }
+
+      } else if (this.query.price) {
+        super.getDataFilterByPriceOne(Number(this.query.price[0]), Number(this.query.price[1]));
+        if (this.query.stock){
+          super.getDataFilterByStock(Number(this.query.stock[0]), Number(this.query.stock[1]));
+        }
+        if (this.query.search){
+          super.getDataFilterBySearch(this.query.search[0]);
+        }
+
+      } else if (this.query.stock) {
+        super.getDataFilterByStockOne(Number(this.query.stock[0]), Number(this.query.stock[1]));
+
+        if (this.query.search){
+          super.getDataFilterBySearch(this.query.search[0]);
+          }
+      } else if (this.query.search) {
+        super.getDataFilterBySearchOne(this.query.search[0]);
+      }
+      // if (this.query.brand){
+      //   super.getDataFilterByBrand(this.query.brand);
+      //   // for (const bran of this.query.brand) {
+      //   //   super.getDataFilterByBrand(bran);
+      //   // }
+      // }
+      // if (this.query.price){
+      //   super.getDataFilterByPrice(Number(this.query.price[0]), Number(this.query.price[1]));
+      //   } else if (this.query.stock) {
+      //     super.getDataFilterByStockOne(Number(this.query.stock[0]), Number(this.query.stock[1]));
+      //   }
+      // if (this.query.stock){
+      //   super.getDataFilterByStock(Number(this.query.stock[0]), Number(this.query.stock[1]));
+      //   }
+
+
       if (this.query.sort){
         if (this.query.sort[0] === 'price-ascending') { super.getDataSortByPriceIncrease(); }
         if (this.query.sort[0] === 'price-descending') { super.getDataSortByPriceDecrease(); }
@@ -73,9 +124,7 @@ export class Controller extends Model {
         if (this.query.sort[0] === 'discount-ascending') { super.getDataSortByDiscountIncrease(); }
         if (this.query.sort[0] === 'discount-descending') { super.getDataSortByDiscountDecrease(); }
         }
-      if (this.query.search){
-        super.getDataFilterBySearch(this.query.search[0]);
-        }
+      
         // Сделали объект
         return super.getFinalData()
         //отдаем на рендер
@@ -112,21 +161,22 @@ export class Controller extends Model {
               this.dataProducts = this.getDataWithFilters();
               this.view.main.dataProducts = this.dataProducts;
             }
-            this.view.main.reRender();
+            this.view.main.update();
             this.addEventProducts();
             this.addEventFilters();
+            this.addEventSearch();
             
             
 
         } else if (url.pathname.startsWith('/cart')) {                
                 this.view.main.settingsMain = "/cart";
-                this.view.main.reRender();
+                this.view.main.update();
         } else if (url.pathname.startsWith('/productDetails')) {            
             this.view.main.settingsMain = "/productDetails";
-            this.view.main.reRender();
+            this.view.main.update();
         } else {         
             this.view.main.settingsMain = "/page404";
-            this.view.main.reRender();
+            this.view.main.update();
       }
 
 
@@ -137,13 +187,22 @@ export class Controller extends Model {
         this.query = this.router.query;
         // this.updateView(this.router.url, this.router.query);
         if (Object.keys(this.query).length === 0) { 
-          // this.dataProducts = this.StartOrResetFilters();
-          this.view.main.dataProducts = this.StartOrResetFilters();
+          this.dataProducts = this.StartOrResetFilters();
+          this.view.main.dataProducts = this.dataProducts;          
         } else {
-          // this.dataProducts = this.getDataWithFilters();
-          this.view.main.dataProducts = this.getDataWithFilters();
+          this.dataProducts = this.getDataWithFilters();
+          this.view.main.dataProducts = this.dataProducts;
         }
-        this.view.main.reRenderProducts();
+        this.view.main.updateProducts();
+        this.updateFilter()
+      }
+
+      updateFilter() {
+        this.view.main.filters.query = this.query;
+        this.view.getFilterProps();
+        // this.view.main.filters.props = this.view.filterProps;
+        this.view.main.filters.update(this.view.filterProps);
+        this.addEventFilters()
       }
     
       
@@ -185,35 +244,14 @@ export class Controller extends Model {
         );
     }
 
-    addEventFilters() {
-
-      // console.log(document.querySelectorAll<Element>('.filters_input')[0])
-
+    addEventSearch() {
       (document
         .querySelectorAll('.filters_input') as NodeListOf<HTMLInputElement>)
         .forEach(item => item.addEventListener("input", (e) => {
           const targetElement = e.target as HTMLInputElement;
           const url = new URL(location.href);
-
-          console.log(targetElement.type);
-          console.log(targetElement.value);
-          console.log(targetElement.name);
-
-          // const filtersForm = (document.getElementById('filtersForm') as HTMLFormElement).elements;
-          // const data = (Array.from(filtersForm) as HTMLInputElement[])
-          //                   .filter((item) => !!item.name)
-          //                   .map((element) => {
-          //                     const { name, value } = element
-                        
-          //                     return { name, value }
-          //                   })
-          if (targetElement.type === "select-one") {
-            const url = new URL(location.href);
-            url.searchParams.set(targetElement.name, targetElement.value);
-            history.pushState(null, '', url.href);
-            this.updateProducts();
-
-          }
+         
+        
           if (targetElement.type === "text") {
             const url = new URL(location.href);
             if (targetElement.value) {
@@ -226,10 +264,47 @@ export class Controller extends Model {
             
 
           }
+                  
+        }));
+
+        const searchButton = document.getElementById('button-addon2') as HTMLElement;
+        const search = document.getElementById('exampleDataList') as HTMLInputElement;
+
+          searchButton.addEventListener('click', () => {
+            const url = new URL(location.href);           
+            if (search.value) {
+              url.searchParams.set(search.name, search.value);             
+            } else { url.searchParams.delete(search.name);}
+            history.pushState(null, '', url.href);
+            this.updateProducts();
+        })
+
+
+    }
+
+    addEventFilters() {
+
+      // console.log(document.querySelectorAll<Element>('.filters_input')[0])
+
+      (document
+        .querySelectorAll('.filters_input') as NodeListOf<HTMLInputElement>)
+        .forEach(item => item.addEventListener("input", (e) => {
+          const targetElement = e.target as HTMLInputElement;
+          const url = new URL(location.href);
+
+          // console.log(targetElement.type);
+          // console.log(targetElement.value);
+          // console.log(targetElement.name);
 
           
-          
+          if (targetElement.type === "select-one") {
+            const url = new URL(location.href);
+            url.searchParams.set(targetElement.name, targetElement.value);
+            history.pushState(null, '', url.href);
+            this.updateProducts();
 
+          }
+         
           if (targetElement.type === "checkbox") {
             const urlGet = url.searchParams.get(targetElement.name) as string;
             // console.log('urlget:', urlGet)
@@ -274,7 +349,7 @@ export class Controller extends Model {
 
         const sliderPrice = document.getElementById('slider-price') as islider.target;
           noUiSlider.create(sliderPrice, {
-          start: this.view.filterProps.price,
+          start: this.query.price ? this.query.price : this.view.filterProps.price,
           connect: true,
           step: 1,          
           range: {
@@ -304,7 +379,7 @@ export class Controller extends Model {
 
           const sliderStock = document.getElementById('slider-stock') as islider.target;
           noUiSlider.create(sliderStock, {
-          start: this.view.filterProps.stock,
+          start: this.query.stock ? this.query.stock : this.view.filterProps.stock ,
           connect: true,
           step: 1,          
           range: {
@@ -364,17 +439,7 @@ export class Controller extends Model {
         })
 
 
-        const searchButton = document.getElementById('button-addon2') as HTMLElement;
-        const search = document.getElementById('exampleDataList') as HTMLInputElement;
-
-          searchButton.addEventListener('click', () => {
-            const url = new URL(location.href);           
-            if (search.value) {
-              url.searchParams.set(search.name, search.value);             
-            } else { url.searchParams.delete(search.name);}
-            history.pushState(null, '', url.href);
-            this.updateProducts();
-        })
+        
 
 
         const sortView4 = document.getElementById('sort-view4') as HTMLElement;

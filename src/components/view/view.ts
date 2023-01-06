@@ -24,7 +24,7 @@ export class View {
     this.controller = controller;
     this.filterProps = this.getFilterProps();
     this.header = new Header(1200, 16);    
-    this.main = new Main(controller.dataProducts, this.filterProps);
+    this.main = new Main(controller.dataProducts, this.filterProps, controller.query);
     this.footer = new Footer();
     this.root = document.getElementById('root') as HTMLElement;
     this.order = new Order();
@@ -88,13 +88,15 @@ export class View {
             throw new Error('The root element is undefined!');
         }
 
-        this.root.innerHTML =  `${this.header.total = 1500, this.header.render()}                                
+        this.root.innerHTML =  `${this.header.render()}                                
                                 ${this.main.render()}                                
                                 ${this.footer.render()}
                                 ${this.order.render()}`;
 
         this.afterRender()
     }
+
+    
 
     
 
