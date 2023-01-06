@@ -10,6 +10,8 @@ import { Cart } from '../cart';
 import { ProductDetails } from '../productDetails';
 import { Page404 } from '../page404';
 import { Template } from 'webpack';
+import { Controller } from '../../controller';
+import Model from '../../model/model';
 
 
 
@@ -17,8 +19,9 @@ import { Template } from 'webpack';
 
 export class Main {
    
+
     card: Card;
-    cardH: CardH;  
+    cardH: CardH;
     filters: Filters;
     sort: Sort;
     search: Search;
@@ -28,8 +31,11 @@ export class Main {
     settingsMain: "/cart" | "/products" | "/productDetails" | "/page404";
     dataProducts: IDataProduct[];
     filterProps: IFiltersProps;
+
     query: queryOptions;
     view?: string = "card";
+    mod = new Model();
+
 
     constructor(dataProducts: IDataProduct[], filterProps: IFiltersProps, query: queryOptions) {
     this.dataProducts = dataProducts;
@@ -41,11 +47,23 @@ export class Main {
     this.filters = new Filters(this.filterProps, this.query);
     this.sort = new Sort();
     this.search = new Search();
-    this.cart = new Cart(this.dataProducts[0]);
+
+    this.cart = new Cart(this.mod.getDataByIdForBasket([1, 2, 3, 4, 5, 6, 12, 18, 25, 36, 45]));
     this.productDetails = new ProductDetails(this.dataProducts[0]);
     this.page404 = new Page404()
     this.settingsMain = "/products";
     }
+// =======
+//     card: Card = new Card(dataProducts.products[0]);  
+//     filters: Filters = new Filters(filterProps);
+//     sort: Sort = new Sort();
+//     search: Search = new Search();
+    
+//     cart: Cart = new Cart(this.mod.getDataByIdForBasket([1, 2, 3, 4, 5, 6, 12, 18, 25, 36, 45]));
+//     productDetails: ProductDetails = new ProductDetails(dataProducts.products[71]);
+//     page404: Page404 = new Page404()
+//     settingsMain: "/cart" | "/products" | "/productDetails" | "/page404" = "/products";
+// >>>>>>> denisdev
 
 
 render() {
@@ -93,15 +111,21 @@ render() {
     if (this.settingsMain === '/cart') {template = cartView}
     if (this.settingsMain === '/productDetails') {template = productDetails}
     if (this.settingsMain === '/page404') {template = page404}
-    
-        return `<main class = "container main">
+            return `<main class = "container main">
                 ${template}                                      
                 </main>`;
 }
 
 
+
 update () {
     (document.querySelector(".main") as HTMLElement).outerHTML = this.render()
+
+//=======
+//reRender () {
+//     (document.querySelector(".main") as HTMLElement).innerHTML = this.render();
+//    if (this.settingsMain === '/cart') {this.cart.updateRander();}
+//>>>>>>> develop
 
 }
 updateProducts (view = "card") {
