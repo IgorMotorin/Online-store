@@ -48,6 +48,7 @@ export interface IFilters {
     stock: number[];    
 }
 
+
 export interface IFiltersProps {
     category: (string | number)[][];
     brand: (string | number)[][];
@@ -55,6 +56,7 @@ export interface IFiltersProps {
     stock: number[];
     found: number;
 }
+
 
 export interface ISort {
     category: string[];
@@ -64,7 +66,11 @@ export interface ISort {
 }
 
 
+
 export type TSort = 'price-ascending' | 'price-descending' | 'rating-ascending' | 'rating-descending' | 'discount-ascending' | 'discount-descending';
+
+
+
 
 export interface queryOptions {
     category?: string[];
@@ -74,6 +80,7 @@ export interface queryOptions {
     sort?: TSort;
     search?: string;
     viewCard?: boolean;
+
 
 }
 
