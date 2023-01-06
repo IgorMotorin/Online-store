@@ -26,11 +26,23 @@ class Model {
   }
 
   getDataFilterByBrand(brand:string[]){
-    this.newIdataProduct = this.IdataProduct.filter(item => brand.includes(item.brand));
+    this.newIdataProduct = this.newIdataProduct.filter(item => brand.includes(item.brand));
      
   }
 
+  getDataFilterByBrandOne(brand:string[]){
+    this.newIdataProduct = this.IdataProduct.filter(item => brand.includes(item.brand));
+     
+  }
   getDataFilterByPrice(priceMin:number, priceMax:number){
+    // if (priceMin && priceMax){this.newIdataProduct = this.newIdataProduct.filter(item => item.price >= priceMin && item.price <= priceMax)}
+    // else if (!priceMin && priceMax){this.newIdataProduct = this.newIdataProduct.filter(item => item.price <= priceMax)}
+    // else if (priceMin && !priceMax){this.newIdataProduct = this.newIdataProduct.filter(item => item.price >= priceMin)}
+
+    this.newIdataProduct = this.newIdataProduct.filter(item => item.price >= priceMin && item.price <= priceMax)
+    return this.newIdataProduct;
+  } 
+  getDataFilterByPriceOne(priceMin:number, priceMax:number){
     // if (priceMin && priceMax){this.newIdataProduct = this.newIdataProduct.filter(item => item.price >= priceMin && item.price <= priceMax)}
     // else if (!priceMin && priceMax){this.newIdataProduct = this.newIdataProduct.filter(item => item.price <= priceMax)}
     // else if (priceMin && !priceMax){this.newIdataProduct = this.newIdataProduct.filter(item => item.price >= priceMin)}
@@ -44,13 +56,25 @@ class Model {
     // else if (!stockMin && stockMax){this.newIdataProduct = this.IdataProduct.filter(item => item.price <= stockMax)}
     // else if (stockMin && !stockMax){this.newIdataProduct = this.IdataProduct.filter(item => item.price >= stockMin)}
 
-    this.newIdataProduct = this.IdataProduct.filter(item => item.price >= stockMin && item.price <= stockMax)
+    this.newIdataProduct = this.newIdataProduct.filter(item => item.stock >= stockMin && item.stock <= stockMax)
+    return this.newIdataProduct
+  } 
+
+  getDataFilterByStockOne(stockMin:number, stockMax:number){
+    // if (stockMin && stockMax){this.newIdataProduct = this.IdataProduct.filter(item => item.price >= stockMin && item.price <= stockMax)}
+    // else if (!stockMin && stockMax){this.newIdataProduct = this.IdataProduct.filter(item => item.price <= stockMax)}
+    // else if (stockMin && !stockMax){this.newIdataProduct = this.IdataProduct.filter(item => item.price >= stockMin)}
+
+    this.newIdataProduct = this.IdataProduct.filter(item => item.stock >= stockMin && item.stock <= stockMax)
     return this.newIdataProduct
   } 
 
   getDataFilterBySearch(searched:string){
-     return this.newIdataProduct = this.IdataProduct.filter(item => item.title.toUpperCase().includes(searched.toUpperCase()) || item.description.toUpperCase().includes(searched.toUpperCase()) || item.brand.toUpperCase().includes(searched.toUpperCase()) || item.category.toUpperCase().includes(searched.toUpperCase()) || String(item.price).includes(searched) || String(item.discountPercentage).includes(searched) || String(item.rating).includes(searched) || String(item.stock).includes(searched));
+     return this.newIdataProduct = this.newIdataProduct.filter(item => item.title.toUpperCase().includes(searched.toUpperCase()) || item.description.toUpperCase().includes(searched.toUpperCase()) || item.brand.toUpperCase().includes(searched.toUpperCase()) || item.category.toUpperCase().includes(searched.toUpperCase()) || String(item.price).includes(searched) || String(item.discountPercentage).includes(searched) || String(item.rating).includes(searched) || String(item.stock).includes(searched));
   }
+  getDataFilterBySearchOne(searched:string){
+    return this.newIdataProduct = this.IdataProduct.filter(item => item.title.toUpperCase().includes(searched.toUpperCase()) || item.description.toUpperCase().includes(searched.toUpperCase()) || item.brand.toUpperCase().includes(searched.toUpperCase()) || item.category.toUpperCase().includes(searched.toUpperCase()) || String(item.price).includes(searched) || String(item.discountPercentage).includes(searched) || String(item.rating).includes(searched) || String(item.stock).includes(searched));
+ }
 
   resetSearch(){
     return this.newIdataProduct;
