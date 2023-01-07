@@ -171,6 +171,9 @@ export class Controller extends Model {
 
         } else if (url.pathname.startsWith('/cart')) {                
                 this.view.main.settingsMain = "/cart";
+                const obj = this.view.header.getLocalStorage();
+                this.view.main.cart.props = super.getDataByIdForBasket(obj.ids);
+                this.view.main.cart.propsArr = this.view.main.cart.props;
                 this.view.main.update();
         } else if (url.pathname.startsWith('/productDetails')) {            
             this.view.main.settingsMain = "/productDetails";
@@ -252,6 +255,59 @@ export class Controller extends Model {
             this.router.readURL();
             this.updateView(this.router.url, this.router.query);})
         );
+
+        (document
+          .querySelectorAll('.card_buttonAdd') as NodeListOf<Element>)
+          .forEach(item => item.addEventListener('click', (e) => {
+              const targetElement = e.target as HTMLInputElement;
+
+              if (localStorage.cart) {
+                const cart: {id: string, count: number, price: string}[] = JSON.parse(localStorage.cart)
+                console.log(cart)
+                const cartIndex = cart.findIndex(item => item.id === targetElement.id);
+                if (cartIndex !== -1) {
+                  cart.splice(cartIndex, 1);
+                  targetElement.setAttribute("cart", "false")
+                    
+                } else {
+                  const obj = {
+                    id: targetElement.id,
+                    count: 1,
+                    price: targetElement.getAttribute("price") as string,
+                  }
+                  cart.push(obj);
+                  targetElement.setAttribute("cart", "true")
+                }
+                localStorage.cart = JSON.stringify(cart);
+                console.log("345", cart)
+              } else {
+                const cart = [];
+                const obj = {
+                  id: targetElement.id,
+                  count: 1,
+                  price: targetElement.getAttribute("price") as string,
+                }
+                cart.push(obj);
+                localStorage.cart = JSON.stringify(cart);
+                targetElement.setAttribute("cart", "true")
+
+              }
+
+              if (targetElement.getAttribute("cart") === "true") {
+                targetElement.innerHTML = "From cart";
+                targetElement.classList.add("btn-secondary")
+              } else {
+                targetElement.innerHTML = "Add to cart";
+                targetElement.classList.remove("btn-secondary")
+              }
+              
+              
+
+              this.view.header.update();
+
+            })
+          );
+
     }
 
     addEventSearch() {

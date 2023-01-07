@@ -15,13 +15,14 @@ let discont = 0;
 
 export class Cart {
         props: IDataProduct[];
+        propsArr: IDataProduct[];
         
         // main = new Main;
 
         constructor (props: IDataProduct[]){
             
             this.props = props;
-            propsArr = this.props;
+            this.propsArr = this.props;
             
             
             
@@ -30,7 +31,7 @@ export class Cart {
 
     render() {
       listGroupItemsArr = [];
-      for (const item of propsArr){listGroupItemsArr.push(`<li class="list-group-item d-flex justify-content-between align-items-start flex-wrap" id="${listGroupItemsArr.length}" style="min-height: 200px">
+      for (const item of this.propsArr){listGroupItemsArr.push(`<li class="list-group-item d-flex justify-content-between align-items-start flex-wrap" id="${listGroupItemsArr.length}" style="min-height: 200px">
       <div class="col-md-2 m-2" style="display: flex; align-self: center">
       <img src="${item.thumbnail}" class="img-fluid rounded" alt="..." style="max-height: 150px;">            
   </div>
@@ -169,27 +170,27 @@ updateRander(){
   
   
   function changeHeader(){
-  let volume = 0;
-  document.querySelectorAll('.changeItems-count').forEach(item => volume += Number(item.innerHTML));
-  let sum = 0;
-  document.querySelectorAll('.changeItems-sum').forEach(item => sum += Number(item.innerHTML));
-  const promoDiscont = Number((document.querySelector('.promoDiscont') as HTMLElement).innerHTML);
-  if (document.querySelector('.nav-item') !== null){(document.querySelector('.promoSum') as HTMLElement).innerHTML = `${sum} EUR`;
-  (document.querySelector('.promoTotalSum') as HTMLElement).innerHTML = `${sum - promoDiscont > 0 ? sum - promoDiscont : 0}`; (document.querySelector('.promoItems') as HTMLElement).innerHTML = `${volume}`;
+    let volume = 0;
+    document.querySelectorAll('.changeItems-count').forEach(item => volume += Number(item.innerHTML));
+    let sum = 0;
+    document.querySelectorAll('.changeItems-sum').forEach(item => sum += Number(item.innerHTML));
+    const promoDiscont = Number((document.querySelector('.promoDiscont') as HTMLElement).innerHTML);
+    if (document.querySelector('.nav-item') !== null){(document.querySelector('.promoSum') as HTMLElement).innerHTML = `${sum} EUR`;
+    (document.querySelector('.promoTotalSum') as HTMLElement).innerHTML = `${sum - promoDiscont > 0 ? sum - promoDiscont : 0}`; (document.querySelector('.promoItems') as HTMLElement).innerHTML = `${volume}`;
     return (document.querySelector('.nav-item') as HTMLElement).innerHTML = `<button type="button" class="btn btn-primary position-relative header_button">
-  Cart total: ${sum} EUR
-  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+    Cart total: ${sum} EUR
+    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
       ${volume}
       <span class="visually-hidden">Корзина заказов</span>
-  </span>
-</button>`;}
+    </span>
+    </button>`;}
 
   }
   
   
 
-    document.querySelectorAll('.align-items-start').forEach(element => { element.addEventListener('click', changeItem);
-    });
+    // document.querySelectorAll('.align-items-start').forEach(element => { element.addEventListener('click', changeItem);
+    // });
 
     // после удаления продукта корректировка высоты блока контейнера после updateRander
     const itemsOnPage = document.querySelectorAll('.align-items-start').length;
@@ -201,7 +202,9 @@ updateRander(){
   `<h1 style="align-self: center; text-align: center"> Вы пока не добавили товары в корзину </h1>`}
 // .......................
   const renderThis = this;
-  function changeItem(event: any){
+
+  
+  const changeItem = (event: any) => {
   const target = event.target;  
   const changeI = event.target.closest('.align-items-start');
   const count = changeI.querySelector('.changeItems-count');
@@ -213,7 +216,7 @@ updateRander(){
     }
     if (target.closest('.changeItems-deleteItem')){
       if (count.innerHTML > 1) {count.innerHTML = `${Number(count.innerHTML) - 1}`; itemSum.innerHTML = `${Number(itemSum.innerHTML) / (Number(count.innerHTML) + 1) * Number(count.innerHTML)}`}
-    else if (Number(count.innerHTML) === 1) {console.log(pageNumber, listGroupPages, itemsOnPage, itemsCount); propsArr.splice(Number(changeI.id), 1);
+    else if (Number(count.innerHTML) === 1) {console.log(pageNumber, listGroupPages, itemsOnPage, itemsCount); this.propsArr.splice(Number(changeI.id), 1);
       (document.querySelector('.container main') as HTMLElement).innerHTML = renderThis.render(); renderThis.updateRander();
       
     }}
@@ -222,11 +225,17 @@ updateRander(){
     
     changeHeader()
   }
+
+  document.querySelectorAll('.align-items-start').forEach(element => { element.addEventListener('click', changeItem);
+    });
+
+
   changeHeader();
   
   
   
   (document.querySelector('.switchPages') as HTMLElement).addEventListener('click', switchPages)
+
   function switchPages(event: any){
     const target = event.target;
     if (target.closest('.dropdown-item')){ itemsCount = Number(target.closest('.dropdown-item').innerHTML);}
@@ -278,6 +287,7 @@ updateRander(){
   }
 
   (document.querySelector('.discont-container') as HTMLElement).addEventListener('click', discontFunc);
+  
   function discontFunc(event: any){
     // const target = event.target;
     // if (target.closest('.dropdown-item')){ itemsCount = Number(target.closest('.dropdown-item').innerHTML);}
