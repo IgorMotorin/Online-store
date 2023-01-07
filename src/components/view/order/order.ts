@@ -1,3 +1,6 @@
+let dateOffLength = 1;
+// let cardNumberLength = 1;
+
 export class Order {
    
   validation() {
@@ -13,7 +16,49 @@ export class Order {
 
         form.classList.add('was-validated')
       }, false)
-    })
+    });
+    const cardNumber = document.querySelector<HTMLInputElement>('.cardNumber');
+    const dateOff = document.querySelector<HTMLInputElement>('.dateOff');
+    const cvv = document.querySelector<HTMLInputElement>('.cvv');
+    if (dateOff){ dateOff.oninput = function(){
+      if (dateOff.value.length === 2 && dateOffLength < 2) {
+        if (Number(dateOff.value) > 12){
+          dateOff.value = dateOff.value[0];
+        } else {dateOffLength = dateOff.value.length; dateOff.value += '/';}
+      }
+      if (dateOff.value.length === 2 && dateOffLength === 3){dateOff.value = dateOff.value[0];}
+      if (dateOff.value.length === 6){const temp = dateOff.value.split(''); temp.pop(); dateOff.value = temp.join('');}
+      dateOffLength = dateOff.value.length;
+      }
+      if (cvv){ cvv.oninput = function(){
+        if (cvv.value.length === 4){const tempC = cvv.value.split(''); tempC.pop(); cvv.value = tempC.join('');}
+      }}}
+
+      if (cardNumber){ cardNumber.oninput = function(){
+          if (!cardNumber.value){
+          (document.querySelector('.visa') as HTMLElement).style.display = 'none';
+          (document.querySelector('.mastercard') as HTMLElement).style.display = 'none';
+          (document.querySelector('.americanExpress') as HTMLElement).style.display = 'none';
+         }
+         if (Number(cardNumber.value[0]) === 4){
+          (document.querySelector('.visa') as HTMLElement).style.display = 'flex'
+         } else if (Number(cardNumber.value[0]) === 5){
+          (document.querySelector('.mastercard') as HTMLElement).style.display = 'flex'
+         } else if (Number(cardNumber.value[0]) === 3){
+          (document.querySelector('.americanExpress') as HTMLElement).style.display = 'flex'
+         }
+        //  if (cardNumber.value.length === 4 ||  cardNumber.value.length === 9 ||  cardNumber.value.length === 14){ if (cardNumber.value.length > cardNumberLength) {
+        //   cardNumber.value += ' ';} else { const tempCard = cardNumber.value.split(''); tempCard.pop(); cardNumber.value = tempCard.join('');}}
+
+         if (cardNumber.value.length === 17){const tempCard = cardNumber.value.split(''); tempCard.pop(); cardNumber.value = tempCard.join('');}
+
+        //  cardNumberLength = cardNumber.value.length;
+      }
+      
+      
+
+    }
+      
   }
 
 
@@ -32,7 +77,7 @@ render() {
                       <div class="row g-3">
                         <div class="col-sm-6">
                           <label for="firstName" class="form-label">First name</label>
-                          <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+                          <input type="text" minlength="3" class="form-control" id="firstName" placeholder="" value="" required>
                           <div class="invalid-feedback">
                             Valid first name is required.
                           </div>
@@ -40,7 +85,7 @@ render() {
 
                         <div class="col-sm-6">
                           <label for="lastName" class="form-label">Last name</label>
-                          <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+                          <input type="text" minlength="3" class="form-control" id="lastName" placeholder="" value="" required>
                           <div class="invalid-feedback">
                             Valid last name is required.
                           </div>
@@ -48,7 +93,7 @@ render() {
 
                         <div class="col-12">
                           <label for="phone" class="form-label">Phone number </label>
-                          <input type="tel" pattern="[+][7]{1}[0-9]{10}" class="form-control" id="phone" placeholder="+71231231212">
+                          <input type="tel" pattern="[+][0-9]{9,}" class="form-control tel" id="phone" placeholder="+712312312" required>
                           <div class="invalid-feedback">
                             Please enter a valid phone number for shipping updates.
                           </div>
@@ -56,7 +101,7 @@ render() {
 
                         <div class="col-12">
                           <label for="email" class="form-label">Email </label>
-                          <input type="email" class="form-control" id="email" placeholder="you@example.com">
+                          <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
                           <div class="invalid-feedback">
                             Please enter a valid email address for shipping updates.
                           </div>
@@ -64,7 +109,7 @@ render() {
 
                         <div class="col-12">
                           <label for="address" class="form-label">Address</label>
-                          <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
+                          <input type="text" pattern="[A-Za-z]{5,}[ ][A-Za-z]{5,}[ ][A-Za-z]{5,}" class="form-control" id="address" placeholder="Baker street London" required>
                           <div class="invalid-feedback">
                             Please enter your shipping address.
                           </div>
@@ -78,17 +123,14 @@ render() {
 
                       <div class="row gy-3">
                         <div class="col-md-6">
-                          <label for="cc-name" class="form-label">Name on card</label>
-                          <input type="text" class="form-control" id="cc-name" placeholder="" required>
-                          <small class="text-muted">Full name as displayed on card</small>
-                          <div class="invalid-feedback">
-                            Name on card is required
-                          </div>
+                        <img src="visaLogo.png" alt="Visa" style="width: 80%; display: none" class="visa">
+                        <img src="mastercardLogo.png" alt="mastercard" style="width: 50%; display: none" class="mastercard">
+                        <img src="AmericanExpressLogo.png" alt="American Express" style="width: 50%; display: none" class="americanExpress">
                         </div>
 
                         <div class="col-md-6">
                           <label for="cc-number" class="form-label">Credit card number</label>
-                          <input type="text" class="form-control" id="cc-number" placeholder="" required>
+                          <input type="text" pattern="[0-9]{16}" class="form-control cardNumber" id="cc-number" placeholder="1234567890123456" required>
                           <div class="invalid-feedback">
                             Credit card number is required
                           </div>
@@ -96,7 +138,7 @@ render() {
 
                         <div class="col-md-3">
                           <label for="cc-expiration" class="form-label">Expiration</label>
-                          <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
+                          <input type="text" pattern="[0-9]{2}[/][0-9]{2}" class="form-control dateOff" id="cc-expiration" placeholder="12/22" required>
                           <div class="invalid-feedback">
                             Expiration date required
                           </div>
@@ -104,7 +146,7 @@ render() {
 
                         <div class="col-md-3">
                           <label for="cc-cvv" class="form-label">CVV</label>
-                          <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
+                          <input type="text" pattern="[0-9]{3,}" class="form-control cvv" id="cc-cvv" placeholder="123" required>
                           <div class="invalid-feedback">
                             Security code required
                           </div>
