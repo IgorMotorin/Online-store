@@ -48,22 +48,12 @@ export class Main {
     this.sort = new Sort();
     this.search = new Search();
 
-    this.cart = new Cart(this.mod.getDataByIdForBasket([1, 2, 3, 4, 5, 6, 12, 18, 25, 36, 45]));
+    this.cart = new Cart(this.mod.getDataByIdForBasket([]));
     this.productDetails = new ProductDetails(this.dataProducts[0]);
     this.page404 = new Page404()
     this.settingsMain = "/products";
     }
-// =======
-//     card: Card = new Card(dataProducts.products[0]);  
-//     filters: Filters = new Filters(filterProps);
-//     sort: Sort = new Sort();
-//     search: Search = new Search();
-    
-//     cart: Cart = new Cart(this.mod.getDataByIdForBasket([1, 2, 3, 4, 5, 6, 12, 18, 25, 36, 45]));
-//     productDetails: ProductDetails = new ProductDetails(dataProducts.products[71]);
-//     page404: Page404 = new Page404()
-//     settingsMain: "/cart" | "/products" | "/productDetails" | "/page404" = "/products";
-// >>>>>>> denisdev
+
 
 
 render() {
@@ -120,15 +110,9 @@ render() {
 
 update () {
     (document.querySelector(".main") as HTMLElement).outerHTML = this.render();
-    if (this.settingsMain === '/cart') {this.cart.updateRander();}
-
-//=======
-//reRender () {
-//     (document.querySelector(".main") as HTMLElement).innerHTML = this.render();
-//    if (this.settingsMain === '/cart') {this.cart.updateRander();}
-//>>>>>>> develop
-
+    if (this.settingsMain === '/cart') {this.cart.updateRander()}
 }
+
 updateProducts (view = "card") {
     const cards = `
                     <div class = "products">                                         

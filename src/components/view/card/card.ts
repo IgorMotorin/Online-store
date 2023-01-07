@@ -8,34 +8,30 @@ export class Card {
         }
 
     render() {
+        const obj = {flag: false}
+        if (localStorage.cart) {
+            const cart: {id: string, count: number, price: string}[] = JSON.parse(localStorage.cart)
+            const cartIndex = cart.findIndex(item => item.id === String(this.props.id));
+            if (cartIndex !== -1) {obj.flag = true} 
+          } 
         
-        const temp1 =  `<img src=${this.props.thumbnail} class="card-img-top h-25" alt="...">`;
-        const temp2 =  `<div class="card-img-top" style="background: url(${this.props.thumbnail});height: 200px;background-size: contain;background-repeat: no-repeat;background-position: center;"></div>`;
+        
         return `
         <div class="card" style="width: 18rem;">
             <div class="card-img-top" style="background: url(${this.props.thumbnail});height: 180px;background-size: contain;background-repeat: no-repeat;background-position: top;"></div>
-            
-
-            
                 <div class="card-body h-25">
                     <h5 class="card-title">${this.props.title}</h5>                    
                     <small class="card-text">${this.props.description}</small>
-                </div>
-
-            
-
+                </div> 
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">Price: ${this.props.price} EUR</li>
                     <li class="list-group-item">Discount: ${this.props.discountPercentage} %</li>
                     <li class="list-group-item">Rating: ${this.props.rating}</li>
                     <li class="list-group-item">Stock: ${this.props.stock}</li>
-                </ul>
-                
-            
-            
+                </ul>            
                 <div class="card-body">
-                    <button class="btn btn-primary card_buttonAdd">Add to cart</button>
-                    <button class="btn btn-primary card_buttonDetails" id="${this.props.id}">Details</button>
+                    <button cart="${obj.flag}" id="${this.props.id}" price="${this.props.price}" class="btn btn-primary card_buttonAdd ${obj.flag ? "btn-secondary":""}">${obj.flag ? "From cart":"Add to cart"}</button>
+                    <button id="${this.props.id}" class="btn btn-primary card_buttonDetails">Details</button>
                 </div>
         </div>
       `;
@@ -52,9 +48,14 @@ export class CardH {
     }
 
 render() {
+    const obj = {flag: false}
+        if (localStorage.cart) {
+            const cart: {id: string, count: number, price: string}[] = JSON.parse(localStorage.cart)
+            const cartIndex = cart.findIndex(item => item.id === String(this.props.id));
+            if (cartIndex !== -1) {obj.flag = true} 
+          }
     
-    const temp1 =  `<img src=${this.props.thumbnail} class="card-img-top h-25" alt="...">`;
-    const temp2 =  `<div class="card-img-top" style="background: url(${this.props.thumbnail});height: 200px;background-size: contain;background-repeat: no-repeat;background-position: center;"></div>`;
+    
     return `
                 <li class="list-group-item d-flex justify-content-between align-items-start flex-wrap">
                     <div class="col-md-2 m-2">
@@ -71,7 +72,7 @@ render() {
                     </div>
                     <div>
                         <div class="card-body">
-                            <button class="btn btn-primary btn-sm card_buttonAdd">Add to cart</button>
+                            <button cart="${obj.flag}" id="${this.props.id}" price="${this.props.price}" class="btn btn-primary btn-sm card_buttonAdd ${obj.flag ? "btn-secondary":""}">${obj.flag ? "From cart":"Add to cart"}</button>
                             <button id="${this.props.id}" class="btn btn-primary btn-sm card_buttonDetails">Details</button>
                         </div>
                     </div>                
