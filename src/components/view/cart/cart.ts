@@ -12,21 +12,16 @@ let listGroupItemsArr: string[];
 let propsArr: IDataProduct[];
 let pageNumber = 1;
 let discont = 0;
+let sum = 0;
 
 export class Cart {
         props: IDataProduct[];
         propsArr: IDataProduct[];
-        
-        // main = new Main;
 
         constructor (props: IDataProduct[]){
             
             this.props = props;
             this.propsArr = this.props;
-            
-            
-            
-
         }
 
     render() {
@@ -119,36 +114,40 @@ function finalRender(){
                 <h6 class="my-0">Total</h6>
                 <small class="text-muted">goods for the amount</small>
                 </div>
-                <span class="text-muted promoSum">12 EUR</span>
+                <span class="text-muted promoSum" style="display: flex;
+                flex-direction: column;
+                justify-content: center">12 EUR</span>
             </li>                             
             <li class="list-group-item d-flex justify-content-between bg-light">
                 <div class="text-success">
                 <h6 class="my-0">Promo code:</h6>
-                <div class="promo1" style="">Rolling Scopes School - 10%
-                <a class="link-secondary changeItems-deleteItem" aria-label="Убавить количество товара">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0d6efd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle align-text-bottom" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                <div class="promo1" style="display: none">RSSchool - 10%
+                <a class="link-secondary delete-promo1" aria-label="Убавить количество товара">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0d6efd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 69px" class="feather feather-plus-circle align-text-bottom" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
               </a></div>
-                <div class="promo1">Front-end 2022Q3 - 10%
-                <a class="link-secondary changeItems-deleteItem" aria-label="Убавить количество товара">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0d6efd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle align-text-bottom" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                <div class="promo2" style="display: none">Front-end 2022Q3 - 10%
+                <a class="link-secondary delete-promo2" aria-label="Убавить количество товара">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0d6efd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle align-text-bottom" aria-hidden="true" style="margin-left: 5px"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
               </a></div>
-                <small>Promo for test: 'RS', '2022Q3'</small>
+                <small>Promo: 'RSSchool', 'Front-end 2022Q3'</small>
                 </div>
-                <span class="text-success"><span class="promoDiscont">${discont}</span> EUR</span>
+                <span class="text-success" style="display: flex;
+                flex-direction: column;
+                justify-content: center"><span class="promoDiscont">${discont}</span> EUR</span>
             </li>
             <li class="list-group-item d-flex justify-content-between">
                 <span>Total payable</span>
-                <strong class="promoTotalSum">20 EUR</strong>
+                <strong><span class="promoTotalSum">20</span> EUR</strong>
             </li>
         </ul>
 
         <form class="card p-2">
             <div class="input-group">
                 <input id="promo code" type="text" class="form-control" placeholder="Promo code">
-                <button type="submit" class="btn btn-secondary">Redeem</button>
+                <button onclick="return false" class="btn btn-secondary">Redeem</button>
             </div>
-        </form>
-        <button type="button" class="btn btn-primary m-2 w-100" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            </form>
+        <button type="button" class="btn btn-primary m-2 w-100 discont-button-buy" data-bs-toggle="modal" data-bs-target="#exampleModal">
             BUY NOW
         </button>
     </div>
@@ -170,13 +169,13 @@ updateRander(){
   
   
   function changeHeader(){
-    let volume = 0;
-    document.querySelectorAll('.changeItems-count').forEach(item => volume += Number(item.innerHTML));
-    let sum = 0;
-    document.querySelectorAll('.changeItems-sum').forEach(item => sum += Number(item.innerHTML));
-    const promoDiscont = Number((document.querySelector('.promoDiscont') as HTMLElement).innerHTML);
-    if (document.querySelector('.nav-item') !== null){(document.querySelector('.promoSum') as HTMLElement).innerHTML = `${sum} EUR`;
-    (document.querySelector('.promoTotalSum') as HTMLElement).innerHTML = `${sum - promoDiscont > 0 ? sum - promoDiscont : 0}`; (document.querySelector('.promoItems') as HTMLElement).innerHTML = `${volume}`;
+  let volume = 0;
+  sum = 0;
+  document.querySelectorAll('.changeItems-count').forEach(item => volume += Number(item.innerHTML));
+   document.querySelectorAll('.changeItems-sum').forEach(item => sum += Number(item.innerHTML));
+  const promoDiscont = Number((document.querySelector('.promoDiscont') as HTMLElement).innerHTML);
+  if (document.querySelector('.nav-item') !== null){(document.querySelector('.promoSum') as HTMLElement).innerHTML = `${sum} EUR`;
+  (document.querySelector('.promoTotalSum') as HTMLElement).innerHTML = `${sum - promoDiscont > 0 ? sum - promoDiscont : 0}`; (document.querySelector('.promoItems') as HTMLElement).innerHTML = `${volume}`;
     return (document.querySelector('.nav-item') as HTMLElement).innerHTML = `<button type="button" class="btn btn-primary position-relative header_button">
     Cart total: ${sum} EUR
     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -187,10 +186,6 @@ updateRander(){
 
   }
   
-  
-
-    // document.querySelectorAll('.align-items-start').forEach(element => { element.addEventListener('click', changeItem);
-    // });
 
     // после удаления продукта корректировка высоты блока контейнера после updateRander
     const itemsOnPage = document.querySelectorAll('.align-items-start').length;
@@ -203,24 +198,21 @@ updateRander(){
 // .......................
   const renderThis = this;
 
-  
   const changeItem = (event: any) => {
   const target = event.target;  
   const changeI = event.target.closest('.align-items-start');
   const count = changeI.querySelector('.changeItems-count');
   const itemSum = changeI.querySelector('.changeItems-sum');
   
-
     if (target.closest('.changeItems-addItem')){
       if (count.innerHTML < Number(changeI.querySelector('.ItemStock').innerHTML)) {count.innerHTML = `${Number(count.innerHTML) + 1}`; itemSum.innerHTML = `${Number(itemSum.innerHTML) / (Number(count.innerHTML) - 1) * Number(count.innerHTML)}`}
     }
     if (target.closest('.changeItems-deleteItem')){
       if (count.innerHTML > 1) {count.innerHTML = `${Number(count.innerHTML) - 1}`; itemSum.innerHTML = `${Number(itemSum.innerHTML) / (Number(count.innerHTML) + 1) * Number(count.innerHTML)}`}
     else if (Number(count.innerHTML) === 1) {console.log(pageNumber, listGroupPages, itemsOnPage, itemsCount); this.propsArr.splice(Number(changeI.id), 1);
-      (document.querySelector('.container main') as HTMLElement).innerHTML = renderThis.render(); renderThis.updateRander();
+      (document.querySelector('.main') as HTMLElement).innerHTML = renderThis.render(); renderThis.updateRander();
       
     }}
-    
     
     
     changeHeader()
@@ -229,10 +221,7 @@ updateRander(){
   document.querySelectorAll('.align-items-start').forEach(element => { element.addEventListener('click', changeItem);
     });
 
-
   changeHeader();
-  
-  
   
   (document.querySelector('.switchPages') as HTMLElement).addEventListener('click', switchPages)
 
@@ -272,6 +261,8 @@ updateRander(){
       if (itemsMove / 200 >= Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML)){itemsMove -= Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200; (listGroupNumbered as HTMLElement).style.top = `-${itemsMove}px`; }
       if (pageNumber > 1) pageNumber--;
       if (itemsCount < itemsOnPage){(listGroupContainer as HTMLElement).style.height = `${itemsCount * 200}px`} else {(listGroupContainer as HTMLElement).style.height = `${itemsOnPage * 200}px`;}
+      if (!itemsOnPage) {(listGroupContainer as HTMLElement).style.height = "300px"; (listGroupContainer as HTMLElement).innerHTML = 
+  `<h1 style="align-self: center; text-align: center"> Вы пока не добавили товары в корзину </h1>`}
     }
     if (linkNumber){
       itemsMove = Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200 * (linkNumber.innerHTML - 1);
@@ -285,59 +276,43 @@ updateRander(){
     
 
   }
+  
 
   (document.querySelector('.discont-container') as HTMLElement).addEventListener('click', discontFunc);
-  
-  function discontFunc(event: any){
-    // const target = event.target;
-    // if (target.closest('.dropdown-item')){ itemsCount = Number(target.closest('.dropdown-item').innerHTML);}
-    // else { itemsCount = Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML);}
-    // const itemsOnPage = document.querySelectorAll('.align-items-start').length;
-    // const linkNext = target.closest('.page-link-next');
-    // const linkPrev = target.closest('.page-link-previous');
-    // const linkNumber = target.closest('.page-link-number');
-    // const listGroupContainer = document.querySelector('.list-group-container');
-    // const listGroupNumbered = document.querySelector('.list-group-numbered');
-    // if (target.closest('.dropdown-item')){
-    //   (document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML = String(itemsCount);
-    //   listGroupPages = Math.ceil(itemsOnPage / itemsCount);
-    //   listGroupPagesRender = '';
-    //   for (let i = 1; i <= listGroupPages; i ++) {listGroupPagesRender += `<li class="page-item"><a class="page-link page-link-number" >${i}</a></li>` }
-    //   (document.querySelector('.pagination') as HTMLElement).innerHTML =  `<li class="page-item"><a class="page-link page-link-previous">Previous</a></li>
-    //   ${listGroupPagesRender}
-    //   <li class="page-item"><a class="page-link page-link-next" >Next</a></li>`;
-    //   itemsMove = 0;
-    //   (listGroupNumbered as HTMLElement).style.top = `0px`;
 
-    // if (itemsCount < itemsOnPage){(listGroupContainer as HTMLElement).style.height = `${itemsCount * 200}px`} else {(listGroupContainer as HTMLElement).style.height = `${itemsOnPage * 200}px`;}
-    // }
-    // console.log(pageNumber, listGroupPages, itemsOnPage, itemsCount);
-        
-    // if (linkNext){
-    //   if (itemsMove / 200 < itemsOnPage - Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML)){itemsMove += Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200; (listGroupNumbered as HTMLElement).style.top = `-${itemsMove}px`;}
-    //   if (pageNumber < listGroupPages) pageNumber++;
-    //   if (listGroupPages <= pageNumber) {console.log(pageNumber, listGroupPages, itemsOnPage, itemsCount);
-    //     if (itemsOnPage % itemsCount !== 0) { (listGroupContainer as HTMLElement).style.height = `${itemsOnPage % itemsCount * 200}px`}}
-    // }
-    // if (linkPrev){
-    //   console.log(pageNumber, listGroupPages);
-    //   if (itemsMove / 200 >= Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML)){itemsMove -= Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200; (listGroupNumbered as HTMLElement).style.top = `-${itemsMove}px`; }
-    //   if (pageNumber > 1) pageNumber--;
-    //   if (itemsCount < itemsOnPage){(listGroupContainer as HTMLElement).style.height = `${itemsCount * 200}px`} else {(listGroupContainer as HTMLElement).style.height = `${itemsOnPage * 200}px`;}
-    // }
-    // if (linkNumber){
-    //   itemsMove = Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200 * (linkNumber.innerHTML - 1);
-    //   (listGroupNumbered as HTMLElement).style.top = `-${itemsMove}px`;
-    //   pageNumber = Number(linkNumber.innerHTML);
-    //   if (itemsCount < itemsOnPage){(listGroupContainer as HTMLElement).style.height = `${itemsCount * 200}px`} else {(listGroupContainer as HTMLElement).style.height = `${itemsOnPage * 200}px`;}
-    //   if (listGroupPages === pageNumber) {console.log(pageNumber, listGroupPages, itemsOnPage, itemsCount);
-    //     if (itemsOnPage % itemsCount !== 0) { (listGroupContainer as HTMLElement).style.height = `${itemsOnPage % itemsCount * 200}px`}}
-        
-    // }
+  const promoWrite = <HTMLInputElement>(document.getElementById('promo code'));
+    const discontTotal = document.querySelector<HTMLElement>('.promoTotalSum');
+    const promoDiscont = document.querySelector<HTMLElement>('.promoDiscont');
     
+    const promo1 =  document.querySelector<HTMLElement>('.promo1');
+    const promo2 =  document.querySelector<HTMLElement>('.promo2');
+  function discontFunc(event: any){
+    
+    const target = event.target;
+    if (promoWrite.value.toUpperCase() === 'RSSCHOOL' && target.closest('.btn-secondary')) {if (promo1 instanceof HTMLElement && promo1.style.display === 'none'){if (promoDiscont instanceof HTMLElement){discont += sum * 0.1; promoDiscont.innerHTML = String(discont); if (discontTotal instanceof HTMLElement) {discontTotal.innerHTML = String(sum - discont)}} (document.querySelector('.promo1') as HTMLElement).style.display = 'flex';}}
+    if (promoWrite.value.toUpperCase() === 'FRONT-END 2022Q3' && target.closest('.btn-secondary'))  {if (promo2 instanceof HTMLElement && promo2.style.display === 'none'){if (promoDiscont instanceof HTMLElement){discont += sum * 0.1;  promoDiscont.innerHTML = String(discont); if (discontTotal instanceof HTMLElement) {discontTotal.innerHTML = String(sum - discont)}} (document.querySelector('.promo2') as HTMLElement).style.display = 'flex';}}
 
+    if (target.closest('.delete-promo1')){
+      {if (promo1 instanceof HTMLElement){promo1.style.display = 'none';}
+      if (promoDiscont instanceof HTMLElement){discont -= sum * 0.1; promoDiscont.innerHTML = String(discont); if (discontTotal instanceof HTMLElement) {discontTotal.innerHTML = String(sum - discont)}}
+    }}
+    if (target.closest('.delete-promo2')){
+      {if (promo2 instanceof HTMLElement){promo2.style.display = 'none';}
+    }if (promoDiscont instanceof HTMLElement){discont -= sum * 0.1; promoDiscont.innerHTML = String(discont); if (discontTotal instanceof HTMLElement) {discontTotal.innerHTML = String(sum - discont)}}
   }
+   if (discont !== 0){
+    (document.querySelector('.promoSum') as HTMLElement).style.textDecoration = 'line-through'} else {(document.querySelector('.promoSum') as HTMLElement).style.textDecoration = 'none'}
+   }
   
+  
+  promoWrite.oninput = function(){
+    (document.querySelector('.btn-secondary') as HTMLElement).style.background = '#6c757d'
+    if (promoWrite.value.toUpperCase() === 'RSSCHOOL' || promoWrite.value.toUpperCase() === 'FRONT-END 2022Q3'){
+      (document.querySelector('.btn-secondary') as HTMLElement).style.background = '#0d6efd'}
+    }
+  
+
+
 }
 }
 
