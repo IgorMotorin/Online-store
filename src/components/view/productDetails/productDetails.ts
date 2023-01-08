@@ -11,7 +11,7 @@ export class ProductDetails {
         const obj = {flag: false}
         if (localStorage.cart) {
             const cart: {id: string, count: number, price: string}[] = JSON.parse(localStorage.cart)
-            const cartIndex = cart.findIndex(item => item.id === String(this.props.id));
+            const cartIndex = cart.findIndex(item => item.id == String(this.props.id));
             if (cartIndex !== -1) {obj.flag = true} 
           }
                 
@@ -76,11 +76,7 @@ export class ProductDetails {
                             BUY NOW
                         </button>                        
                     </div>
-                </div>
-
-            
-            
-                
+                </div>                
         </div>
         
       `;

@@ -8,12 +8,16 @@ export class Filters {
         props: IFiltersProps;
         query: queryOptions;
         nextProps: IFiltersProps;
+        slaiderPriceFlag: boolean;
+        slaiderStockFlag: boolean;
         
 
     constructor(props: IFiltersProps, query: queryOptions) {
         this.props = props;
         this.nextProps = props;
-        this.query = query;  
+        this.query = query;
+        this.slaiderPriceFlag = false;
+        this.slaiderStockFlag = false;
     }
 
 
@@ -22,7 +26,7 @@ export class Filters {
        
 
         <div class="filters">
-            <p class="fs-5 fw-semibold">Found: ${this.props.found} items</p>
+            <p class="fs-5 fw-semibold">Found: ${this.props.found ? this.props.found: "not found" } items</p>
             <div class = "d-flex flex-row gap-1">
                 <button id="filter-reset" type="button" class="btn btn-outline-primary btn-sm flex-fill">Reset filters</button>
                 <button id="filter-copy" type="button" class="btn btn-outline-primary btn-sm flex-fill">Copy link</button>
@@ -57,7 +61,7 @@ export class Filters {
                             ${this.props.category.map(item => {
                                 return `<div class="form-check badge-filter">
                                             <input class="form-check-input filters_input" type="checkbox" value="${item[0]}" name="category" id="${item[0]}" ${this.query?.category?.includes(String(item[0])) ? "checked" : ""}>
-                                            <label class="form-check-label " for="${item[0]}">
+                                            <label class="form-check-label ${this.nextProps?.category?.filter(itm=> itm[0] === item[0]).length == 0 ? "opacity-50" : ""}" for="${item[0]}">
                                                 ${String(item[0]).toUpperCase()}
                                             </label>
                                             <span class="badge text-bg-primary">${item[1]}</span>
@@ -79,7 +83,7 @@ export class Filters {
                                 ${this.props.brand.map(item => {
                                     return `<div class="form-check badge-filter">
                                                 <input class="form-check-input filters_input" type="checkbox" name="brand" value="${item[0]}" id="${item[0]}" ${this.query?.brand?.includes(String(item[0])) ? "checked" : ""}>
-                                                <label class="form-check-label " for="${item[0]}">
+                                                <label class="form-check-label ${this.nextProps?.brand?.filter(itm=> itm[0] === item[0]).length == 0 ? "opacity-50" : ""}" for="${item[0]}">
                                                     ${item[0]}
                                                 </label>
                                                 <span class="badge text-bg-primary">${item[1]}</span>

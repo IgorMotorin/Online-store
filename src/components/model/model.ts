@@ -121,6 +121,11 @@ class Model {
     return this.newIdataProduct
   }
 
+  getDataSortByIdIncrease(){
+    this.newIdataProduct.sort(((a, b) => a.id > b.id ? 1 : -1))
+    return this.newIdataProduct
+  }
+
   getDataByIdForBasket(idNumb:number[]){
     return this.newIdataProduct.filter(item => {for (const i of idNumb) {if (item.id === i) return true}})
   }
