@@ -1,4 +1,5 @@
 import { IDataProduct } from "../../interface/interface";
+import { Header } from '../header';
 // import { Event } from "../../interface/interface";
 // import { Main } from "../main"
 
@@ -13,20 +14,29 @@ let propsArr: IDataProduct[];
 let pageNumber = 1;
 let discont = 0;
 let sum = 0;
+let promo1Display = 'none';
+let promo2Display = 'none';
+
 
 export class Cart {
         props: IDataProduct[];
         propsArr: IDataProduct[];
+        header: Header;
 
         constructor (props: IDataProduct[]){
-            
+            this.header = new Header(sum, discont);
             this.props = props;
             this.propsArr = this.props;
         }
 
     render() {
       listGroupItemsArr = [];
-      for (const item of this.propsArr){listGroupItemsArr.push(`<li class="list-group-item d-flex justify-content-between align-items-start flex-wrap" id="${listGroupItemsArr.length}" style="min-height: 200px">
+      let productItemCount = '1';
+      let productItemPrice = '1';
+      const cart = JSON.parse(localStorage.cart);
+      for (const item of this.propsArr){
+        cart.filter((a: any) => {if (item.id === Number(a.id)) {productItemCount = a.count; productItemPrice = String(a.price * a.count);}});
+        listGroupItemsArr.push(`<li propsId="${item.id}" class="list-group-item d-flex justify-content-between align-items-start flex-wrap" id="${listGroupItemsArr.length}" style="min-height: 200px">
       <div class="col-md-2 m-2" style="display: flex; align-self: center">
       <img src="${item.thumbnail}" class="img-fluid rounded" alt="..." style="max-height: 150px;">            
   </div>
@@ -46,7 +56,7 @@ export class Cart {
               <a class="link-secondary changeItems-deleteItem" aria-label="Убавить количество товара">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0d6efd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle align-text-bottom" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
               </a>
-              <span class="badge bg-primary rounded-pill changeItems-count">1</span>                                
+              <span class="badge bg-primary rounded-pill changeItems-count">${productItemCount}</span>                                
               <a class="link-secondary changeItems-addItem" aria-label="Добавить количество товара">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0d6efd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle align-text-bottom" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
               </a>
@@ -54,7 +64,7 @@ export class Cart {
       </h5>
       <div class="">
           <span>Total:</span> 
-          <strong><span class="changeItems-sum">${item.price}</span> EUR</strong>
+          <strong><span class="changeItems-sum">${productItemPrice}</span> EUR</strong>
       </div>
   </div>                
 </li>
@@ -114,18 +124,18 @@ function finalRender(){
                 <h6 class="my-0">Total</h6>
                 <small class="text-muted">goods for the amount</small>
                 </div>
-                <span class="text-muted promoSum" style="display: flex;
+                <span class="text-muted" style="display: flex;
                 flex-direction: column;
-                justify-content: center">12 EUR</span>
+                justify-content: center"><span class="promoSum">12</span> EUR</span>
             </li>                             
             <li class="list-group-item d-flex justify-content-between bg-light">
                 <div class="text-success">
                 <h6 class="my-0">Promo code:</h6>
-                <div class="promo1" style="display: none">RSSchool - 10%
+                <div class="promo1" style="display: ${promo1Display}">RSSchool - 10%
                 <a class="link-secondary delete-promo1" aria-label="Убавить количество товара">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0d6efd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 69px" class="feather feather-plus-circle align-text-bottom" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
               </a></div>
-                <div class="promo2" style="display: none">Front-end 2022Q3 - 10%
+                <div class="promo2" style="display: ${promo2Display}">Front-end 2022Q3 - 10%
                 <a class="link-secondary delete-promo2" aria-label="Убавить количество товара">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0d6efd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle align-text-bottom" aria-hidden="true" style="margin-left: 5px"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
               </a></div>
@@ -167,22 +177,35 @@ function finalRender(){
 
 updateRander(){
   
-  
   function changeHeader(){
   let volume = 0;
   sum = 0;
   document.querySelectorAll('.changeItems-count').forEach(item => volume += Number(item.innerHTML));
    document.querySelectorAll('.changeItems-sum').forEach(item => sum += Number(item.innerHTML));
-  const promoDiscont = Number((document.querySelector('.promoDiscont') as HTMLElement).innerHTML);
-  if (document.querySelector('.nav-item') !== null){(document.querySelector('.promoSum') as HTMLElement).innerHTML = `${sum} EUR`;
-  (document.querySelector('.promoTotalSum') as HTMLElement).innerHTML = `${sum - promoDiscont > 0 ? sum - promoDiscont : 0}`; (document.querySelector('.promoItems') as HTMLElement).innerHTML = `${volume}`;
-    return (document.querySelector('.nav-item') as HTMLElement).innerHTML = `<button type="button" class="btn btn-primary position-relative header_button">
+
+   const promo1 =  document.querySelector<HTMLElement>('.promo1');
+   const promo2 =  document.querySelector<HTMLElement>('.promo2');
+   const promoDiscont = document.querySelector<HTMLElement>('.promoDiscont');
+   if (promo1 instanceof HTMLElement && promo1.style.display === 'none' && promo2 instanceof HTMLElement && promo2.style.display === 'flex'){
+     (promoDiscont as HTMLElement).innerHTML = String(Math.round(0.1 * sum))
+ } else if (promo2 instanceof HTMLElement && promo2.style.display === 'none' && promo1 instanceof HTMLElement && promo1.style.display === 'flex'){
+   (promoDiscont as HTMLElement).innerHTML = String(Math.round(0.1 *sum))
+} else if (promo1 instanceof HTMLElement && promo1.style.display === 'flex' && promo2 instanceof HTMLElement && promo2.style.display === 'flex'){
+ (promoDiscont as HTMLElement).innerHTML = String(Math.round(0.2 * sum))
+} else {(promoDiscont as HTMLElement).innerHTML = '0'}
+discont = Number((promoDiscont as HTMLElement).innerHTML);
+
+  const promoDiscontHead = Number((document.querySelector('.promoDiscont') as HTMLElement).innerHTML);
+  if (document.querySelector('.nav-item') !== null){(document.querySelector('.promoSum') as HTMLElement).innerHTML = `${sum}`;
+  (document.querySelector('.promoTotalSum') as HTMLElement).innerHTML = `${sum - promoDiscontHead > 0 ? sum - promoDiscontHead : 0}`; (document.querySelector('.promoItems') as HTMLElement).innerHTML = `${volume}`;
+  const head = new Header(sum, volume);
+  head.update();  
+  return (document.querySelector('.header_button') as HTMLElement).innerHTML = `
     Cart total: ${sum} EUR
     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
       ${volume}
       <span class="visually-hidden">Корзина заказов</span>
-    </span>
-    </button>`;}
+    </span>`;}
 
   }
   
@@ -191,7 +214,7 @@ updateRander(){
     const itemsOnPage = document.querySelectorAll('.align-items-start').length;
     const listGroupContainer = document.querySelector('.list-group-container');
     if (itemsCount * pageNumber < itemsOnPage){(listGroupContainer as HTMLElement).style.height = `${itemsCount * 200}px`} else {
-      console.log(pageNumber, listGroupPages, itemsOnPage, itemsCount, (itemsOnPage % itemsCount) * 200); (listGroupContainer as HTMLElement).style.height = `${pageNumber > 0 && itemsOnPage % itemsCount === 0 ? itemsCount * 200 : (itemsOnPage % itemsCount) * 200}px`;} 
+      (listGroupContainer as HTMLElement).style.height = `${pageNumber > 0 && itemsOnPage % itemsCount === 0 ? itemsCount * 200 : (itemsOnPage % itemsCount) * 200}px`;} 
     if (listGroupPages < pageNumber) {pageNumber--;itemsMove -= Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200; (document.querySelector('.list-group-numbered') as HTMLElement).style.top = `-${itemsMove}px`; }
     if (!itemsOnPage) {(listGroupContainer as HTMLElement).style.height = "300px"; (listGroupContainer as HTMLElement).innerHTML = 
   `<h1 style="align-self: center; text-align: center"> Вы пока не добавили товары в корзину </h1>`}
@@ -203,20 +226,38 @@ updateRander(){
   const changeI = event.target.closest('.align-items-start');
   const count = changeI.querySelector('.changeItems-count');
   const itemSum = changeI.querySelector('.changeItems-sum');
+  const itemId = String(changeI.getAttribute("propsId"));
+  const cart = JSON.parse(localStorage.cart);
+  
+  
   
     if (target.closest('.changeItems-addItem')){
-      if (count.innerHTML < Number(changeI.querySelector('.ItemStock').innerHTML)) {count.innerHTML = `${Number(count.innerHTML) + 1}`; itemSum.innerHTML = `${Number(itemSum.innerHTML) / (Number(count.innerHTML) - 1) * Number(count.innerHTML)}`}
+      if (count.innerHTML < Number(changeI.querySelector('.ItemStock').innerHTML)) {count.innerHTML = `${Number(count.innerHTML) + 1}`; itemSum.innerHTML = `${Number(itemSum.innerHTML) / (Number(count.innerHTML) - 1) * Number(count.innerHTML)}`;
+      cart.filter((item: any) => {if (item.id === itemId) {item.count += 1; }})
+      localStorage.cart = JSON.stringify(cart);
+      }
     }
     if (target.closest('.changeItems-deleteItem')){
-      if (count.innerHTML > 1) {count.innerHTML = `${Number(count.innerHTML) - 1}`; itemSum.innerHTML = `${Number(itemSum.innerHTML) / (Number(count.innerHTML) + 1) * Number(count.innerHTML)}`}
-    else if (Number(count.innerHTML) === 1) {console.log(pageNumber, listGroupPages, itemsOnPage, itemsCount); this.propsArr.splice(Number(changeI.id), 1);
+      if (count.innerHTML > 1) {count.innerHTML = `${Number(count.innerHTML) - 1}`; itemSum.innerHTML = `${Number(itemSum.innerHTML) / (Number(count.innerHTML) + 1) * Number(count.innerHTML)}`;
+      cart.filter((item: any) => {if (item.id === itemId) { item.count -= 1; }})
+      localStorage.cart = JSON.stringify(cart);
+      }
+    else if (Number(count.innerHTML) === 1) {let indexCart = 0; cart.filter((item: any) => {if (item.id === itemId) {indexCart = cart.indexOf(item)}})
+    cart.splice(indexCart, 1);
+    localStorage.cart = JSON.stringify(cart);
+      this.propsArr.splice(Number(changeI.id), 1);
       (document.querySelector('.main') as HTMLElement).innerHTML = renderThis.render(); renderThis.updateRander();
       
     }}
+
+        
     
-    
-    changeHeader()
+    changeHeader();
+
+        
   }
+  
+
 
   document.querySelectorAll('.align-items-start').forEach(element => { element.addEventListener('click', changeItem);
     });
@@ -248,16 +289,16 @@ updateRander(){
 
     if (itemsCount < itemsOnPage){(listGroupContainer as HTMLElement).style.height = `${itemsCount * 200}px`} else {(listGroupContainer as HTMLElement).style.height = `${itemsOnPage * 200}px`;}
     }
-    console.log(pageNumber, listGroupPages, itemsOnPage, itemsCount);
+    
         
     if (linkNext){
       if (itemsMove / 200 < itemsOnPage - Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML)){itemsMove += Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200; (listGroupNumbered as HTMLElement).style.top = `-${itemsMove}px`;}
       if (pageNumber < listGroupPages) pageNumber++;
-      if (listGroupPages <= pageNumber) {console.log(pageNumber, listGroupPages, itemsOnPage, itemsCount);
+      if (listGroupPages <= pageNumber) {
         if (itemsOnPage % itemsCount !== 0) { (listGroupContainer as HTMLElement).style.height = `${itemsOnPage % itemsCount * 200}px`}}
     }
     if (linkPrev){
-      console.log(pageNumber, listGroupPages);
+      
       if (itemsMove / 200 >= Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML)){itemsMove -= Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200; (listGroupNumbered as HTMLElement).style.top = `-${itemsMove}px`; }
       if (pageNumber > 1) pageNumber--;
       if (itemsCount < itemsOnPage){(listGroupContainer as HTMLElement).style.height = `${itemsCount * 200}px`} else {(listGroupContainer as HTMLElement).style.height = `${itemsOnPage * 200}px`;}
@@ -269,7 +310,7 @@ updateRander(){
       (listGroupNumbered as HTMLElement).style.top = `-${itemsMove}px`;
       pageNumber = Number(linkNumber.innerHTML);
       if (itemsCount < itemsOnPage){(listGroupContainer as HTMLElement).style.height = `${itemsCount * 200}px`} else {(listGroupContainer as HTMLElement).style.height = `${itemsOnPage * 200}px`;}
-      if (listGroupPages === pageNumber) {console.log(pageNumber, listGroupPages, itemsOnPage, itemsCount);
+      if (listGroupPages === pageNumber) {
         if (itemsOnPage % itemsCount !== 0) { (listGroupContainer as HTMLElement).style.height = `${itemsOnPage % itemsCount * 200}px`}}
         
     }
@@ -283,22 +324,24 @@ updateRander(){
   const promoWrite = <HTMLInputElement>(document.getElementById('promo code'));
     const discontTotal = document.querySelector<HTMLElement>('.promoTotalSum');
     const promoDiscont = document.querySelector<HTMLElement>('.promoDiscont');
-    
     const promo1 =  document.querySelector<HTMLElement>('.promo1');
     const promo2 =  document.querySelector<HTMLElement>('.promo2');
   function discontFunc(event: any){
     
     const target = event.target;
-    if (promoWrite.value.toUpperCase() === 'RSSCHOOL' && target.closest('.btn-secondary')) {if (promo1 instanceof HTMLElement && promo1.style.display === 'none'){if (promoDiscont instanceof HTMLElement){discont += sum * 0.1; promoDiscont.innerHTML = String(discont); if (discontTotal instanceof HTMLElement) {discontTotal.innerHTML = String(sum - discont)}} (document.querySelector('.promo1') as HTMLElement).style.display = 'flex';}}
-    if (promoWrite.value.toUpperCase() === 'FRONT-END 2022Q3' && target.closest('.btn-secondary'))  {if (promo2 instanceof HTMLElement && promo2.style.display === 'none'){if (promoDiscont instanceof HTMLElement){discont += sum * 0.1;  promoDiscont.innerHTML = String(discont); if (discontTotal instanceof HTMLElement) {discontTotal.innerHTML = String(sum - discont)}} (document.querySelector('.promo2') as HTMLElement).style.display = 'flex';}}
+    if (promoWrite.value.toUpperCase() === 'RSSCHOOL' && target.closest('.btn-secondary')) {if (promo1 instanceof HTMLElement && promo1.style.display === 'none'){if (promoDiscont instanceof HTMLElement){discont += Math.round(sum * 0.1); promoDiscont.innerHTML = String(discont); if (discontTotal instanceof HTMLElement) {discontTotal.innerHTML = String(sum - discont)}} (document.querySelector('.promo1') as HTMLElement).style.display = 'flex'; promo1Display = 'flex';}}
+    if (promoWrite.value.toUpperCase() === 'FRONT-END 2022Q3' && target.closest('.btn-secondary'))  {if (promo2 instanceof HTMLElement && promo2.style.display === 'none'){if (promoDiscont instanceof HTMLElement){discont += Math.round(sum * 0.1);  promoDiscont.innerHTML = String(discont); if (discontTotal instanceof HTMLElement) {discontTotal.innerHTML = String(sum - discont)}} (document.querySelector('.promo2') as HTMLElement).style.display = 'flex'; promo2Display = 'flex';}}
 
     if (target.closest('.delete-promo1')){
-      {if (promo1 instanceof HTMLElement){promo1.style.display = 'none';}
-      if (promoDiscont instanceof HTMLElement){discont -= sum * 0.1; promoDiscont.innerHTML = String(discont); if (discontTotal instanceof HTMLElement) {discontTotal.innerHTML = String(sum - discont)}}
+      {if (promo1 instanceof HTMLElement){promo1.style.display = 'none'; promo1Display = 'none';}
+      if (promoDiscont instanceof HTMLElement){discont -= Math.round(sum * 0.1); promoDiscont.innerHTML = String(discont); if (discontTotal instanceof HTMLElement) {discontTotal.innerHTML = String(sum - discont)}}
     }}
     if (target.closest('.delete-promo2')){
-      {if (promo2 instanceof HTMLElement){promo2.style.display = 'none';}
-    }if (promoDiscont instanceof HTMLElement){discont -= sum * 0.1; promoDiscont.innerHTML = String(discont); if (discontTotal instanceof HTMLElement) {discontTotal.innerHTML = String(sum - discont)}}
+      {if (promo2 instanceof HTMLElement){promo2.style.display = 'none'; promo2Display = 'none';}
+    }if (promoDiscont instanceof HTMLElement){discont -= Math.round(sum * 0.1); promoDiscont.innerHTML = String(discont); if (discontTotal instanceof HTMLElement) {discontTotal.innerHTML = String(sum - discont)}}
+  }
+  if (promo1 instanceof HTMLElement && promo1.style.display === 'none' && promo2 instanceof HTMLElement && promo2.style.display === 'none'){
+    discont = 0; if (discontTotal instanceof HTMLElement) {discontTotal.innerHTML = String(0);}
   }
    if (discont !== 0){
     (document.querySelector('.promoSum') as HTMLElement).style.textDecoration = 'line-through'} else {(document.querySelector('.promoSum') as HTMLElement).style.textDecoration = 'none'}
