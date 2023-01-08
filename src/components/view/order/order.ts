@@ -109,7 +109,7 @@ render() {
 
                         <div class="col-12">
                           <label for="address" class="form-label">Address</label>
-                          <input type="text" pattern="[A-Za-z]{5,}[ ][A-Za-z]{5,}[ ][A-Za-z]{5,}" class="form-control" id="address" placeholder="Baker street London" required>
+                          <input type="text" pattern="[A-Za-z0-9]{5,}[ ][A-Za-z0-9]{5,}[ ][A-Za-z0-9]{5,}" class="form-control" id="address" placeholder="Baker street London" required>
                           <div class="invalid-feedback">
                             Please enter your shipping address.
                           </div>
