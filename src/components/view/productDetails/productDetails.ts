@@ -8,10 +8,13 @@ export class ProductDetails {
         }
 
     render() {
-        // console.log("999", this.props)
-        // <img src="${this.props.thumbnail}" style="max-height: 300px" class="img-fluid rounded" alt="...">
-        const temp1 =  `<img src=${this.props.thumbnail} class="card-img-top h-25" alt="...">`;
-        const temp2 =  `<div class="card-img-top" style="background: url(${this.props.thumbnail});height: 200px;background-size: contain;background-repeat: no-repeat;background-position: center;"></div>`;
+        const obj = {flag: false}
+        if (localStorage.cart) {
+            const cart: {id: string, count: number, price: string}[] = JSON.parse(localStorage.cart)
+            const cartIndex = cart.findIndex(item => item.id === String(this.props.id));
+            if (cartIndex !== -1) {obj.flag = true} 
+          }
+                
         return `
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -30,18 +33,14 @@ export class ProductDetails {
                     <div class="col-md-6 d-flex justify-content-center align-items-center">
                        
                         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="false">
-                            <div class="carousel-indicators" >
-                                <button type="button" data-bs-target="#carouselExampleIndicators" style ="background-color: #0d6efd" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <div class="carousel-indicators" >                                
                                 ${this.props.images
-                                    .map((item, idx)=>{return `<button type="button" data-bs-target="#carouselExampleIndicators" style ="background-color: #0d6efd" data-bs-slide-to="${idx + 1}" aria-label="Slide ${idx + 2}"></button>`
+                                    .map((item, idx)=>{return `<button type="button" data-bs-target="#carouselExampleIndicators" style ="background-color: #0d6efd" ${idx==0 ? "class='active' aria-current='true'":""} data-bs-slide-to="${idx}" aria-label="Slide ${idx + 1}"></button>`
                                                 }).join("")}
                             </div>
-                            <div class="carousel-inner" style="height: 500px; max-width: 500px">
-                                <div class="carousel-item active">
-                                    <img src="${this.props.thumbnail}"  class="img-fluid rounded productDetails_img" alt="...">
-                                </div>
+                            <div class="carousel-inner" style="height: 500px; max-width: 500px">                                
                                 ${this.props.images
-                                    .map(item=>{return `<div class="carousel-item">
+                                    .map((item, idx)=>{return `<div class="carousel-item ${idx==0 ? "active": ""}">
                                                             <img src="${item}" class=" img-fluid rounded productDetails_img" alt="...">
                                                         </div>`
                                                 }).join("")}
@@ -72,8 +71,8 @@ export class ProductDetails {
                         <li class="list-group-item"><p>Category: ${this.props.category}</p></li>
                     </ul>
                     <div class="card-body">
-                        <a href="#" class="btn btn-primary">Add to cart</a>
-                        <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <button cart="${obj.flag}" id="${this.props.id}" price="${this.props.price}" class="btn btn-primary card_buttonAdd ${obj.flag ? "btn-secondary":""}">${obj.flag ? "From cart":"Add to cart"}</button>
+                        <button id="${this.props.id}" price="${this.props.price}" type="button" class="btn btn-primary m-2 details_buttonBuy card_buttonAdd" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             BUY NOW
                         </button>                        
                     </div>

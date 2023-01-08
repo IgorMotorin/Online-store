@@ -183,6 +183,8 @@ export class Controller extends Model {
               this.view.main.dataProducts = this.dataProducts;
               console.log(this.dataProducts)
               this.view.main.update();
+              this.addEventCardAddButton();
+              this.addEventDetailsBayButton();
             }
             
         } else {         
@@ -256,58 +258,101 @@ export class Controller extends Model {
             this.updateView(this.router.url, this.router.query);})
         );
 
-        (document
-          .querySelectorAll('.card_buttonAdd') as NodeListOf<Element>)
-          .forEach(item => item.addEventListener('click', (e) => {
-              const targetElement = e.target as HTMLInputElement;
+        this.addEventCardAddButton();
+        
 
-              if (localStorage.cart) {
-                const cart: {id: string, count: number, price: string}[] = JSON.parse(localStorage.cart)
-                console.log(cart)
-                const cartIndex = cart.findIndex(item => item.id === targetElement.id);
-                if (cartIndex !== -1) {
-                  cart.splice(cartIndex, 1);
-                  targetElement.setAttribute("cart", "false")
-                    
-                } else {
-                  const obj = {
-                    id: targetElement.id,
-                    count: 1,
-                    price: targetElement.getAttribute("price") as string,
-                  }
-                  cart.push(obj);
-                  targetElement.setAttribute("cart", "true")
+    }
+
+    addEventDetailsBayButton(){    
+    
+      
+      (document
+        .querySelectorAll('.details_buttonBuy') as NodeListOf<Element>)
+        .forEach(item => item.addEventListener('click', (e) => {
+            const targetElement = e.target as HTMLInputElement;  
+            
+            if (localStorage.cart) {
+              const cart: {id: string, count: number, price: string}[] = JSON.parse(localStorage.cart)              
+              const cartIndex = cart.findIndex(item => item.id === targetElement.id);
+              if (cartIndex == -1)  {
+                const obj = {
+                  id: targetElement.id,
+                  count: 1,
+                  price: targetElement.getAttribute("price") as string,
                 }
-                localStorage.cart = JSON.stringify(cart);
-                console.log("345", cart)
+                cart.push(obj);                
+              }
+              localStorage.cart = JSON.stringify(cart);              
+            } else {
+              const cart = [];
+              const obj = {
+                id: targetElement.id,
+                count: 1,
+                price: targetElement.getAttribute("price") as string,
+              }
+              cart.push(obj);
+              localStorage.cart = JSON.stringify(cart); 
+            }
+
+            history.pushState(null, 'buyNow', location.origin + '/cart');
+            this.router.readURL();
+            this.updateView(this.router.url, this.router.query);})
+        );
+    }
+
+    addEventCardAddButton(){
+
+      (document
+        .querySelectorAll('.card_buttonAdd') as NodeListOf<Element>)
+        .forEach(item => item.addEventListener('click', (e) => {
+            const targetElement = e.target as HTMLInputElement;
+
+            if (localStorage.cart) {
+              const cart: {id: string, count: number, price: string}[] = JSON.parse(localStorage.cart)
+              console.log(cart)
+              const cartIndex = cart.findIndex(item => item.id === targetElement.id);
+              if (cartIndex !== -1) {
+                cart.splice(cartIndex, 1);
+                targetElement.setAttribute("cart", "false")
+                  
               } else {
-                const cart = [];
                 const obj = {
                   id: targetElement.id,
                   count: 1,
                   price: targetElement.getAttribute("price") as string,
                 }
                 cart.push(obj);
-                localStorage.cart = JSON.stringify(cart);
                 targetElement.setAttribute("cart", "true")
-
               }
-
-              if (targetElement.getAttribute("cart") === "true") {
-                targetElement.innerHTML = "From cart";
-                targetElement.classList.add("btn-secondary")
-              } else {
-                targetElement.innerHTML = "Add to cart";
-                targetElement.classList.remove("btn-secondary")
+              localStorage.cart = JSON.stringify(cart);
+              console.log("345", cart)
+            } else {
+              const cart = [];
+              const obj = {
+                id: targetElement.id,
+                count: 1,
+                price: targetElement.getAttribute("price") as string,
               }
-              
-              
+              cart.push(obj);
+              localStorage.cart = JSON.stringify(cart);
+              targetElement.setAttribute("cart", "true")
 
-              this.view.header.update();
+            }
 
-            })
-          );
+            if (targetElement.getAttribute("cart") === "true") {
+              targetElement.innerHTML = "From cart";
+              targetElement.classList.add("btn-secondary")
+            } else {
+              targetElement.innerHTML = "Add to cart";
+              targetElement.classList.remove("btn-secondary")
+            }
+            
+            
 
+            this.view.header.update();
+
+          })
+        );
     }
 
     addEventSearch() {
