@@ -18,7 +18,7 @@ import Model from '../../model/model';
 
 
 export class Main {
-   
+
 
     card: Card;
     cardH: CardH;
@@ -38,103 +38,125 @@ export class Main {
 
 
     constructor(dataProducts: IDataProduct[], filterProps: IFiltersProps, query: queryOptions) {
-    this.dataProducts = dataProducts;
-    this.filterProps = filterProps;
-    this.query = query;
-    if (query.view) {this.view = query.view;}    
-    this.card = new Card(this.dataProducts[0]); 
-    this.cardH = new CardH(this.dataProducts[0]);  
-    this.filters = new Filters(this.filterProps, this.query);
-    this.sort = new Sort();
-    this.search = new Search();
+        this.dataProducts = dataProducts;
+        this.filterProps = filterProps;
+        this.query = query;
+        if (query.view) { this.view = query.view; }
+        this.card = new Card(this.dataProducts[0]);
+        this.cardH = new CardH(this.dataProducts[0]);
+        this.filters = new Filters(this.filterProps, this.query);
+        this.sort = new Sort();
+        this.search = new Search();
 
-    this.cart = new Cart(this.mod.getDataByIdForBasket([]));
-    this.productDetails = new ProductDetails(this.dataProducts[0]);
-    this.page404 = new Page404()
-    this.settingsMain = "/products";
+        this.cart = new Cart(this.mod.getDataByIdForBasket([]));
+        this.productDetails = new ProductDetails(this.dataProducts[0]);
+        this.page404 = new Page404()
+        this.settingsMain = "/products";
     }
 
 
 
-render() {
+    render() {
+        let template = ``;
 
-    const cards = `
+        const productsNotFound = `<div class = "text-center"">
+                                        <h3>Products not found</h3>
+                                        </div> `;
+
+        if (this.settingsMain === '/products') {
+            const cards = `
                     <div class = "products">                                         
                         ${this.dataProducts
-                            .map(item=>{
-                            this.card.props = item;
-                            return `${this.card.render()}`
-                            }).join("")}
+                    .map(item => {
+                        this.card.props = item;
+                        return `${this.card.render()}`
+                    }).join("")}
                     </div>
                     `;
 
-    const cardsH = `
+            const cardsH = `
                     <div class = "products">                                         
                         ${this.dataProducts
-                            .map(item=>{
-                            this.cardH.props = item;
-                            return `${this.cardH.render()}`
-                            }).join("")}
+                    .map(item => {
+                        this.cardH.props = item;
+                        return `${this.cardH.render()}`
+                    }).join("")}
                     </div>
                     `;
 
+            
 
-    const productsView = `${this.search.render()}
+            
+
+            const productsView = `${this.search.render()}
                             <div class = "d-flex flex-row mb-3 container">
                                 ${this.filters.render()}
                                 <div class="container">
                                     ${this.sort.render()}
-                                    ${this.view == "card" ? cards: cardsH}                                
+                                    ${this.dataProducts.length === 0 ? productsNotFound : ""}                                
+                                    ${this.view == "card" ? cards : cardsH}                                    
                                 </div>
                             </div> `;
 
-    const cartView = `${this.cart.render()}`;
+           
 
-    this.productDetails.props = this.dataProducts[0];
-    const productDetails = `${this.productDetails.render()}`;
-
-    const page404 = `${this.page404.render()}`
-
-    let template = ``;
-   
-    if (this.settingsMain === '/products') {template = productsView}
-    if (this.settingsMain === '/cart') {template = cartView}
-    if (this.settingsMain === '/productDetails') {template = productDetails}
-    if (this.settingsMain === '/page404') {template = page404}
-            return `<main class = "container main">
+                       
+            template = productsView;
+        }
+        if (this.settingsMain === '/cart') {
+            const cartView = `${this.cart.render()}`;
+            template = cartView
+        }
+        if (this.settingsMain === '/productDetails') {
+            this.productDetails.props = this.dataProducts[0];
+            const productDetails = `${this.productDetails.render()}`;
+            template = productDetails;
+        }
+        if (this.settingsMain === '/page404') {
+            const page404 = `${this.page404.render()}`;
+            template = page404;
+        }
+        return `<main class = "container main">
                 ${template}                                      
                 </main>`;
-}
+    }
 
 
 
-update () {
-    (document.querySelector(".main") as HTMLElement).outerHTML = this.render();
-    if (this.settingsMain === '/cart') {this.cart.updateRander()}
-}
+    update() {
+        (document.querySelector(".main") as HTMLElement).outerHTML = this.render();
+        if (this.settingsMain === '/cart') { this.cart.updateRander() }
+    }
 
-updateProducts (view = "card") {
-    const cards = `
-                    <div class = "products">                                         
+    updateProducts(view = "card") {
+
+        const productsNotFound =    `<div class = "text-center"">
+                                    <h3>Products not found</h3>
+                                    </div> `;
+
+        const cards = ` 
+                    <div class = "products">
+                    ${this.dataProducts.length === 0 ? productsNotFound : ""}                                         
                         ${this.dataProducts
-                            .map(item=>{
-                            this.card.props = item;
-                            return `${this.card.render()}`
-                            }).join("")}
+                .map(item => {
+                    this.card.props = item;
+                    return `${this.card.render()}`
+                }).join("")}
                     </div>
                     `;
 
-    const cardsH = `
-                    <div class = "products">                                         
+        const cardsH = `
+                    <div class = "products">
+                    ${this.dataProducts.length === 0 ? productsNotFound : ""}                                     
                         ${this.dataProducts
-                            .map(item=>{
-                            this.cardH.props = item;
-                            return `${this.cardH.render()}`
-                            }).join("")}
+                .map(item => {
+                    this.cardH.props = item;
+                    return `${this.cardH.render()}`
+                }).join("")}
                     </div>
                     `;
-    (document.querySelector(".products") as HTMLElement).outerHTML = view == "card" ? cards: cardsH;
+        (document.querySelector(".products") as HTMLElement).outerHTML = view == "card" ? cards : cardsH;
 
-}
+    }
 
 }
