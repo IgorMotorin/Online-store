@@ -10,7 +10,6 @@ let listGroupPages: number;
 let listGroupPagesRender = '';
 let listGroupItems: string;
 let listGroupItemsArr: string[];
-let propsArr: IDataProduct[];
 let pageNumber = 1;
 let discont = 0;
 let sum = 0;
@@ -36,7 +35,7 @@ export class Cart {
       let cart: {id: string, count: number, price: string}[] = [];
       if (localStorage.cart) {cart = JSON.parse(localStorage.cart);}      
       for (const item of this.propsArr){
-        cart.filter((a: any) => {if (item.id === Number(a.id)) {productItemCount = a.count; productItemPrice = String(a.price * a.count);}});
+        cart.filter((a: {id: string, count: number, price: string}) => {if (item.id === Number(a.id)) {productItemCount = String(a.count); productItemPrice = String(Number(a.price) * a.count);}});
         listGroupItemsArr.push(`<li propsId="${item.id}" class="list-group-item d-flex justify-content-between align-items-start flex-wrap" id="${listGroupItemsArr.length}" style="min-height: 200px">
       <div class="col-md-2 m-2" style="display: flex; align-self: center">
       <img src="${item.thumbnail}" class="img-fluid rounded" alt="..." style="max-height: 150px;">            
@@ -184,20 +183,20 @@ updateRander(){
   document.querySelectorAll('.changeItems-count').forEach(item => volume += Number(item.innerHTML));
    document.querySelectorAll('.changeItems-sum').forEach(item => sum += Number(item.innerHTML));
 
-   const promo1 =  document.querySelector<HTMLElement>('.promo1');
-   const promo2 =  document.querySelector<HTMLElement>('.promo2');
-   const promoDiscont = document.querySelector<HTMLElement>('.promoDiscont');
-   if (promo1 instanceof HTMLElement && promo1.style.display === 'none' && promo2 instanceof HTMLElement && promo2.style.display === 'flex'){
-     (promoDiscont as HTMLElement).innerHTML = String(Math.round(0.1 * sum))
- } else if (promo2 instanceof HTMLElement && promo2.style.display === 'none' && promo1 instanceof HTMLElement && promo1.style.display === 'flex'){
-   (promoDiscont as HTMLElement).innerHTML = String(Math.round(0.1 *sum))
-} else if (promo1 instanceof HTMLElement && promo1.style.display === 'flex' && promo2 instanceof HTMLElement && promo2.style.display === 'flex'){
- (promoDiscont as HTMLElement).innerHTML = String(Math.round(0.2 * sum))
-} else {(promoDiscont as HTMLElement).innerHTML = '0'}
-discont = Number((promoDiscont as HTMLElement).innerHTML);
+   const promo1 =  <HTMLElement>document.querySelector('.promo1');
+   const promo2 =  <HTMLElement>document.querySelector('.promo2');
+   const promoDiscont = <HTMLElement>document.querySelector('.promoDiscont');
+   if (promo1.style.display === 'none' && promo2.style.display === 'flex'){
+     promoDiscont.innerHTML = String(Math.round(0.1 * sum))
+ } else if (promo2.style.display === 'none' && promo1.style.display === 'flex'){
+   promoDiscont.innerHTML = String(Math.round(0.1 *sum))
+} else if (promo1.style.display === 'flex' && promo2.style.display === 'flex'){
+ promoDiscont.innerHTML = String(Math.round(0.2 * sum))
+} else {promoDiscont.innerHTML = '0'}
+discont = Number(promoDiscont.innerHTML);
 
-  const promoDiscontHead = Number((document.querySelector('.promoDiscont') as HTMLElement).innerHTML);
-  if (document.querySelector('.nav-item') !== null){(document.querySelector('.promoSum') as HTMLElement).innerHTML = `${sum}`;
+  const promoDiscontHead = Number(promoDiscont.innerHTML);
+  if (document.querySelector('.nav-item')){(document.querySelector('.promoSum') as HTMLElement).innerHTML = `${sum}`;
   (document.querySelector('.promoTotalSum') as HTMLElement).innerHTML = `${sum - promoDiscontHead > 0 ? sum - promoDiscontHead : 0}`; (document.querySelector('.promoItems') as HTMLElement).innerHTML = `${volume}`;
   const head = new Header(sum, volume);
   head.update();  
@@ -213,71 +212,70 @@ discont = Number((promoDiscont as HTMLElement).innerHTML);
 
     // после удаления продукта корректировка высоты блока контейнера после updateRander
     const itemsOnPage = document.querySelectorAll('.align-items-start').length;
-    const listGroupContainer = document.querySelector('.list-group-container');
-    if (itemsCount * pageNumber < itemsOnPage){(listGroupContainer as HTMLElement).style.height = `${itemsCount * 200}px`} else {
-      (listGroupContainer as HTMLElement).style.height = `${pageNumber > 0 && itemsOnPage % itemsCount === 0 ? itemsCount * 200 : (itemsOnPage % itemsCount) * 200}px`;} 
-    if (listGroupPages < pageNumber) {pageNumber--;itemsMove -= Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200; (document.querySelector('.list-group-numbered') as HTMLElement).style.top = `-${itemsMove}px`; }
-    if (!itemsOnPage) {(listGroupContainer as HTMLElement).style.height = "300px"; (listGroupContainer as HTMLElement).innerHTML = 
+    const listGroupContainer = <HTMLElement>document.querySelector('.list-group-container');
+    if (itemsCount * pageNumber < itemsOnPage){listGroupContainer.style.height = `${itemsCount * 200}px`} else {
+      listGroupContainer.style.height = `${pageNumber > 0 && itemsOnPage % itemsCount === 0 ? itemsCount * 200 : (itemsOnPage % itemsCount) * 200}px`;} 
+    if (listGroupPages < pageNumber) {pageNumber--; history.pushState(null, `page=${pageNumber}`, location.origin + `/cart?page=${pageNumber}`); itemsMove -= Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200; (document.querySelector('.list-group-numbered') as HTMLElement).style.top = `-${itemsMove}px`; }
+    if (!itemsOnPage) {listGroupContainer.style.height = "300px"; (listGroupContainer as HTMLElement).innerHTML = 
   `<h1 style="align-self: center; text-align: center"> Вы пока не добавили товары в корзину </h1>`}
 // .......................
-  const renderThis = this;
+  
 
-  const changeItem = (event: any) => {
-  const target = event.target;  
-  const changeI = event.target.closest('.align-items-start');
-  const count = changeI.querySelector('.changeItems-count');
-  const itemSum = changeI.querySelector('.changeItems-sum');
-  const itemId = String(changeI.getAttribute("propsId"));
-  let cart: {id: string, count: number, price: string}[] = [];
-  if (localStorage.cart) {cart = JSON.parse(localStorage.cart);} 
   
   
-  
-    if (target.closest('.changeItems-addItem')){
-      if (count.innerHTML < Number(changeI.querySelector('.ItemStock').innerHTML)) {count.innerHTML = `${Number(count.innerHTML) + 1}`; itemSum.innerHTML = `${Number(itemSum.innerHTML) / (Number(count.innerHTML) - 1) * Number(count.innerHTML)}`;
-      cart.filter((item: any) => {if (item.id === itemId) {item.count += 1; }})
-      localStorage.cart = JSON.stringify(cart);
-      }
-    }
-    if (target.closest('.changeItems-deleteItem')){
-      if (count.innerHTML > 1) {count.innerHTML = `${Number(count.innerHTML) - 1}`; itemSum.innerHTML = `${Number(itemSum.innerHTML) / (Number(count.innerHTML) + 1) * Number(count.innerHTML)}`;
-      cart.filter((item: any) => {if (item.id === itemId) { item.count -= 1; }})
-      localStorage.cart = JSON.stringify(cart);
-      }
-    else if (Number(count.innerHTML) === 1) {let indexCart = 0; cart.filter((item: any) => {if (item.id === itemId) {indexCart = cart.indexOf(item)}})
-    cart.splice(indexCart, 1);
-    localStorage.cart = JSON.stringify(cart);
-      this.propsArr.splice(Number(changeI.id), 1);
-      (document.querySelector('.main') as HTMLElement).innerHTML = renderThis.render(); renderThis.updateRander();
-      
-    }}
 
-        
+
+  document.querySelectorAll('.align-items-start').forEach(element => { element.addEventListener('click', (event) => {
+    const target = <HTMLElement>event.target;  
+    const changeI = <HTMLElement>target.closest('.align-items-start');
+    const count = <HTMLElement>changeI.querySelector('.changeItems-count');
+    const itemSum = <HTMLElement>changeI.querySelector('.changeItems-sum');
+    const itemId = String(changeI.getAttribute("propsId"));
+    let cart: {id: string, count: number, price: string}[] = [];
+    if (localStorage.cart) {cart = JSON.parse(localStorage.cart);} 
     
-    changeHeader();
-
+    
+    
+      if (target.closest('.changeItems-addItem')){
+        if (Number(count.innerHTML) < Number((changeI.querySelector('.ItemStock') as HTMLElement).innerHTML)) {count.innerHTML = `${Number(count.innerHTML) + 1}`; itemSum.innerHTML = `${Number(itemSum.innerHTML) / (Number(count.innerHTML) - 1) * Number(count.innerHTML)}`;
+        cart.filter((item) => {if (item.id === itemId) {item.count += 1; }})
+        localStorage.cart = JSON.stringify(cart);
+        }
+      }
+      if (target.closest('.changeItems-deleteItem')){
+        if (Number(count.innerHTML) > 1) {count.innerHTML = `${Number(count.innerHTML) - 1}`; itemSum.innerHTML = `${Number(itemSum.innerHTML) / (Number(count.innerHTML) + 1) * Number(count.innerHTML)}`;
+        cart.filter((item) => {if (item.id === itemId) { item.count -= 1; }})
+        localStorage.cart = JSON.stringify(cart);
+        }
+      else if (Number(count.innerHTML) === 1) {let indexCart = 0; cart.filter((item) => {if (item.id === itemId) {indexCart = cart.indexOf(item)}})
+      cart.splice(indexCart, 1);
+      localStorage.cart = JSON.stringify(cart);
+        this.propsArr.splice(Number(changeI.id), 1);
+        (document.querySelector('.main') as HTMLElement).innerHTML = this.render(); this.updateRander();
         
-  }
+      }}
   
-
-
-  document.querySelectorAll('.align-items-start').forEach(element => { element.addEventListener('click', changeItem);
+          
+      
+      changeHeader();
+  
+          
+    });
     });
 
   changeHeader();
   
-  (document.querySelector('.switchPages') as HTMLElement).addEventListener('click', switchPages)
-
-  function switchPages(event: any){
-    const target = event.target;
-    if (target.closest('.dropdown-item')){ itemsCount = Number(target.closest('.dropdown-item').innerHTML);}
+  (document.querySelector('.switchPages') as HTMLElement).addEventListener('click', (event) => {
+    const target = <HTMLElement>event.target;
+    if (target) {
+    if (target.closest('.dropdown-item')){ itemsCount = Number((target.closest('.dropdown-item') as HTMLElement).innerHTML);}
     else { itemsCount = Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML);}
     const itemsOnPage = document.querySelectorAll('.align-items-start').length;
-    const linkNext = target.closest('.page-link-next');
-    const linkPrev = target.closest('.page-link-previous');
-    const linkNumber = target.closest('.page-link-number');
-    const listGroupContainer = document.querySelector('.list-group-container');
-    const listGroupNumbered = document.querySelector('.list-group-numbered');
+    const linkNext = <HTMLElement>target.closest('.page-link-next');
+    const linkPrev = <HTMLElement>target.closest('.page-link-previous');
+    const linkNumber = <HTMLElement>target.closest('.page-link-number');
+    const listGroupContainer = <HTMLElement>document.querySelector('.list-group-container');
+    const listGroupNumbered = <HTMLElement>document.querySelector('.list-group-numbered');
     if (target.closest('.dropdown-item')){
       (document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML = String(itemsCount);
       listGroupPages = Math.ceil(itemsOnPage / itemsCount);
@@ -287,75 +285,86 @@ discont = Number((promoDiscont as HTMLElement).innerHTML);
       ${listGroupPagesRender}
       <li class="page-item"><a class="page-link page-link-next" >Next</a></li>`;
       itemsMove = 0;
-      (listGroupNumbered as HTMLElement).style.top = `0px`;
+      listGroupNumbered.style.top = `0px`;
 
-    if (itemsCount < itemsOnPage){(listGroupContainer as HTMLElement).style.height = `${itemsCount * 200}px`} else {(listGroupContainer as HTMLElement).style.height = `${itemsOnPage * 200}px`;}
+    if (itemsCount < itemsOnPage){listGroupContainer.style.height = `${itemsCount * 200}px`} else {listGroupContainer.style.height = `${itemsOnPage * 200}px`;}
     }
     
         
     if (linkNext){
-      if (itemsMove / 200 < itemsOnPage - Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML)){itemsMove += Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200; (listGroupNumbered as HTMLElement).style.top = `-${itemsMove}px`;}
-      if (pageNumber < listGroupPages) pageNumber++;
+      
+      if (itemsMove / 200 < itemsOnPage - Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML)){itemsMove += Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200; listGroupNumbered.style.top = `-${itemsMove}px`;}
+      if (pageNumber < listGroupPages) {
+        history.pushState(null, `page=${pageNumber + 1}`, location.origin + `/cart?page=${pageNumber + 1}`);
+        pageNumber++;
+      }
       if (listGroupPages <= pageNumber) {
-        if (itemsOnPage % itemsCount !== 0) { (listGroupContainer as HTMLElement).style.height = `${itemsOnPage % itemsCount * 200}px`}}
+        if (itemsOnPage % itemsCount !== 0) { listGroupContainer.style.height = `${itemsOnPage % itemsCount * 200}px`}}
     }
     if (linkPrev){
       
-      if (itemsMove / 200 >= Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML)){itemsMove -= Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200; (listGroupNumbered as HTMLElement).style.top = `-${itemsMove}px`; }
-      if (pageNumber > 1) pageNumber--;
-      if (itemsCount < itemsOnPage){(listGroupContainer as HTMLElement).style.height = `${itemsCount * 200}px`} else {(listGroupContainer as HTMLElement).style.height = `${itemsOnPage * 200}px`;}
-      if (!itemsOnPage) {(listGroupContainer as HTMLElement).style.height = "300px"; (listGroupContainer as HTMLElement).innerHTML = 
+      if (itemsMove / 200 >= Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML)){itemsMove -= Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200; listGroupNumbered.style.top = `-${itemsMove}px`; }
+      if (pageNumber > 1) {
+        history.pushState(null, `page=${pageNumber - 1}`, location.origin + `/cart?page=${pageNumber - 1}`);
+        pageNumber--;}
+      if (itemsCount < itemsOnPage){listGroupContainer.style.height = `${itemsCount * 200}px`} else {listGroupContainer.style.height = `${itemsOnPage * 200}px`;}
+      if (!itemsOnPage) {listGroupContainer.style.height = "300px"; listGroupContainer.innerHTML = 
   `<h1 style="align-self: center; text-align: center"> Вы пока не добавили товары в корзину </h1>`}
     }
     if (linkNumber){
-      itemsMove = Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200 * (linkNumber.innerHTML - 1);
-      (listGroupNumbered as HTMLElement).style.top = `-${itemsMove}px`;
+      itemsMove = Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200 * (Number(linkNumber.innerHTML) - 1);
+      listGroupNumbered.style.top = `-${itemsMove}px`;
       pageNumber = Number(linkNumber.innerHTML);
-      if (itemsCount < itemsOnPage){(listGroupContainer as HTMLElement).style.height = `${itemsCount * 200}px`} else {(listGroupContainer as HTMLElement).style.height = `${itemsOnPage * 200}px`;}
+      if (itemsCount < itemsOnPage){listGroupContainer.style.height = `${itemsCount * 200}px`} else {listGroupContainer.style.height = `${itemsOnPage * 200}px`;}
       if (listGroupPages === pageNumber) {
-        if (itemsOnPage % itemsCount !== 0) { (listGroupContainer as HTMLElement).style.height = `${itemsOnPage % itemsCount * 200}px`}}
-        
+        if (itemsOnPage % itemsCount !== 0) { listGroupContainer.style.height = `${itemsOnPage % itemsCount * 200}px`}}
+        history.pushState(null, 'page=1', location.origin + `/cart?page=${pageNumber}`);
+    }}
+  });
+
+  const promoWrite = <HTMLInputElement>document.getElementById('promo code');
+  const discontTotal = <HTMLElement>document.querySelector('.promoTotalSum');
+  const promoDiscont = <HTMLElement>document.querySelector('.promoDiscont');
+  const promo1 = <HTMLElement>document.querySelector('.promo1');
+  const promo2 =  <HTMLElement>document.querySelector('.promo2');
+  
+
+
+
+
+  (document.querySelector('.discont-container') as HTMLElement).addEventListener('click', (event) => {
+    
+    
+      const target = <HTMLElement>event.target;
+      
+      if (promoWrite.value.toUpperCase() === 'RSSCHOOL' && target.closest('.btn-secondary')) {if (promo1 instanceof HTMLElement && promo1.style.display === 'none'){if (promoDiscont instanceof HTMLElement){discont += Math.round(sum * 0.1); promoDiscont.innerHTML = String(discont); if (discontTotal instanceof HTMLElement) {discontTotal.innerHTML = String(sum - discont)}} (document.querySelector('.promo1') as HTMLElement).style.display = 'flex'; promo1Display = 'flex';}}
+      if (promoWrite.value.toUpperCase() === 'FRONT-END 2022Q3' && target.closest('.btn-secondary'))  {if (promo2 instanceof HTMLElement && promo2.style.display === 'none'){if (promoDiscont instanceof HTMLElement){discont += Math.round(sum * 0.1);  promoDiscont.innerHTML = String(discont); if (discontTotal instanceof HTMLElement) {discontTotal.innerHTML = String(sum - discont)}} (document.querySelector('.promo2') as HTMLElement).style.display = 'flex'; promo2Display = 'flex';}}
+      
+      if (target.closest('.delete-promo1')){
+        {if (promo1 instanceof HTMLElement){promo1.style.display = 'none'; promo1Display = 'none';}
+        if (promoDiscont instanceof HTMLElement){discont -= Math.round(sum * 0.1); promoDiscont.innerHTML = String(discont); if (discontTotal instanceof HTMLElement) {discontTotal.innerHTML = String(sum - discont)}}
+      }}
+      if (target.closest('.delete-promo2')){
+        {if (promo2 instanceof HTMLElement){promo2.style.display = 'none'; promo2Display = 'none';}
+      }if (promoDiscont instanceof HTMLElement){discont -= Math.round(sum * 0.1); promoDiscont.innerHTML = String(discont); if (discontTotal instanceof HTMLElement) {discontTotal.innerHTML = String(sum - discont)}}
+    } 
+    if (promo1 instanceof HTMLElement && promo1.style.display === 'none' && promo2 instanceof HTMLElement && promo2.style.display === 'none'){
+      discont = 0; if (promoDiscont instanceof HTMLElement) {promoDiscont.innerHTML = String(0);}
     }
     
+     if (discont !== 0){
+      (document.querySelector('.promoSum') as HTMLElement).style.textDecoration = 'line-through'} else {(document.querySelector('.promoSum') as HTMLElement).style.textDecoration = 'none'}
+      
+     }
+  );
 
-  }
-  
-
-  (document.querySelector('.discont-container') as HTMLElement).addEventListener('click', discontFunc);
-
-  const promoWrite = <HTMLInputElement>(document.getElementById('promo code'));
-    const discontTotal = document.querySelector<HTMLElement>('.promoTotalSum');
-    const promoDiscont = document.querySelector<HTMLElement>('.promoDiscont');
-    const promo1 =  document.querySelector<HTMLElement>('.promo1');
-    const promo2 =  document.querySelector<HTMLElement>('.promo2');
-  function discontFunc(event: any){
-    
-    const target = event.target;
-    if (promoWrite.value.toUpperCase() === 'RSSCHOOL' && target.closest('.btn-secondary')) {if (promo1 instanceof HTMLElement && promo1.style.display === 'none'){if (promoDiscont instanceof HTMLElement){discont += Math.round(sum * 0.1); promoDiscont.innerHTML = String(discont); if (discontTotal instanceof HTMLElement) {discontTotal.innerHTML = String(sum - discont)}} (document.querySelector('.promo1') as HTMLElement).style.display = 'flex'; promo1Display = 'flex';}}
-    if (promoWrite.value.toUpperCase() === 'FRONT-END 2022Q3' && target.closest('.btn-secondary'))  {if (promo2 instanceof HTMLElement && promo2.style.display === 'none'){if (promoDiscont instanceof HTMLElement){discont += Math.round(sum * 0.1);  promoDiscont.innerHTML = String(discont); if (discontTotal instanceof HTMLElement) {discontTotal.innerHTML = String(sum - discont)}} (document.querySelector('.promo2') as HTMLElement).style.display = 'flex'; promo2Display = 'flex';}}
-
-    if (target.closest('.delete-promo1')){
-      {if (promo1 instanceof HTMLElement){promo1.style.display = 'none'; promo1Display = 'none';}
-      if (promoDiscont instanceof HTMLElement){discont -= Math.round(sum * 0.1); promoDiscont.innerHTML = String(discont); if (discontTotal instanceof HTMLElement) {discontTotal.innerHTML = String(sum - discont)}}
-    }}
-    if (target.closest('.delete-promo2')){
-      {if (promo2 instanceof HTMLElement){promo2.style.display = 'none'; promo2Display = 'none';}
-    }if (promoDiscont instanceof HTMLElement){discont -= Math.round(sum * 0.1); promoDiscont.innerHTML = String(discont); if (discontTotal instanceof HTMLElement) {discontTotal.innerHTML = String(sum - discont)}}
-  }
-  if (promo1 instanceof HTMLElement && promo1.style.display === 'none' && promo2 instanceof HTMLElement && promo2.style.display === 'none'){
-    discont = 0; if (discontTotal instanceof HTMLElement) {discontTotal.innerHTML = String(0);}
-  }
-   if (discont !== 0){
-    (document.querySelector('.promoSum') as HTMLElement).style.textDecoration = 'line-through'} else {(document.querySelector('.promoSum') as HTMLElement).style.textDecoration = 'none'}
-   }
-  
   
   promoWrite.oninput = function(){
+    
     (document.querySelector('.btn-secondary') as HTMLElement).style.background = '#6c757d'
     if (promoWrite.value.toUpperCase() === 'RSSCHOOL' || promoWrite.value.toUpperCase() === 'FRONT-END 2022Q3'){
       (document.querySelector('.btn-secondary') as HTMLElement).style.background = '#0d6efd'}
     }
-  
 
 
 }

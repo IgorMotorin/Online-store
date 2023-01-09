@@ -17,9 +17,13 @@ export class Order {
         form.classList.add('was-validated')
       }, false)
     });
-    const cardNumber = document.querySelector<HTMLInputElement>('.cardNumber');
-    const dateOff = document.querySelector<HTMLInputElement>('.dateOff');
-    const cvv = document.querySelector<HTMLInputElement>('.cvv');
+    const cardNumber = <HTMLInputElement>document.querySelector('.cardNumber');
+    const dateOff = <HTMLInputElement>document.querySelector('.dateOff');
+    const cvv = <HTMLInputElement>document.querySelector('.cvv');
+    const visa = <HTMLElement>document.querySelector('.visa');
+    const mastercard = <HTMLElement>document.querySelector('.mastercard');
+    const americanExpress = <HTMLElement>document.querySelector('.americanExpress');
+
     if (dateOff){ dateOff.oninput = function(){
       if (dateOff.value.length === 2 && dateOffLength < 2) {
         if (Number(dateOff.value) > 12){
@@ -36,16 +40,16 @@ export class Order {
 
       if (cardNumber){ cardNumber.oninput = function(){
           if (!cardNumber.value){
-          (document.querySelector('.visa') as HTMLElement).style.display = 'none';
-          (document.querySelector('.mastercard') as HTMLElement).style.display = 'none';
-          (document.querySelector('.americanExpress') as HTMLElement).style.display = 'none';
+          visa.style.display = 'none';
+          mastercard.style.display = 'none';
+          americanExpress.style.display = 'none';
          }
          if (Number(cardNumber.value[0]) === 4){
-          (document.querySelector('.visa') as HTMLElement).style.display = 'flex'
+          visa.style.display = 'flex'
          } else if (Number(cardNumber.value[0]) === 5){
-          (document.querySelector('.mastercard') as HTMLElement).style.display = 'flex'
+          mastercard.style.display = 'flex'
          } else if (Number(cardNumber.value[0]) === 3){
-          (document.querySelector('.americanExpress') as HTMLElement).style.display = 'flex'
+          americanExpress.style.display = 'flex'
          }
         //  if (cardNumber.value.length === 4 ||  cardNumber.value.length === 9 ||  cardNumber.value.length === 14){ if (cardNumber.value.length > cardNumberLength) {
         //   cardNumber.value += ' ';} else { const tempCard = cardNumber.value.split(''); tempCard.pop(); cardNumber.value = tempCard.join('');}}
