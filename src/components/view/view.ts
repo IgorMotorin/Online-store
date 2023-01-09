@@ -70,13 +70,16 @@ export class View {
 
     render(): void {
         if (!this.root) {
-            throw new Error('The root element is undefined!');
-        }
-        this.root.innerHTML = `${this.header.render()}                                
+            throw new Error('The root element is undefined!'); }
+
+        const rootUpdate = document.createElement('div');
+        rootUpdate.setAttribute('id', 'root');
+        rootUpdate.innerHTML = `${this.header.render()}                                
                                 ${this.main.render()}                                
                                 ${this.footer.render()}
                                 ${this.order.render()}`;
 
+        this.root.replaceWith(rootUpdate);
         this.afterRender();
     }
 

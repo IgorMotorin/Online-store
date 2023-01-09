@@ -54,28 +54,31 @@ export class Main {
                                         <h3>Products not found</h3>
                                         </div> `;
 
-        if (this.settingsMain === '/products') {
-            const cards = `
-                    <div class = "products">                                         
-                        ${this.dataProducts
-                            .map((item) => {
-                                this.card.props = item;
-                                return `${this.card.render()}`;
-                            })
-                            .join('')}
-                    </div>
-                    `;
+        const obj = {cards: ''};
 
-            const cardsH = `
-                    <div class = "products">                                         
-                        ${this.dataProducts
-                            .map((item) => {
-                                this.cardH.props = item;
-                                return `${this.cardH.render()}`;
-                            })
-                            .join('')}
-                    </div>
-                    `;
+        if (this.settingsMain === '/products') {
+
+            if ( this.view == 'card') {
+                obj.cards = `<div class = "products">
+                            ${this.dataProducts.length === 0 ? productsNotFound : ''}                                         
+                                ${this.dataProducts
+                                    .map((item) => {
+                                        this.card.props = item;
+                                        return `${this.card.render()}`;
+                                    })
+                                    .join('')}
+                                    </div>`; 
+            } else {
+                obj.cards = `<div class = "products">
+                            ${this.dataProducts.length === 0 ? productsNotFound : ''}                                     
+                                ${this.dataProducts
+                                    .map((item) => {
+                                        this.cardH.props = item;
+                                        return `${this.cardH.render()}`;
+                                    })
+                                    .join('')}
+                                    </div>`;
+            }            
 
             const productsView = `${this.search.render()}
                             <div class = "d-flex flex-row mb-3 container">
@@ -85,7 +88,7 @@ export class Main {
                                     ${
                                         this.dataProducts.length === 0 ? productsNotFound : ''
                                     }                                
-                                    ${this.view == 'card' ? cards : cardsH}                                    
+                                    ${obj.cards}                                    
                                 </div>
                             </div> `;
 
@@ -111,8 +114,11 @@ export class Main {
 
     update(): void {
         const main: HTMLElement | null = document.querySelector('.main');
+        const mainUpdate = document.createElement('div');
+        mainUpdate.classList.add("container", "main")
+        mainUpdate.innerHTML = this.render();
         if (main) {
-            main.outerHTML = this.render();
+            main.replaceWith(mainUpdate);
         }
         if (this.settingsMain === '/cart') {
             this.cart.updateRander();
@@ -124,8 +130,10 @@ export class Main {
                                     <h3>Products not found</h3>
                                     </div> `;
 
-        const cards = ` 
-                    <div class = "products">
+        const obj = {cards: ''};
+
+       if ( view == 'card') {
+        obj.cards = `                     
                     ${this.dataProducts.length === 0 ? productsNotFound : ''}                                         
                         ${this.dataProducts
                             .map((item) => {
@@ -133,11 +141,9 @@ export class Main {
                                 return `${this.card.render()}`;
                             })
                             .join('')}
-                    </div>
-                    `;
-
-        const cardsH = `
-                    <div class = "products">
+                    `; 
+    } else {
+        obj.cards = `                   
                     ${this.dataProducts.length === 0 ? productsNotFound : ''}                                     
                         ${this.dataProducts
                             .map((item) => {
@@ -145,11 +151,17 @@ export class Main {
                                 return `${this.cardH.render()}`;
                             })
                             .join('')}
-                    </div>
                     `;
+    }
+
+        
         const products: HTMLElement | null = document.querySelector('.products');
+        const productsUpdate = document.createElement('div');
+        productsUpdate.classList.add('products');
+        productsUpdate.innerHTML = obj.cards;
+
         if (products) {
-            products.outerHTML = view == 'card' ? cards : cardsH;
+            products.replaceWith(productsUpdate);
         }
     }
 }

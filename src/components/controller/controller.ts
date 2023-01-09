@@ -387,6 +387,10 @@ export class Controller extends Model {
                 history.pushState(null, '', url.origin);
                 this.updateProducts();
             }
+            history.pushState(null, '', url.origin);
+            this.router.readURL();
+            this.updateView(this.router.url, this.router.query);
+            // this.updateProducts();
         });
 
         const filterCopy: HTMLElement | null = document.getElementById('filter-copy');
