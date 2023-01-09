@@ -1,8 +1,18 @@
+// import { Controller } from '../../controller';
+// import { Router } from '../../router';
+
 let dateOffLength = 1;
-// let cardNumberLength = 1;
 
 export class Order {
-   
+  
+  // router: Router;
+  // controller: Controller;
+
+  constructor(){
+    // this.router = new Router();
+    // this.controller = new Controller(this.router);
+  }
+  
   validation() {
     const forms: NodeListOf<HTMLFormElement> = document.querySelectorAll('.needs-validation')
 
@@ -13,10 +23,23 @@ export class Order {
           event.preventDefault()
           event.stopPropagation()
         }
-
+        event.preventDefault()
         form.classList.add('was-validated')
+        if (form.checkValidity()) {
+          modalContent.innerHTML = '<h1 style="font-size: 70px; text-align: center; font-weight: 600">success!</h1>';
+          modalContent.style.height = '570px';
+          modalContent.style.justifyContent = 'center';
+          setTimeout(() => {
+            history.pushState(null, 'cart', location.origin);
+            // this.router.readURL();
+            // this.controller = new Controller(this.router);
+            // this.controller.updateView(this.router.url, this.router.query);
+            // console.log('good')
+          }, 3000);
+        }
       }, false)
     });
+    const modalContent = <HTMLElement>document.querySelector('.modal-content');
     const cardNumber = <HTMLInputElement>document.querySelector('.cardNumber');
     const dateOff = <HTMLInputElement>document.querySelector('.dateOff');
     const cvv = <HTMLInputElement>document.querySelector('.cvv');
@@ -81,7 +104,7 @@ render() {
                       <div class="row g-3">
                         <div class="col-sm-6">
                           <label for="firstName" class="form-label">First name</label>
-                          <input type="text" minlength="3" class="form-control" id="firstName" placeholder="" value="" required>
+                          <input type="text" minlength="3" class="form-control" id="firstName" placeholder="Sherlock" value="" required>
                           <div class="invalid-feedback">
                             Valid first name is required.
                           </div>
@@ -89,7 +112,7 @@ render() {
 
                         <div class="col-sm-6">
                           <label for="lastName" class="form-label">Last name</label>
-                          <input type="text" minlength="3" class="form-control" id="lastName" placeholder="" value="" required>
+                          <input type="text" minlength="3" class="form-control" id="lastName" placeholder="Holmes" value="" required>
                           <div class="invalid-feedback">
                             Valid last name is required.
                           </div>
@@ -127,17 +150,16 @@ render() {
 
                       <div class="row gy-3">
                         <div class="col-md-6">
-                        <img src="visaLogo.png" alt="Visa" style="width: 80%; display: none" class="visa">
-                        <img src="mastercardLogo.png" alt="mastercard" style="width: 50%; display: none" class="mastercard">
-                        <img src="AmericanExpressLogo.png" alt="American Express" style="width: 50%; display: none" class="americanExpress">
-                        </div>
-
-                        <div class="col-md-6">
                           <label for="cc-number" class="form-label">Credit card number</label>
                           <input type="text" pattern="[0-9]{16}" class="form-control cardNumber" id="cc-number" placeholder="1234567890123456" required>
                           <div class="invalid-feedback">
                             Credit card number is required
                           </div>
+                        </div>
+                        <div class="col-md-6">
+                        <img src="visaLogo.png" alt="Visa" style="width: 80%; display: none" class="visa">
+                        <img src="mastercardLogo.png" alt="mastercard" style="width: 50%; display: none" class="mastercard">
+                        <img src="AmericanExpressLogo.png" alt="American Express" style="width: 50%; display: none" class="americanExpress">
                         </div>
 
                         <div class="col-md-3">
