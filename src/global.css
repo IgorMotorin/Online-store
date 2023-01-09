@@ -71,7 +71,7 @@ body {
 
 
 .badge-filter {
-    text-align-last: justify;
+    text-align-last: start;
 }
 
 .card-img-top:hover{
@@ -91,10 +91,18 @@ body {
     background-repeat: no-repeat;
     /* background-color: #0d6efd; */
     fill: white;
+    /* fill:#0d6efd; */
     stroke: blue;
     
 }
 
+/* #sort-view4 > svg > rect:nth-child(1) {
+    fill:#0d6efd;
+} */
+
+.sort-view {
+    fill:#0d6efd;
+}
 
 .productDetails_img:active {
     transition: transform .5s ease;

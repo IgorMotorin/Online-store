@@ -33,7 +33,7 @@ render() {
                                     <button id="sort-view4" type="button" class="btn p-1">
                                         <svg width="32" height="32">
                                             <rect width="14" height="14" x="0" y="0"
-                                            fill="none"
+                                            fill="none"                                            
                                             stroke-width="1"
                                             stroke="#0d6efd"/>
                                             <rect width="14" height="14" x="18" y="0"
