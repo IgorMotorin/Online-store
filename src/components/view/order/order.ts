@@ -1,16 +1,19 @@
 // import { Controller } from '../../controller';
 // import { Router } from '../../router';
+import { queryOptions } from "../../interface/interface";
+
+
+  
+
 
 let dateOffLength = 1;
 
 export class Order {
+  updateView: (url: URL, query: queryOptions) => void;
   
-  // router: Router;
-  // controller: Controller;
 
-  constructor(){
-    // this.router = new Router();
-    // this.controller = new Controller(this.router);
+  constructor(updateView: (url: URL, query: queryOptions) => void) {
+    this.updateView = updateView
   }
   
   validation() {
@@ -33,7 +36,8 @@ export class Order {
             history.pushState(null, 'cart', location.origin);
             // this.router.readURL();
             // this.controller = new Controller(this.router);
-            // this.controller.updateView(this.router.url, this.router.query);
+            const url = new URL(location.origin);
+            this.updateView(url, {});
             // console.log('good')
           }, 3000);
         }
