@@ -61,10 +61,14 @@ export class Filters {
                             ${this.props.category.map(item => {
                                 return `<div class="form-check badge-filter">
                                             <input class="form-check-input filters_input" type="checkbox" value="${item[0]}" name="category" id="${item[0]}" ${this.query?.category?.includes(String(item[0])) ? "checked" : ""}>
-                                            <label class="form-check-label ${this.nextProps?.category?.filter(itm=> itm[0] === item[0]).length == 0 ? "opacity-50" : ""}" for="${item[0]}">
+                                            <label class="form-check-label w-75 ${this.nextProps?.category?.filter(itm=> itm[0] === item[0]).length == 0 ? "opacity-50" : ""}" for="${item[0]}">
                                                 ${String(item[0]).toUpperCase()}
                                             </label>
-                                            <span class="badge text-bg-primary">${item[1]}</span>
+                                            <span class="badge text-bg-primary ${this.nextProps?.category?.filter(itm=> itm[0] === item[0]).length == 0 ? "opacity-50" : ""}">
+                                            ${this.nextProps?.category?.filter(itm=> itm[0] === item[0]).length>0 ? this.nextProps?.category?.filter(itm=> itm[0] === item[0])[0][1]: 0}
+                                            /
+                                            ${item[1]}
+                                            </span>
                                         </div>`;
                             }).join('')}
                         
@@ -83,10 +87,14 @@ export class Filters {
                                 ${this.props.brand.map(item => {
                                     return `<div class="form-check badge-filter">
                                                 <input class="form-check-input filters_input" type="checkbox" name="brand" value="${item[0]}" id="${item[0]}" ${this.query?.brand?.includes(String(item[0])) ? "checked" : ""}>
-                                                <label class="form-check-label ${this.nextProps?.brand?.filter(itm=> itm[0] === item[0]).length == 0 ? "opacity-50" : ""}" for="${item[0]}">
+                                                <label class="form-check-label w-75 text-wrap  ${this.nextProps?.brand?.filter(itm=> itm[0] === item[0]).length == 0 ? "opacity-50" : ""}" for="${item[0]}">
                                                     ${item[0]}
                                                 </label>
-                                                <span class="badge text-bg-primary">${item[1]}</span>
+                                                <span class="badge text-bg-primary ${this.nextProps?.brand?.filter(itm=> itm[0] === item[0]).length == 0 ? "opacity-50" : ""}">
+                                                ${this.nextProps?.brand?.filter(itm=> itm[0] === item[0]).length>0 ? this.nextProps?.brand?.filter(itm=> itm[0] === item[0])[0][1]: 0}
+                                                /
+                                                ${item[1]}
+                                                </span>
                                             </div>`;
                                 }).join('')}
                             </div>

@@ -36,29 +36,32 @@ export class Header {
       `;
     }
 
-    update() {
+    update(): void {
         this.getLocalStorage();
-        (document.querySelector(".header_button") as HTMLElement).innerHTML = `  Cart total: ${this.total} EUR
-                                                                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                                                                    ${this.volume}
-                                                                                    <span class="visually-hidden">Корзина заказов</span>
-                                                                                </span>`
+        const header_button:HTMLElement | null = document.querySelector(".header_button");
+        if (header_button){
+            header_button.innerHTML = ` Cart total: ${this.total} EUR
+                                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                            ${this.volume}
+                                            <span class="visually-hidden">Корзина заказов</span>
+                                        </span>`;
+        }
+
+        
     }
 
-    getLocalStorage(){
+    getLocalStorage(): {total: number; volume: number; ids: number[]}{
         const obj: {total: number; volume: number; ids: number[]} = {total: 0, volume: 0, ids: []}
         if (localStorage.cart) {
-            const cart: {id: string, count: number, price: string}[] = JSON.parse(localStorage.cart)
+            const cart: {id: string, count: number, price: string}[] = JSON.parse(localStorage.cart);
             if (cart.length > 0) {
               obj.total = cart.reduce((acc, current)=> acc + current.count * Number(current.price), 0);
               obj.volume = cart.reduce((acc, current)=> acc + current.count, 0);
-              obj.ids = cart.map(item => Number(item.id))
-            }              
-            
+              obj.ids = cart.map(item => Number(item.id));
+            }            
         }
         this.total = obj.total;
         this.volume = obj.volume; 
         return obj;
     }
-
 }

@@ -1,12 +1,9 @@
 import { Router } from '../router';
 
-export class App {     
-          
-      router: Router;
+export class App {
+    router: Router;
 
-      constructor() {        
+    constructor() {
         this.router = new Router();
-        
-      }
-     
+    }
 }

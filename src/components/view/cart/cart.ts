@@ -32,8 +32,9 @@ export class Cart {
     render() {
       listGroupItemsArr = [];
       let productItemCount = '1';
-      let productItemPrice = '1';
-      const cart = JSON.parse(localStorage.cart);
+      let productItemPrice = '1'; 
+      let cart: {id: string, count: number, price: string}[] = [];
+      if (localStorage.cart) {cart = JSON.parse(localStorage.cart);}      
       for (const item of this.propsArr){
         cart.filter((a: any) => {if (item.id === Number(a.id)) {productItemCount = a.count; productItemPrice = String(a.price * a.count);}});
         listGroupItemsArr.push(`<li propsId="${item.id}" class="list-group-item d-flex justify-content-between align-items-start flex-wrap" id="${listGroupItemsArr.length}" style="min-height: 200px">
@@ -227,7 +228,8 @@ discont = Number((promoDiscont as HTMLElement).innerHTML);
   const count = changeI.querySelector('.changeItems-count');
   const itemSum = changeI.querySelector('.changeItems-sum');
   const itemId = String(changeI.getAttribute("propsId"));
-  const cart = JSON.parse(localStorage.cart);
+  let cart: {id: string, count: number, price: string}[] = [];
+  if (localStorage.cart) {cart = JSON.parse(localStorage.cart);} 
   
   
   
