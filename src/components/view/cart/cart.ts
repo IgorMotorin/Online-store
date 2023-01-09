@@ -1,11 +1,12 @@
 import { IDataProduct } from "../../interface/interface";
 import { Header } from '../header';
-// import { Event } from "../../interface/interface";
-// import { Main } from "../main"
+
+
 
 
 let itemsMove = 0;
 let itemsCount = 5;
+let cartRender: {itemsCount: number, itemsMove: number, pageNumber: number} = {itemsCount: 5, itemsMove: 0, pageNumber: 1};
 let listGroupPages: number;
 let listGroupPagesRender = '';
 let listGroupItems: string;
@@ -21,11 +22,14 @@ export class Cart {
         props: IDataProduct[];
         propsArr: IDataProduct[];
         header: Header;
+        
 
         constructor (props: IDataProduct[]){
             this.header = new Header(sum, discont);
             this.props = props;
             this.propsArr = this.props;
+            
+            
         }
 
     render() {
@@ -33,6 +37,7 @@ export class Cart {
       let productItemCount = '1';
       let productItemPrice = '1'; 
       let cart: {id: string, count: number, price: string}[] = [];
+      if (localStorage.cartRender){cartRender = JSON.parse(localStorage.cartRender); pageNumber = cartRender.pageNumber;}
       if (localStorage.cart) {cart = JSON.parse(localStorage.cart);}      
       for (const item of this.propsArr){
         cart.filter((a: {id: string, count: number, price: string}) => {if (item.id === Number(a.id)) {productItemCount = String(a.count); productItemPrice = String(Number(a.price) * a.count);}});
@@ -69,6 +74,9 @@ export class Cart {
   </div>                
 </li>
 `);}
+
+if (localStorage.cartRender){cartRender = JSON.parse(localStorage.cartRender); itemsCount = cartRender.itemsCount;
+   if (cartRender.itemsMove && itemsMove === 0){itemsMove = cartRender.itemsMove; }}
 listGroupPages = Math.ceil(listGroupItemsArr.length / itemsCount);
 listGroupItems = listGroupItemsArr.join('');
 listGroupPagesRender = '';
@@ -176,7 +184,14 @@ function finalRender(){
 
 
 updateRander(){
-  
+  if (location.search){
+  const checkPages: number = Math.ceil(document.querySelectorAll('.align-items-start').length / itemsCount);
+  const searchArr: string[] = location.search.split('=');
+  if(searchArr[0] !== '?page' || Number(searchArr[1]) > checkPages || Number(searchArr[1]) < 1){
+    // console.log('page not found');
+    }
+  }
+
   function changeHeader(){
   let volume = 0;
   sum = 0;
@@ -208,14 +223,16 @@ discont = Number(promoDiscont.innerHTML);
     </span>`;}
 
   }
+  if (localStorage.cartRender){cartRender = JSON.parse(localStorage.cartRender); itemsCount = cartRender.itemsCount;}
   
-
     // после удаления продукта корректировка высоты блока контейнера после updateRander
     const itemsOnPage = document.querySelectorAll('.align-items-start').length;
     const listGroupContainer = <HTMLElement>document.querySelector('.list-group-container');
     if (itemsCount * pageNumber < itemsOnPage){listGroupContainer.style.height = `${itemsCount * 200}px`} else {
       listGroupContainer.style.height = `${pageNumber > 0 && itemsOnPage % itemsCount === 0 ? itemsCount * 200 : (itemsOnPage % itemsCount) * 200}px`;} 
-    if (listGroupPages < pageNumber) {pageNumber--; history.pushState(null, `page=${pageNumber}`, location.origin + `/cart?page=${pageNumber}`); itemsMove -= Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200; (document.querySelector('.list-group-numbered') as HTMLElement).style.top = `-${itemsMove}px`; }
+    if (listGroupPages < pageNumber) {pageNumber--; history.pushState(null, `page=${pageNumber}`, location.origin + `/cart?page=${pageNumber}`); itemsMove -= Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200; (document.querySelector('.list-group-numbered') as HTMLElement).style.top = `-${itemsMove}px`; 
+    if (localStorage.cartRender){cartRender = JSON.parse(localStorage.cartRender); cartRender.itemsMove = itemsMove; localStorage.cartRender = JSON.stringify(cartRender);}
+    if (!localStorage.cartRender){cartRender.itemsMove = itemsMove; localStorage.cartRender = JSON.stringify(cartRender);}}
     if (!itemsOnPage) {listGroupContainer.style.height = "300px"; (listGroupContainer as HTMLElement).innerHTML = 
   `<h1 style="align-self: center; text-align: center"> Вы пока не добавили товары в корзину </h1>`}
 // .......................
@@ -268,8 +285,11 @@ discont = Number(promoDiscont.innerHTML);
   (document.querySelector('.switchPages') as HTMLElement).addEventListener('click', (event) => {
     const target = <HTMLElement>event.target;
     if (target) {
-    if (target.closest('.dropdown-item')){ itemsCount = Number((target.closest('.dropdown-item') as HTMLElement).innerHTML);}
-    else { itemsCount = Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML);}
+    if (target.closest('.dropdown-item')){ itemsCount = Number((target.closest('.dropdown-item') as HTMLElement).innerHTML);
+    history.pushState(null, `page=1`, location.origin + `/cart?page=1`);
+    if (localStorage.cartRender){cartRender = JSON.parse(localStorage.cartRender); cartRender.itemsMove = 0; cartRender.pageNumber = 1; localStorage.cartRender = JSON.stringify(cartRender);}}
+    if (localStorage.cartRender){cartRender = JSON.parse(localStorage.cartRender); cartRender.itemsCount = itemsCount; localStorage.cartRender = JSON.stringify(cartRender);}
+    if (!localStorage.cartRender){cartRender.itemsCount = itemsCount; localStorage.cartRender = JSON.stringify(cartRender);}
     const itemsOnPage = document.querySelectorAll('.align-items-start').length;
     const linkNext = <HTMLElement>target.closest('.page-link-next');
     const linkPrev = <HTMLElement>target.closest('.page-link-previous');
@@ -285,18 +305,20 @@ discont = Number(promoDiscont.innerHTML);
       ${listGroupPagesRender}
       <li class="page-item"><a class="page-link page-link-next" >Next</a></li>`;
       itemsMove = 0;
-      listGroupNumbered.style.top = `0px`;
+      if (listGroupNumbered){listGroupNumbered.style.top = `0px`}
 
     if (itemsCount < itemsOnPage){listGroupContainer.style.height = `${itemsCount * 200}px`} else {listGroupContainer.style.height = `${itemsOnPage * 200}px`;}
     }
+
+    if (localStorage.cartRender){cartRender = JSON.parse(localStorage.cartRender); if (cartRender.itemsMove){itemsMove = cartRender.itemsMove; }}
     
-        
+            
     if (linkNext){
       
-      if (itemsMove / 200 < itemsOnPage - Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML)){itemsMove += Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200; listGroupNumbered.style.top = `-${itemsMove}px`;}
+      if (itemsMove / 200 < itemsOnPage - Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML)){itemsMove += Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200; if(listGroupNumbered){listGroupNumbered.style.top = `-${itemsMove}px`;}}
       if (pageNumber < listGroupPages) {
         history.pushState(null, `page=${pageNumber + 1}`, location.origin + `/cart?page=${pageNumber + 1}`);
-        pageNumber++;
+        pageNumber++; if (localStorage.cartRender){cartRender = JSON.parse(localStorage.cartRender); cartRender.pageNumber = pageNumber; localStorage.cartRender = JSON.stringify(cartRender)}
       }
       if (listGroupPages <= pageNumber) {
         if (itemsOnPage % itemsCount !== 0) { listGroupContainer.style.height = `${itemsOnPage % itemsCount * 200}px`}}
@@ -306,7 +328,7 @@ discont = Number(promoDiscont.innerHTML);
       if (itemsMove / 200 >= Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML)){itemsMove -= Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200; listGroupNumbered.style.top = `-${itemsMove}px`; }
       if (pageNumber > 1) {
         history.pushState(null, `page=${pageNumber - 1}`, location.origin + `/cart?page=${pageNumber - 1}`);
-        pageNumber--;}
+        pageNumber--; if (localStorage.cartRender){cartRender = JSON.parse(localStorage.cartRender); cartRender.pageNumber = pageNumber; localStorage.cartRender = JSON.stringify(cartRender)}}
       if (itemsCount < itemsOnPage){listGroupContainer.style.height = `${itemsCount * 200}px`} else {listGroupContainer.style.height = `${itemsOnPage * 200}px`;}
       if (!itemsOnPage) {listGroupContainer.style.height = "300px"; listGroupContainer.innerHTML = 
   `<h1 style="align-self: center; text-align: center"> Вы пока не добавили товары в корзину </h1>`}
@@ -319,7 +341,12 @@ discont = Number(promoDiscont.innerHTML);
       if (listGroupPages === pageNumber) {
         if (itemsOnPage % itemsCount !== 0) { listGroupContainer.style.height = `${itemsOnPage % itemsCount * 200}px`}}
         history.pushState(null, 'page=1', location.origin + `/cart?page=${pageNumber}`);
+        if (localStorage.cartRender){cartRender = JSON.parse(localStorage.cartRender); cartRender.pageNumber = pageNumber; localStorage.cartRender = JSON.stringify(cartRender)}
     }}
+    if (localStorage.cartRender){cartRender = JSON.parse(localStorage.cartRender); cartRender.itemsMove = itemsMove; localStorage.cartRender = JSON.stringify(cartRender);}
+    if (!localStorage.cartRender){cartRender.itemsMove = itemsMove; localStorage.cartRender = JSON.stringify(cartRender);}
+    if (!itemsOnPage) {listGroupContainer.style.height = "300px"; (listGroupContainer as HTMLElement).innerHTML = 
+  `<h1 style="align-self: center; text-align: center"> Вы пока не добавили товары в корзину </h1>`}
   });
 
   const promoWrite = <HTMLInputElement>document.getElementById('promo code');
