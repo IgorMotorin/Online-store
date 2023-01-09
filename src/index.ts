@@ -2,9 +2,10 @@ import './nouislider.css';
 import './bootstrap.min.css';
 import './global.css';
 import {App} from './components/app';
+import { cross } from './crosscheck';
 
 
-console.log('Starting  App');
+console.log(cross);
 const app: App = new App();
 
 
