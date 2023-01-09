@@ -1,9 +1,6 @@
 export class Search {
-   
-   
-
-render() {
-    return `
+    render() {
+        return `
             <div class="input-group mb-3 w-50 container search p-3"> 
                                                                      
                     <input class="form-control filters_input" form ="filtersForm" name="search" list="datalistOptions" id="exampleDataList" placeholder="Search...">
@@ -16,6 +13,5 @@ render() {
                
             </div>
   `;
-}
-
+    }
 }

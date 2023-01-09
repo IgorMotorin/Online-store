@@ -1,16 +1,12 @@
-import { IFiltersProps, queryOptions } from "../../interface/interface";
+import { IFiltersProps, queryOptions } from '../../interface/interface';
 // import noUiSlider from 'nouislider';
 
 export class Filters {
-
-
-    
-        props: IFiltersProps;
-        query: queryOptions;
-        nextProps: IFiltersProps;
-        slaiderPriceFlag: boolean;
-        slaiderStockFlag: boolean;
-        
+    props: IFiltersProps;
+    query: queryOptions;
+    nextProps: IFiltersProps;
+    slaiderPriceFlag: boolean;
+    slaiderStockFlag: boolean;
 
     constructor(props: IFiltersProps, query: queryOptions) {
         this.props = props;
@@ -20,13 +16,10 @@ export class Filters {
         this.slaiderStockFlag = false;
     }
 
-
     render() {
         return `
-       
-
         <div class="filters">
-            <p class="fs-5 fw-semibold">Found: ${this.props.found ? this.props.found: "not found" } items</p>
+            <p class="fs-5 fw-semibold">Found: ${this.props.found ? this.props.found : 'not found'} items</p>
             <div class = "d-flex flex-row gap-1">
                 <button id="filter-reset" type="button" class="btn btn-outline-primary btn-sm flex-fill">Reset filters</button>
                 <button id="filter-copy" type="button" class="btn btn-outline-primary btn-sm flex-fill">Copy link</button>
@@ -58,19 +51,41 @@ export class Filters {
                     </h2>
                     <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne">
                         <div class="accordion-body">
-                            ${this.props.category.map(item => {
-                                return `<div class="form-check badge-filter">
-                                            <input class="form-check-input filters_input" type="checkbox" value="${item[0]}" name="category" id="${item[0]}" ${this.query?.category?.includes(String(item[0])) ? "checked" : ""}>
-                                            <label class="form-check-label w-75 ${this.nextProps?.category?.filter(itm=> itm[0] === item[0]).length == 0 ? "opacity-50" : ""}" for="${item[0]}">
+                            ${this.props.category
+                                .map((item) => {
+                                    return `<div class="form-check badge-filter">
+                                            <input class="form-check-input filters_input" type="checkbox" value="${
+                                                item[0]
+                                            }" name="category" id="${item[0]}" ${
+                                        this.query?.category?.includes(String(item[0])) ? 'checked' : ''
+                                    }>
+                                            <label class="form-check-label w-75 ${
+                                                this.nextProps?.category?.filter((itm) => itm[0] === item[0]).length ==
+                                                0
+                                                    ? 'opacity-50'
+                                                    : ''
+                                            }" for="${item[0]}">
                                                 ${String(item[0]).toUpperCase()}
                                             </label>
-                                            <span class="badge text-bg-primary ${this.nextProps?.category?.filter(itm=> itm[0] === item[0]).length == 0 ? "opacity-50" : ""}">
-                                            ${this.nextProps?.category?.filter(itm=> itm[0] === item[0]).length>0 ? this.nextProps?.category?.filter(itm=> itm[0] === item[0])[0][1]: 0}
+                                            <span class="badge text-bg-primary ${
+                                                this.nextProps?.category?.filter((itm) => itm[0] === item[0]).length ==
+                                                0
+                                                    ? 'opacity-50'
+                                                    : ''
+                                            }">
+                                            ${
+                                                this.nextProps?.category?.filter((itm) => itm[0] === item[0]).length > 0
+                                                    ? this.nextProps?.category?.filter(
+                                                          (itm) => itm[0] === item[0]
+                                                      )[0][1]
+                                                    : 0
+                                            }
                                             /
                                             ${item[1]}
                                             </span>
                                         </div>`;
-                            }).join('')}
+                                })
+                                .join('')}
                         
       
                         </div>
@@ -84,19 +99,42 @@ export class Filters {
                         </h2>
                         <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
                             <div class="accordion-body">
-                                ${this.props.brand.map(item => {
-                                    return `<div class="form-check badge-filter">
-                                                <input class="form-check-input filters_input" type="checkbox" name="brand" value="${item[0]}" id="${item[0]}" ${this.query?.brand?.includes(String(item[0])) ? "checked" : ""}>
-                                                <label class="form-check-label w-75 text-wrap  ${this.nextProps?.brand?.filter(itm=> itm[0] === item[0]).length == 0 ? "opacity-50" : ""}" for="${item[0]}">
+                                ${this.props.brand
+                                    .map((item) => {
+                                        return `<div class="form-check badge-filter">
+                                                <input class="form-check-input filters_input" type="checkbox" name="brand" value="${
+                                                    item[0]
+                                                }" id="${item[0]}" ${
+                                            this.query?.brand?.includes(String(item[0])) ? 'checked' : ''
+                                        }>
+                                                <label class="form-check-label w-75 text-wrap  ${
+                                                    this.nextProps?.brand?.filter((itm) => itm[0] === item[0]).length ==
+                                                    0
+                                                        ? 'opacity-50'
+                                                        : ''
+                                                }" for="${item[0]}">
                                                     ${item[0]}
                                                 </label>
-                                                <span class="badge text-bg-primary ${this.nextProps?.brand?.filter(itm=> itm[0] === item[0]).length == 0 ? "opacity-50" : ""}">
-                                                ${this.nextProps?.brand?.filter(itm=> itm[0] === item[0]).length>0 ? this.nextProps?.brand?.filter(itm=> itm[0] === item[0])[0][1]: 0}
+                                                <span class="badge text-bg-primary ${
+                                                    this.nextProps?.brand?.filter((itm) => itm[0] === item[0]).length ==
+                                                    0
+                                                        ? 'opacity-50'
+                                                        : ''
+                                                }">
+                                                ${
+                                                    this.nextProps?.brand?.filter((itm) => itm[0] === item[0]).length >
+                                                    0
+                                                        ? this.nextProps?.brand?.filter(
+                                                              (itm) => itm[0] === item[0]
+                                                          )[0][1]
+                                                        : 0
+                                                }
                                                 /
                                                 ${item[1]}
                                                 </span>
                                             </div>`;
-                                }).join('')}
+                                    })
+                                    .join('')}
                             </div>
                         </div>
                     </div>                
@@ -108,68 +146,37 @@ export class Filters {
         `;
     }
 
-    update(props: IFiltersProps){
+    update(props: IFiltersProps) {
         this.props.found = props.found;
         this.nextProps = props;
-        const prevbuttonCategory = (document.getElementById("filter-button-category") as HTMLElement).getAttribute("aria-expanded");
-        const prevbuttonBrand = (document.getElementById("filter-button-brand") as HTMLElement).getAttribute("aria-expanded");
+        const prevbuttonCategory: HTMLElement | null = document.getElementById('filter-button-category');
+        const prevbuttonCategoryAt: string | null | undefined = prevbuttonCategory?.getAttribute('aria-expanded');
+        const prevbuttonBrand: HTMLElement | null = document.getElementById('filter-button-brand');
+        const prevbuttonBrandAt: string | null | undefined = prevbuttonBrand?.getAttribute('aria-expanded');
 
-
-        (document.querySelector(".filters") as HTMLElement).outerHTML =  this.render();
-
-        const buttonCategory = (document.getElementById("filter-button-category") as HTMLElement);
-        const divCategory = (document.getElementById("collapseOne") as HTMLElement);
-
-        if (prevbuttonCategory == "true") {
-            buttonCategory.classList.remove();
-        buttonCategory.classList.add("accordion-button");
-        buttonCategory.setAttribute("aria-expanded", "true")
-        divCategory.classList.add("show")
-        }
-        
-        const buttonBrand = (document.getElementById("filter-button-brand") as HTMLElement);
-        const divBrand = (document.getElementById("collapseTwo") as HTMLElement);
-        
-        if (prevbuttonBrand == "true") {
-            buttonBrand.classList.remove();
-        buttonBrand.classList.add("accordion-button");
-        buttonBrand.setAttribute("aria-expanded", "true")
-        divBrand.classList.add("show")
+        const filters: HTMLElement | null = document.querySelector('.filters');
+        if (filters) {
+            filters.outerHTML = this.render();
         }
 
+        const buttonCategory: HTMLElement | null = document.getElementById('filter-button-category');
+        const divCategory: HTMLElement | null = document.getElementById('collapseOne');
+
+        if (prevbuttonCategoryAt == 'true') {
+            buttonCategory?.classList.remove();
+            buttonCategory?.classList.add('accordion-button');
+            buttonCategory?.setAttribute('aria-expanded', 'true');
+            divCategory?.classList.add('show');
+        }
+
+        const buttonBrand: HTMLElement | null = document.getElementById('filter-button-brand');
+        const divBrand: HTMLElement | null = document.getElementById('collapseTwo');
+
+        if (prevbuttonBrandAt == 'true') {
+            buttonBrand?.classList.remove();
+            buttonBrand?.classList.add('accordion-button');
+            buttonBrand?.setAttribute('aria-expanded', 'true');
+            divBrand?.classList.add('show');
+        }
     }
 }
-
-
-
-// <input  type="range" 
-// class="form-range one-range filters_input" 
-// min="${this.props.price[0]}" 
-// max="${this.props.price[1]}" 
-// id="customRange1"
-// name = "price"
-// value="${this.props.price[0]}">
-// <input  type="range" 
-// class="form-range two-range filters_input" 
-// min="${this.props.price[0]}" 
-// max="${this.props.price[1]}" 
-// id="customRange2"
-// name = "price"
-// value="${this.props.price[1]}">
-
-
-
-// <input  type="range" 
-//                     class="form-range one-range filters_input" 
-//                     min="${this.props.stock[0]}" 
-//                     max="${this.props.stock[1]}" 
-//                     id="customRange3"
-//                     name = "stock"
-//                     value = ${this.props.stock[0]}>
-//             <input  type="range" 
-//                     class="form-range two-range filters_input" 
-//                     min="${this.props.stock[0]}" 
-//                     max="${this.props.stock[1]}" 
-//                     id="customRange4"
-//                     name = "stock"
-//                     value = ${this.props.stock[1]}>

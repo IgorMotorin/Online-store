@@ -1,22 +1,15 @@
 import { dataProducts } from '../../model/dataProducts';
 import { Header } from '../header';
 import { Card } from '../card';
-import { Filters } from '../filters'
+import { Filters } from '../filters';
 import { Footer } from '../footer';
 import { Search } from '../search';
 import { IFiltersProps } from '../../interface/interface';
 import '../../../assets/icons/grid-3x3.svg';
 
-
-
-
-
 export class Sort {
-   
-    
-
-render() {
-    return `
+    render() {
+        return `
                                 <div class = "d-flex flex-row mb-3 justify-content-between">
                                     
                                 <select class="form-select form-select-sm w-25 h-50 filters_input" form ="filtersForm" name="sort" aria-label=".form-select-sm example">
@@ -57,14 +50,7 @@ render() {
                                         stroke="#0d6efd"/>                                    
                                         </svg>
                                     </button>
-                                </div>
-                                
-                                
-                                
-                                       
-                                   
-                                </div>
-  `;
-}
-
+                                </div>                                    
+                                </div>`;
+    }
 }
