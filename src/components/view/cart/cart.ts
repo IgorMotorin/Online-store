@@ -168,6 +168,7 @@ function finalRender(){
         <button type="button" class="btn btn-primary m-2 w-100 discont-button-buy" data-bs-toggle="modal" data-bs-target="#exampleModal">
             BUY NOW
         </button>
+        '<h1 class="btn btn-primary m-2 w-100 discont-button-doNot-buy" style="font-size: 20px; text-align: center; font-weight: 200">Добавьте товары в корзину</h1>';
     </div>
                 
 
@@ -184,6 +185,9 @@ function finalRender(){
 
 
 updateRander(){
+  if (listGroupPages === 0) {
+    const butBuy = <HTMLElement>document.querySelector('.discont-button-buy'); butBuy.style.display = 'none';
+    } else {const butDoNotBuy = <HTMLElement>document.querySelector('.discont-button-doNot-buy'); butDoNotBuy.style.display = 'none';}
   if (location.search){
   const checkPages: number = Math.ceil(document.querySelectorAll('.align-items-start').length / itemsCount);
   const searchArr: string[] = location.search.split('=');
