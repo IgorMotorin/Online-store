@@ -64,6 +64,7 @@ export class Order {
     const americanExpress = <HTMLElement>document.querySelector('.americanExpress');
 
     if (dateOff){ dateOff.oninput = function(){
+      if (dateOff.value.length !== 3){ if (isNaN(Number(dateOff.value[dateOff.value.length - 1])) || dateOff.value[dateOff.value.length - 1] === ' '){const tempC = dateOff.value.split(''); tempC.pop(); dateOff.value = tempC.join('');}}
       if (dateOff.value.length === 2 && dateOffLength < 2) {
         if (Number(dateOff.value) > 12){
           dateOff.value = dateOff.value[0];
@@ -74,10 +75,12 @@ export class Order {
       dateOffLength = dateOff.value.length;
       }
       if (cvv){ cvv.oninput = function(){
+        const tempC = cvv.value.split(''); const tempRes = tempC.filter((a) => {if (!isNaN(Number(a)) && a !== ' '){return true}}); cvv.value = tempRes.join('');
         if (cvv.value.length === 4){const tempC = cvv.value.split(''); tempC.pop(); cvv.value = tempC.join('');}
       }}}
 
       if (cardNumber){ cardNumber.oninput = function(){
+          const tempC = cardNumber.value.split(''); const tempRes = tempC.filter((a) => {if (!isNaN(Number(a)) && a !== ' '){return true}}); cardNumber.value = tempRes.join('');
           if (!cardNumber.value){
           visa.style.display = 'none';
           mastercard.style.display = 'none';
@@ -118,21 +121,15 @@ render() {
               <div class="container">                                      
                     <form class="needs-validation" novalidate>
                       <div class="row g-3">
-                        <div class="col-sm-6">
-                          <label for="firstName" class="form-label">First name</label>
-                          <input type="text" minlength="3" class="form-control" id="firstName" placeholder="Sherlock" value="" required>
+                        <div class="col-12">
+                          <label for="firstName" class="form-label">First and Last name</label>
+                          <input type="text" pattern="^\\W*(?:\\w{5,}\\b\\W*){2,}$" class="form-control" id="firstName" placeholder="Sherlock Holms" value="" required>
                           <div class="invalid-feedback">
-                            Valid first name is required.
+                            Valid first and last name is required.
                           </div>
                         </div>
 
-                        <div class="col-sm-6">
-                          <label for="lastName" class="form-label">Last name</label>
-                          <input type="text" minlength="3" class="form-control" id="lastName" placeholder="Holmes" value="" required>
-                          <div class="invalid-feedback">
-                            Valid last name is required.
-                          </div>
-                        </div>
+                        
 
                         <div class="col-12">
                           <label for="phone" class="form-label">Phone number </label>
@@ -152,7 +149,7 @@ render() {
 
                         <div class="col-12">
                           <label for="address" class="form-label">Address</label>
-                          <input type="text" pattern="[A-Za-z0-9]{5,}[ ][A-Za-z0-9]{5,}[ ][A-Za-z0-9]{5,}" class="form-control" id="address" placeholder="Baker street London" required>
+                          <input type="text" pattern="^\\W*(?:\\w{5,}\\b\\W*){3,}$" class="form-control" id="address" placeholder="Baker street London" required>
                           <div class="invalid-feedback">
                             Please enter your shipping address.
                           </div>

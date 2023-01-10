@@ -191,7 +191,7 @@ updateRander(){
     // console.log('page not found');
     }
   }
-
+  
   function changeHeader(){
   let volume = 0;
   sum = 0;
@@ -223,6 +223,7 @@ discont = Number(promoDiscont.innerHTML);
     </span>`;}
 
   }
+  
   if (localStorage.cartRender){cartRender = JSON.parse(localStorage.cartRender); itemsCount = cartRender.itemsCount;}
   
     // после удаления продукта корректировка высоты блока контейнера после updateRander
@@ -230,7 +231,7 @@ discont = Number(promoDiscont.innerHTML);
     const listGroupContainer = <HTMLElement>document.querySelector('.list-group-container');
     if (itemsCount * pageNumber < itemsOnPage){listGroupContainer.style.height = `${itemsCount * 200}px`} else {
       listGroupContainer.style.height = `${pageNumber > 0 && itemsOnPage % itemsCount === 0 ? itemsCount * 200 : (itemsOnPage % itemsCount) * 200}px`;} 
-    if (listGroupPages < pageNumber) {pageNumber--; history.pushState(null, `page=${pageNumber}`, location.origin + `/cart?page=${pageNumber}`); itemsMove -= Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200; (document.querySelector('.list-group-numbered') as HTMLElement).style.top = `-${itemsMove}px`; 
+    if (listGroupPages < pageNumber && listGroupPages !== 0) {pageNumber--; history.pushState(null, `page=${pageNumber}`, location.origin + `/cart?page=${pageNumber}`); itemsMove -= Number((document.querySelector('.dropdown-toggle') as HTMLElement).innerHTML) * 200; (document.querySelector('.list-group-numbered') as HTMLElement).style.top = `-${itemsMove}px`; 
     if (localStorage.cartRender){cartRender = JSON.parse(localStorage.cartRender); cartRender.itemsMove = itemsMove; localStorage.cartRender = JSON.stringify(cartRender);}
     if (!localStorage.cartRender){cartRender.itemsMove = itemsMove; localStorage.cartRender = JSON.stringify(cartRender);}}
     if (!itemsOnPage) {listGroupContainer.style.height = "300px"; (listGroupContainer as HTMLElement).innerHTML = 
@@ -239,7 +240,7 @@ discont = Number(promoDiscont.innerHTML);
   
 
   
-  
+
 
 
   document.querySelectorAll('.align-items-start').forEach(element => { element.addEventListener('click', (event) => {
