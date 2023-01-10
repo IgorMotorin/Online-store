@@ -158,8 +158,7 @@ export class Main {
         const products: HTMLElement | null = document.querySelector('.products');
         const productsUpdate = document.createElement('div');
         productsUpdate.classList.add('products');
-        productsUpdate.innerHTML = obj.cards;
-
+        productsUpdate.innerHTML = obj.cards;            
         if (products) {
             products.replaceWith(productsUpdate);
         }

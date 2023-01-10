@@ -433,6 +433,8 @@ export class Controller extends Model {
             const url = new URL(location.href);
             url.searchParams.set('view', 'card');
             history.pushState(null, '', url.href);
+            this.router.readURL();
+            this.updateView(this.router.url, this.router.query);
             this.updateProducts();
         });
 
@@ -441,6 +443,8 @@ export class Controller extends Model {
             const url = new URL(location.href);
             url.searchParams.set('view', 'line');
             history.pushState(null, '', url.href);
+            this.router.readURL();
+            this.updateView(this.router.url, this.router.query);
             this.updateProducts();
         });
 
