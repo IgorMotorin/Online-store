@@ -36,7 +36,7 @@ export class Order {
             history.pushState(null, 'cart', location.origin);
             // this.router.readURL();
             // this.controller = new Controller(this.router);
-            const url = new URL(location.origin);
+            const url = new URL(location.href);
             this.updateView(url, {});
             // console.log('good')
           }, 3000);

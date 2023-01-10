@@ -25,8 +25,24 @@ export class Controller extends Model {
     }
 
     getDataWithFilters(): IDataProduct[] {
+
+        const act = {
+            category: (a: string[]):void => super.getDataFilterByCategory(a),
+            brand: (a: string[]):void => super.getDataFilterByBrand(a),
+            brandOne: (a: string[]):void => super.getDataFilterByBrandOne(a),
+            price: (a: number, b: number): IDataProduct[] => super.getDataFilterByPrice(a, b),
+            priceOne: (a: number, b: number): IDataProduct[] => super.getDataFilterByPriceOne(a, b),
+            stock: (a: number, b: number): IDataProduct[] => super.getDataFilterByStock(a, b),
+            stockOne: (a: number, b: number): IDataProduct[] => super.getDataFilterByStockOne(a, b),
+            search: (a: string): IDataProduct[] => super.getDataFilterBySearch(a),
+            searchOne: (a: string): IDataProduct[] => super.getDataFilterBySearchOne(a)
+        }
+
+
         if (this.query.category) {
+            // act["category"](this.query.category);
             super.getDataFilterByCategory(this.query.category);
+            // act["brand"](this.query.brand);
             if (this.query.brand) {
                 super.getDataFilterByBrand(this.query.brand);
             }
@@ -298,7 +314,8 @@ export class Controller extends Model {
     }
 
     addEventSearch() {
-        (document.querySelectorAll('.filters_input') as NodeListOf<HTMLInputElement>).forEach((item) => {
+        const filters_input:NodeListOf<HTMLInputElement> = document.querySelectorAll('.filters_input');
+        filters_input.forEach((item) => {
             item.addEventListener('input', (e) => {
                 const targetElement = e.target as HTMLInputElement;
                 const url = new URL(location.href);
@@ -320,10 +337,10 @@ export class Controller extends Model {
             }
         });
 
-        const searchButton = document.getElementById('button-addon2') as HTMLElement;
+        const searchButton: HTMLElement | null = document.getElementById('button-addon2');
         const search = document.getElementById('exampleDataList') as HTMLInputElement;
 
-        searchButton.addEventListener('click', () => {
+        searchButton?.addEventListener('click', () => {
             const url = new URL(location.href);
             if (search.value) {
                 url.searchParams.set(search.name, search.value);

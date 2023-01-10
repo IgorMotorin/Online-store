@@ -10,7 +10,7 @@ export class View {
     header: Header;
     main: Main;
     footer: Footer;
-    root: HTMLElement;
+    root: HTMLElement | null;
     order: Order;
     controller: Controller;
     filterProps: IFiltersProps;
@@ -21,7 +21,7 @@ export class View {
         this.header = new Header(0, 0);
         this.main = new Main(controller.dataProducts, this.filterProps, controller.query);
         this.footer = new Footer();
-        this.root = document.getElementById('root') as HTMLElement;
+        this.root = document.getElementById('root');
         this.order = new Order(this.controller.updateView);
         this.getFilterProps();
     }
