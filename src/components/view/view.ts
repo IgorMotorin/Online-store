@@ -22,7 +22,7 @@ export class View {
         this.main = new Main(controller.dataProducts, this.filterProps, controller.query);
         this.footer = new Footer();
         this.root = document.getElementById('root');
-        this.order = new Order(this.controller.updateView);
+        this.order = new Order(this.controller);
         this.getFilterProps();
     }
 

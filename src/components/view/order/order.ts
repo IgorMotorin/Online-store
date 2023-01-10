@@ -1,5 +1,6 @@
 // import { Controller } from '../../controller';
 // import { Router } from '../../router';
+import { Controller } from "../../controller";
 import { queryOptions } from "../../interface/interface";
 
 
@@ -9,11 +10,11 @@ import { queryOptions } from "../../interface/interface";
 let dateOffLength = 1;
 
 export class Order {
-  updateView: (url: URL, query: queryOptions) => void;
+  controller: Controller;
   
 
-  constructor(updateView: (url: URL, query: queryOptions) => void) {
-    this.updateView = updateView
+  constructor(controller: Controller) {
+    this.controller = controller;
   }
   
   validation() {
@@ -33,13 +34,24 @@ export class Order {
           modalContent.style.height = '570px';
           modalContent.style.justifyContent = 'center';
           setTimeout(() => {
-            history.pushState(null, 'cart', location.origin);
-            // this.router.readURL();
-            // this.controller = new Controller(this.router);
+            history.pushState(null, 'cart', location.origin); 
+            const modal = <HTMLElement>document.querySelector('#exampleModal');
+            const modalBack = <HTMLElement>document.querySelector('.modal-backdrop');
+            const body = <HTMLElement>document.querySelector('.modal-open');
+            modal.setAttribute("aria-hidden", "true")
+            modal.style.display = 'none'
+            modal.classList.remove('show')
+            modalBack.remove()
+            body.classList.remove('modal-open')
+            body.style.overflow = '';
+            body.style.padding = "";
+            if (localStorage.cart) {localStorage.cart = JSON.stringify([]);}
             const url = new URL(location.href);
-            this.updateView(url, {});
-            // console.log('good')
+            this.controller.updateView(url, {});
+            this.controller.view.header.update();
+            
           }, 3000);
+
         }
       }, false)
     });
