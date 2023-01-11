@@ -515,8 +515,8 @@ export class Controller extends Model {
                 connect: true,
                 step: 1,
                 range: {
-                    min: 0,
-                    max: 1800,
+                    min: 10,
+                    max: 1749,
                 },
             });
 
@@ -557,7 +557,7 @@ export class Controller extends Model {
                 connect: true,
                 step: 1,
                 range: {
-                    min: 0,
+                    min: 2,
                     max: 150,
                 },
             });
